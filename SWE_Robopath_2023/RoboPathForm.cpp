@@ -647,7 +647,6 @@ System::Boolean UI::RoboPathForm::ShowYesNoWindow(System::String^ message)
 System::Void UI::RoboPathForm::AppendLog(System::String^ sMessage) {
     this->richTextBox_Log->AppendText(sMessage);
 }
-
 System::Void UI::RoboPathForm::SetVersion() {
     Projectdata::Version xVersion;
     this->textBox_Version->Text = xVersion.getVersion();
