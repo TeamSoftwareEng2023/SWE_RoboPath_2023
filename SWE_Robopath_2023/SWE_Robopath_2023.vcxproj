@@ -138,7 +138,7 @@
     <ClInclude Include="Resource.h" />
     <ClInclude Include="RoboPath.h" />
     <ClInclude Include="RoboPathStruct.h" />
-    <ClInclude Include="RoboPathVersion.h" />
+    <ClInclude Include="Version.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp" />
@@ -152,7 +152,7 @@
     </ClCompile>
     <ClCompile Include="ReadCSV.cpp" />
     <ClCompile Include="RoboPath.cpp" />
-    <ClCompile Include="RoboPathVersion.cpp" />
+    <ClCompile Include="Version.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="app.ico" />
@@ -163,6 +163,11 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="RoboPathForm.resx">
+      <DependentUpon>RoboPathForm.h</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

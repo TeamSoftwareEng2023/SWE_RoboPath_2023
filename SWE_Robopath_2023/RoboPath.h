@@ -2,7 +2,7 @@
 #include"pch.h"
 #include"RoboPathStruct.h"
 
-namespace DataRoboPath
+namespace Projectdata
 {
 	ref class RoboPath
 	{
@@ -12,8 +12,8 @@ namespace DataRoboPath
 		//Dekonstruktor
 		~RoboPath();
 		//Erhalte/Setze die eingelesene CSV-Datei in einer Liste
-		void SetlstPathData(System::Collections::Generic::List<DataRoboPathStruct::RoboPathStruct<float>^>^);
-		System::Collections::Generic::List<DataRoboPathStruct::RoboPathStruct<float>^>^ GetlstPathData();
+		void SetlstPathData(System::Collections::Generic::List<Projectdata::RoboPathStruct<float>^>^);
+		System::Collections::Generic::List<Projectdata::RoboPathStruct<float>^>^ GetlstPathData();
 		//Erhalte/Setze den Dateipfad
 		void SetFilePath(System::String^);
 		System::String^ GetFilePath();
@@ -41,10 +41,12 @@ namespace DataRoboPath
 		//Erhalte/Setze die boolsche Variable für die Option "Orientierung aus CSV"
 		void SetNutzerdefinierteOrientierung(bool);
 		bool GetNutzerdefinierteOrientierung();
+        //Setze alles zurück
+        void Zurücksetzen();
 
 	private:
 		System::String^ sFilepath;
-		System::Collections::Generic::List<DataRoboPathStruct::RoboPathStruct<float>^>^ lstPathData;
+		System::Collections::Generic::List<Projectdata::RoboPathStruct<float>^>^ lstPathData;
 		float fNutzerGeschwindigkeit;
 		float fNutzerToleranz;
 		float fNutzerMittelwertfindung;

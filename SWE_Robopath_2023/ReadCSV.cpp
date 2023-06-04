@@ -1,10 +1,10 @@
 #include "pch.h"
 #include "ReadCSV.h"
 
-System::Collections::Generic::List<DataRoboPathStruct::RoboPathStruct<float>^>^ LogicReadCSV::ReadCSV::ReadAndReturnCSV(System::String^ sFilepath)
+System::Collections::Generic::List<Projectdata::RoboPathStruct<float>^>^ Logic::ReadCSV::ReadAndReturnCSV(System::String^ sFilepath)
 {
-	UIRoboPathForms::RoboPathForm^ UIControl = gcnew UIRoboPathForms::RoboPathForm();
-	System::Collections::Generic::List<DataRoboPathStruct::RoboPathStruct<float>^>^ lstLeer;
+	UI::RoboPathForm^ UIControl = gcnew UI::RoboPathForm();
+	System::Collections::Generic::List<Projectdata::RoboPathStruct<float>^>^ lstLeer;
 	std::ifstream CSV(msclr::interop::marshal_as<std::string>(sFilepath));
 	std::string sLine;
 	char cTrennzeichen = ' ';
@@ -18,7 +18,7 @@ System::Collections::Generic::List<DataRoboPathStruct::RoboPathStruct<float>^>^ 
 			{
 				std::stringstream ssWerte(sLine);
 				std::string sEinzelwert;
-				DataRoboPathStruct::RoboPathStruct<float>^ strctRoboPathWerte;
+				Projectdata::RoboPathStruct<float>^ strctRoboPathWerte;
 
 				while (std::getline(ssWerte, sEinzelwert, cTrennzeichen))
 				{
@@ -87,7 +87,7 @@ System::Collections::Generic::List<DataRoboPathStruct::RoboPathStruct<float>^>^ 
 		}
 		else
 		{
-			UIControl->AppendLog("\nDatei wurde verschoben, gelöscht oder ist schreibgeschützt!");
+			UIControl->AppendLog("Datei wurde verschoben, gelöscht oder ist schreibgeschützt!\n");
 			return lstLeer;
 		}
 	}

@@ -1,14 +1,14 @@
 #include "pch.h"
 #include"RoboPathForm.h"
 
-UIRoboPathForms::RoboPathForm::RoboPathForm(void)
+UI::RoboPathForm::RoboPathForm(void)
 {
     InitializeComponent();
-    Datastore = gcnew DataRoboPath::RoboPath();
+    Datastore = gcnew Projectdata::RoboPath();
     SetVersion();
 }
 
-UIRoboPathForms::RoboPathForm::~RoboPathForm()
+UI::RoboPathForm::~RoboPathForm()
 {
     if (components)
     {
@@ -16,7 +16,7 @@ UIRoboPathForms::RoboPathForm::~RoboPathForm()
     }
 }
 
-void UIRoboPathForms::RoboPathForm::InitializeComponent()
+void UI::RoboPathForm::InitializeComponent()
 {
     this->SetButton = (gcnew System::Windows::Forms::Button());
     this->textBox_Geschwindigkeit = (gcnew System::Windows::Forms::TextBox());
@@ -55,6 +55,7 @@ void UIRoboPathForms::RoboPathForm::InitializeComponent()
     this->label_Toleranz_Wert = (gcnew System::Windows::Forms::Label());
     this->label_Toleranz_Act_Wert = (gcnew System::Windows::Forms::Label());
     this->label_Überschrift = (gcnew System::Windows::Forms::Label());
+    this->ClearButton = (gcnew System::Windows::Forms::Button());
     this->SuspendLayout();
     // 
     // SetButton
@@ -68,10 +69,10 @@ void UIRoboPathForms::RoboPathForm::InitializeComponent()
     this->SetButton->TabIndex = 3;
     this->SetButton->Text = L"Set";
     this->SetButton->UseVisualStyleBackColor = false;
+    this->SetButton->Click += gcnew System::EventHandler(this, &RoboPathForm::SetButton_Click);
     // 
     // textBox_Geschwindigkeit
     // 
-    this->textBox_Geschwindigkeit->AcceptsTab = true;
     this->textBox_Geschwindigkeit->Location = System::Drawing::Point(169, 101);
     this->textBox_Geschwindigkeit->Name = L"textBox_Geschwindigkeit";
     this->textBox_Geschwindigkeit->Size = System::Drawing::Size(100, 20);
@@ -107,6 +108,7 @@ void UIRoboPathForms::RoboPathForm::InitializeComponent()
     this->checkBox_Geschwindigkeit->TabIndex = 8;
     this->checkBox_Geschwindigkeit->Text = L"Geschwindigkeit aus .csv";
     this->checkBox_Geschwindigkeit->UseVisualStyleBackColor = true;
+    this->checkBox_Geschwindigkeit->CheckedChanged += gcnew System::EventHandler(this, &RoboPathForm::checkbox_GeschwindigkeitAusCSV_CheckChanged);
     // 
     // checkBox_Orientierung
     // 
@@ -117,6 +119,7 @@ void UIRoboPathForms::RoboPathForm::InitializeComponent()
     this->checkBox_Orientierung->TabIndex = 9;
     this->checkBox_Orientierung->Text = L"Orientierung aus .csv";
     this->checkBox_Orientierung->UseVisualStyleBackColor = true;
+    this->checkBox_Orientierung->CheckedChanged += gcnew System::EventHandler(this, &RoboPathForm::checkBox_OrientierugnngsCSV_CheckChanged);
     // 
     // label_Geschwindigkeit
     // 
@@ -418,12 +421,26 @@ void UIRoboPathForms::RoboPathForm::InitializeComponent()
     this->label_Überschrift->TabIndex = 40;
     this->label_Überschrift->Text = L"RoboPath Konfigurator";
     // 
+    // ClearButton
+    // 
+    this->ClearButton->BackColor = System::Drawing::SystemColors::ButtonFace;
+    this->ClearButton->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+        static_cast<System::Byte>(0)));
+    this->ClearButton->Location = System::Drawing::Point(12, 361);
+    this->ClearButton->Name = L"ClearButton";
+    this->ClearButton->Size = System::Drawing::Size(110, 50);
+    this->ClearButton->TabIndex = 41;
+    this->ClearButton->Text = L"Zurücksetzen";
+    this->ClearButton->UseVisualStyleBackColor = false;
+    this->ClearButton->Click += gcnew System::EventHandler(this, &RoboPathForm::ZurücksetzenButton_Click);
+    // 
     // RoboPathForm
     // 
     this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
     this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
     this->BackColor = System::Drawing::SystemColors::ButtonShadow;
     this->ClientSize = System::Drawing::Size(784, 561);
+    this->Controls->Add(this->ClearButton);
     this->Controls->Add(this->label_Überschrift);
     this->Controls->Add(this->label_Toleranz_Act_Wert);
     this->Controls->Add(this->label_Toleranz_Wert);
@@ -470,22 +487,184 @@ void UIRoboPathForms::RoboPathForm::InitializeComponent()
 
 }
 
-System::Void UIRoboPathForms::RoboPathForm::CSVÖffnen_Click(System::Object^ sender, System::EventArgs^ e) {
+#pragma region EventHandler
+System::Void UI::RoboPathForm::checkbox_GeschwindigkeitAusCSV_CheckChanged(System::Object^ sender, System::EventArgs^ e) {
+    if (this->checkBox_Geschwindigkeit->Checked) {
+
+        this->textBox_Geschwindigkeit->Text = "";
+
+        this->textBox_Geschwindigkeit->Enabled = false;
+
+        this->textBoxGeschwindigkeit_Aktuell->Text = "";
+    }
+    else {
+        this->textBox_Geschwindigkeit->Enabled = true;
+    }
+}
+System::Void UI::RoboPathForm::checkBox_OrientierugnngsCSV_CheckChanged(System::Object^ sender, System::EventArgs^ e) {
+    if (this->checkBox_Orientierung->Checked) {
+
+        this->textBox_Orientierung_A->Text = "";
+        this->textBox_Orientierung_B->Text = "";
+        this->textBox_Orientierung_C->Text = "";
+
+        this->textBox_Orientierung_A->Enabled = false;
+        this->textBox_Orientierung_B->Enabled = false;
+        this->textBox_Orientierung_C->Enabled = false;
+
+        this->textBox_Orientierung_A_Aktuell->Text = "";
+        this->textBox_Orientierung_B_Aktuell->Text = "";
+        this->textBox_Orientierung_C_Aktuell->Text = "";
+    }
+    else {
+        this->textBox_Orientierung_A->Enabled = true;
+        this->textBox_Orientierung_B->Enabled = true;
+        this->textBox_Orientierung_C->Enabled = true;
+    }
+}
+System::Void UI::RoboPathForm::SetButton_Click(System::Object^ sender, System::EventArgs^ e) {
+    try {
+        if ((this->checkBox_Geschwindigkeit->Checked == false
+            && this->textBox_Geschwindigkeit->Text == "")
+            || (this->checkBox_Orientierung->Checked == false
+                && (this->textBox_Orientierung_A->Text == ""
+                    || this->textBox_Orientierung_B->Text == ""
+                    || this->textBox_Orientierung_C->Text == ""))
+            || this->textBox_Toleranz->Text == ""
+            || this->textBox_Mittelwertfindung->Text == ""
+            || Datastore->GetFilePath() == "") {
+
+            System::Collections::Generic::List<System::String^> lstFehlermeldungen;
+            if (Datastore->GetFilePath() == "") {
+                lstFehlermeldungen.Add("Laden Sie eine CSV-Datei");
+            }
+            if (this->checkBox_Geschwindigkeit->Checked == false
+                && this->textBox_Geschwindigkeit->Text == "") {
+                lstFehlermeldungen.Add("Geben Sie eine Geschwindigkeit ein");
+            }
+            if (this->checkBox_Orientierung->Checked == false
+                && (this->textBox_Orientierung_A->Text == ""
+                    || this->textBox_Orientierung_B->Text == ""
+                    || this->textBox_Orientierung_C->Text == "")) {
+                if (this->textBox_Orientierung_A->Text == "") {
+                    lstFehlermeldungen.Add("Geben Sie einen Wert in der Orientierung \"A\" ein");
+                }
+                if (this->textBox_Orientierung_B->Text == "") {
+                    lstFehlermeldungen.Add("Geben Sie einen Wert in der Orientierung \"B\" ein");
+                }
+                if (this->textBox_Orientierung_C->Text == "") {
+                    lstFehlermeldungen.Add("Geben Sie einen Wert in der Orientierung \"C\" ein");
+                }
+            }
+            if (this->textBox_Toleranz->Text == "") {
+                lstFehlermeldungen.Add("Geben Sie eine Toleranz ein");
+            }
+            if (this->textBox_Mittelwertfindung->Text == "") {
+                lstFehlermeldungen.Add("Geben Sie eine Mittelwert ein");
+            }
+
+            System::String^ sFehlerMeldung = "Folgende Fehler sind aufgetreten:\n";
+
+            for (int i = 0; i < lstFehlermeldungen.Count; i++) {
+                sFehlerMeldung = sFehlerMeldung + "\n" + lstFehlermeldungen[i];
+                this->richTextBox_Log->AppendText(lstFehlermeldungen[i] + "\n");
+            }
+            this->ShowErrorWindow(sFehlerMeldung);
+        }
+        else {
+            if (this->checkBox_Geschwindigkeit->Checked == false) {
+                Datastore->SetGeschwindigkeit(Single::Parse(this->textBox_Geschwindigkeit->Text));
+            }
+            if (this->checkBox_Orientierung->Checked == false) {
+                Datastore->SetOrientierungA(Single::Parse(this->textBox_Orientierung_A->Text));
+                Datastore->SetOrientierungB(Single::Parse(this->textBox_Orientierung_B->Text));
+                Datastore->SetOrientierungC(Single::Parse(this->textBox_Orientierung_C->Text));
+            }
+            Datastore->SetToleranz(Single::Parse(this->textBox_Toleranz->Text));
+            Datastore->SetMittelWert(Single::Parse(this->textBox_Mittelwertfindung->Text));
+            Datastore->SetNutzerdefinierteGeschwindigkeit(this->checkBox_Geschwindigkeit->Checked);
+            Datastore->SetNutzerdefinierteOrientierung(this->checkBox_Orientierung->Checked);
+
+            this->textBoxGeschwindigkeit_Aktuell->Text = this->textBox_Geschwindigkeit->Text;
+            this->textBox_Orientierung_A_Aktuell->Text = this->textBox_Orientierung_A->Text;
+            this->textBox_Orientierung_B_Aktuell->Text = this->textBox_Orientierung_B->Text;
+            this->textBox_Orientierung_C_Aktuell->Text = this->textBox_Orientierung_C->Text;
+            this->textBox_Toleranz_Aktuell->Text = this->textBox_Toleranz->Text;
+            this->textBox_Mittelwert_Aktuell->Text = this->textBox_Mittelwertfindung->Text;
+            this->richTextBox_Log->AppendText("Laden der Werte erfolgreich\n");
+        }
+    }
+    catch (const std::exception&) {
+        this->richTextBox_Log->AppendText("Fehler beim Laden der Werte\n");
+    }
+}
+System::Void UI::RoboPathForm::ZurücksetzenButton_Click(System::Object^ sender, System::EventArgs^ e) {
+    try
+    {
+        System::Boolean bJaNein = this->ShowYesNoWindow("Sollen alle Daten gelöscht werden?");
+
+        if (bJaNein) {
+            Datastore->Zurücksetzen();
+            this->AllesZurücksetzen();
+        }
+        else {
+            return;
+        }
+    }
+    catch (const std::exception&)
+    {
+        this->richTextBox_Log->AppendText("Fehler beim Zurücksetzen der Werte\n");
+    }
+}
+System::Void UI::RoboPathForm::CSVÖffnen_Click(System::Object^ sender, System::EventArgs^ e) {
     openFileDialog_CSV->ShowDialog();
 }
-System::Void UIRoboPathForms::RoboPathForm::openFileDialog_CSV_FileOk(System::Object^ sender, System::ComponentModel::CancelEventArgs^ e) {
-    this->richTextBox_Log->Text = "Folgende .csv ist geladen: " + openFileDialog_CSV->FileName;
+System::Void UI::RoboPathForm::openFileDialog_CSV_FileOk(System::Object^ sender, System::ComponentModel::CancelEventArgs^ e) {
+    this->richTextBox_Log->Text = "Folgende .csv ist geladen: " + openFileDialog_CSV->FileName + "\n";
     Datastore->SetFilePath(openFileDialog_CSV->FileName);
 }
-System::Void UIRoboPathForms::RoboPathForm::AppendLog(std::string sMessage) {
-    System::String^ sLogText = msclr::interop::marshal_as<System::String^>(sMessage);
-    this->richTextBox_Log->AppendText(sLogText);
-}
-System::Void UIRoboPathForms::RoboPathForm::StartButton_Click(System::Object^ sender, System::EventArgs^ e) {
+System::Void UI::RoboPathForm::StartButton_Click(System::Object^ sender, System::EventArgs^ e) {
     /*LogicReadCSV::ReadCSV Reader;*/
     /*Reader.ReadAndReturnCSV(DataStore.GetFilePath());*/
 }
-System::Void UIRoboPathForms::RoboPathForm::SetVersion() {
-    DataRoboPathVersion::RoboPathVersion xVersion;
+#pragma endregion EventHandler
+
+#pragma region windows forms helper
+System::Void UI::RoboPathForm::ShowErrorWindow(String^ errorMessage)
+{
+    MessageBox::Show(errorMessage, "Fehler", MessageBoxButtons::OK, MessageBoxIcon::Error);
+}
+System::Boolean UI::RoboPathForm::ShowYesNoWindow(System::String^ message)
+{
+
+    // Anzeigen des Ja-Nein-Fensters und Rückgabe der Benutzerantwort
+    System::Windows::Forms::DialogResult xDialogResult = MessageBox::Show(message, "", MessageBoxButtons::YesNo, MessageBoxIcon::Question);
+    return xDialogResult == System::Windows::Forms::DialogResult::Yes;
+}
+#pragma endregion windows forms helper
+
+#pragma region helpers
+System::Void UI::RoboPathForm::AppendLog(System::String^ sMessage) {
+    this->richTextBox_Log->AppendText(sMessage);
+}
+
+System::Void UI::RoboPathForm::SetVersion() {
+    Projectdata::Version xVersion;
     this->textBox_Version->Text = xVersion.getVersion();
 }
+System::Void UI::RoboPathForm::AllesZurücksetzen() {
+    this->textBox_Geschwindigkeit->Clear();
+    this->textBoxGeschwindigkeit_Aktuell->Clear();
+    this->textBox_Orientierung_A->Clear();
+    this->textBox_Orientierung_A_Aktuell->Clear();
+    this->textBox_Orientierung_B->Clear();
+    this->textBox_Orientierung_B_Aktuell->Clear();
+    this->textBox_Orientierung_C->Clear();
+    this->textBox_Orientierung_C_Aktuell->Clear();
+    this->textBox_Toleranz->Clear();
+    this->textBox_Toleranz_Aktuell->Clear();
+    this->textBox_Mittelwertfindung->Clear();
+    this->textBox_Mittelwert_Aktuell->Clear();
+    this->richTextBox_Log->Clear();
+}
+#pragma endregion helpers
