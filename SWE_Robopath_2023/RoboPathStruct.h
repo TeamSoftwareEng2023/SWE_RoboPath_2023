@@ -1,6 +1,6 @@
 #pragma once
 
-namespace DataRoboPathStruct {
+namespace Projectdata {
 	generic<typename T>
 	ref struct RoboPathStruct
 	{
