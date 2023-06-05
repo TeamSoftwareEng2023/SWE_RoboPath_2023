@@ -53,7 +53,7 @@
     <ClInclude Include="RoboPathStruct.h">
       <Filter>Projectdata\Header</Filter>
     </ClInclude>
-    <ClInclude Include="Version.h">
+    <ClInclude Include="VersionInfo.h">
       <Filter>Projectdata\Header</Filter>
     </ClInclude>
     <ClInclude Include="ReadCSV.h">
