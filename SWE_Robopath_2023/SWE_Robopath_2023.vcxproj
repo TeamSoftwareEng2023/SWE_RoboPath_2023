@@ -138,7 +138,7 @@
     <ClInclude Include="Resource.h" />
     <ClInclude Include="RoboPath.h" />
     <ClInclude Include="RoboPathStruct.h" />
-    <ClInclude Include="Version.h" />
+    <ClInclude Include="VersionInfo.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp" />

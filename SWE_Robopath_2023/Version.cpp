@@ -1,9 +1,9 @@
 #include "pch.h"
-#include "Version.h"
+#include "VersionInfo.h"
 
-Projectdata::Version::Version() {
-	sVersion = "v1.2";
+Projectdata::VersionInfo::VersionInfo() {
+	sVersion = "v1.3";
 }
-System::String^ Projectdata::Version::getVersion() {
+System::String^ Projectdata::VersionInfo::getVersion() {
 	return sVersion;
 }

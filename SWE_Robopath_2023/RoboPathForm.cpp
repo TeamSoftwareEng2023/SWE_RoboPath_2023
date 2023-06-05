@@ -77,6 +77,7 @@ void UI::RoboPathForm::InitializeComponent()
     this->textBox_Geschwindigkeit->Name = L"textBox_Geschwindigkeit";
     this->textBox_Geschwindigkeit->Size = System::Drawing::Size(100, 20);
     this->textBox_Geschwindigkeit->TabIndex = 1;
+    this->textBox_Geschwindigkeit->Leave += gcnew System::EventHandler(this, &RoboPathForm::ValidiereEingabe);
     // 
     // textBox_Orientierung_A
     // 
@@ -84,6 +85,7 @@ void UI::RoboPathForm::InitializeComponent()
     this->textBox_Orientierung_A->Name = L"textBox_Orientierung_A";
     this->textBox_Orientierung_A->Size = System::Drawing::Size(100, 20);
     this->textBox_Orientierung_A->TabIndex = 2;
+    this->textBox_Orientierung_A->Leave += gcnew System::EventHandler(this, &RoboPathForm::ValidiereEingabe);
     // 
     // textBox_Toleranz
     // 
@@ -91,6 +93,7 @@ void UI::RoboPathForm::InitializeComponent()
     this->textBox_Toleranz->Name = L"textBox_Toleranz";
     this->textBox_Toleranz->Size = System::Drawing::Size(100, 20);
     this->textBox_Toleranz->TabIndex = 6;
+    this->textBox_Toleranz->Leave += gcnew System::EventHandler(this, &RoboPathForm::ValidiereEingabe);
     // 
     // textBox_Mittelwertfindung
     // 
@@ -98,6 +101,7 @@ void UI::RoboPathForm::InitializeComponent()
     this->textBox_Mittelwertfindung->Name = L"textBox_Mittelwertfindung";
     this->textBox_Mittelwertfindung->Size = System::Drawing::Size(100, 20);
     this->textBox_Mittelwertfindung->TabIndex = 7;
+    this->textBox_Mittelwertfindung->Leave += gcnew System::EventHandler(this, &RoboPathForm::ValidiereEingabe);
     // 
     // checkBox_Geschwindigkeit
     // 
@@ -265,7 +269,6 @@ void UI::RoboPathForm::InitializeComponent()
     // 
     // richTextBox_Log
     // 
-    this->richTextBox_Log->Enabled = false;
     this->richTextBox_Log->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
         static_cast<System::Byte>(0)));
     this->richTextBox_Log->Location = System::Drawing::Point(169, 273);
@@ -303,6 +306,7 @@ void UI::RoboPathForm::InitializeComponent()
     this->textBox_Orientierung_C->Name = L"textBox_Orientierung_C";
     this->textBox_Orientierung_C->Size = System::Drawing::Size(100, 20);
     this->textBox_Orientierung_C->TabIndex = 26;
+    this->textBox_Orientierung_C->Leave += gcnew System::EventHandler(this, &RoboPathForm::ValidiereEingabe);
     // 
     // textBox_Orientierung_B
     // 
@@ -310,6 +314,7 @@ void UI::RoboPathForm::InitializeComponent()
     this->textBox_Orientierung_B->Name = L"textBox_Orientierung_B";
     this->textBox_Orientierung_B->Size = System::Drawing::Size(100, 20);
     this->textBox_Orientierung_B->TabIndex = 27;
+    this->textBox_Orientierung_B->Leave += gcnew System::EventHandler(this, &RoboPathForm::ValidiereEingabe);
     // 
     // label_C
     // 
@@ -567,9 +572,11 @@ System::Void UI::RoboPathForm::SetButton_Click(System::Object^ sender, System::E
 
             for (int i = 0; i < lstFehlermeldungen.Count; i++) {
                 sFehlerMeldung = sFehlerMeldung + "\n" + lstFehlermeldungen[i];
-                this->richTextBox_Log->AppendText(lstFehlermeldungen[i] + "\n");
+                /*this->richTextBox_Log->AppendText(lstFehlermeldungen[i] + "\n");*/
             }
+            this->AppendLog(sFehlerMeldung + "\n\n");
             this->ShowErrorWindow(sFehlerMeldung);
+
         }
         else {
             if (this->checkBox_Geschwindigkeit->Checked == false) {
@@ -591,11 +598,11 @@ System::Void UI::RoboPathForm::SetButton_Click(System::Object^ sender, System::E
             this->textBox_Orientierung_C_Aktuell->Text = this->textBox_Orientierung_C->Text;
             this->textBox_Toleranz_Aktuell->Text = this->textBox_Toleranz->Text;
             this->textBox_Mittelwert_Aktuell->Text = this->textBox_Mittelwertfindung->Text;
-            this->richTextBox_Log->AppendText("Laden der Werte erfolgreich\n");
+            this->AppendLog("Laden der Werte erfolgreich\n\n");
         }
     }
     catch (const std::exception&) {
-        this->richTextBox_Log->AppendText("Fehler beim Laden der Werte\n");
+        this->AppendLog("Fehler beim Laden der Werte\n\n");
     }
 }
 System::Void UI::RoboPathForm::ZurücksetzenButton_Click(System::Object^ sender, System::EventArgs^ e) {
@@ -613,19 +620,62 @@ System::Void UI::RoboPathForm::ZurücksetzenButton_Click(System::Object^ sender, 
     }
     catch (const std::exception&)
     {
-        this->richTextBox_Log->AppendText("Fehler beim Zurücksetzen der Werte\n");
+        this->AppendLog("Fehler beim Zurücksetzen der Werte\n\n");
     }
 }
 System::Void UI::RoboPathForm::CSVÖffnen_Click(System::Object^ sender, System::EventArgs^ e) {
     openFileDialog_CSV->ShowDialog();
 }
 System::Void UI::RoboPathForm::openFileDialog_CSV_FileOk(System::Object^ sender, System::ComponentModel::CancelEventArgs^ e) {
-    this->richTextBox_Log->Text = "Folgende .csv ist geladen: " + openFileDialog_CSV->FileName + "\n";
+    this->AppendLog("Folgende .csv ist geladen: " + openFileDialog_CSV->FileName + "\n\n");
     Datastore->SetFilePath(openFileDialog_CSV->FileName);
 }
 System::Void UI::RoboPathForm::StartButton_Click(System::Object^ sender, System::EventArgs^ e) {
     /*LogicReadCSV::ReadCSV Reader;*/
     /*Reader.ReadAndReturnCSV(DataStore.GetFilePath());*/
+}
+System::Void UI::RoboPathForm::ValidiereEingabe(System::Object^ sender, System::EventArgs^ e) {
+    TextBox^ tbAktuelleTextBox = dynamic_cast<TextBox^>(sender);
+    if (tbAktuelleTextBox->Text == "") {
+        return;
+    }
+    if (tbAktuelleTextBox->Text->Contains(".")) {
+        tbAktuelleTextBox->Text = tbAktuelleTextBox->Text->Replace(".", ",");
+    }
+    float fEingabe;
+    if (float::TryParse(tbAktuelleTextBox->Text, fEingabe)) {
+        if (tbAktuelleTextBox->Name == "textBox_Geschwindigkeit"
+            && (fEingabe <= 0
+                || fEingabe > 2)) {
+            this->ShowErrorWindow("Die Geschwindigkeit muss größer als 0 sein und darf maximal 2m/s betragen");
+            tbAktuelleTextBox->Text = "";
+        }
+        else if (tbAktuelleTextBox->Name->Contains("textBox_Orientierung_")
+                && (fEingabe < 0
+                    || fEingabe > 360)) {
+            this->ShowErrorWindow("Der Winkel muss zwischen 0° und 360° betragen");
+            tbAktuelleTextBox->Text = "";
+        }
+        else if (tbAktuelleTextBox->Name == "textBox_Toleranz"
+                && (fEingabe < 0
+                    || fEingabe > 0)) {
+            this->ShowErrorWindow("Die Grenzen müssen noch definiert werden.\nSolange ist erstmal alles erlaubt");
+            /*tbAktuelleTextBox->Text = "";*/
+        }
+        else if (tbAktuelleTextBox->Name == "textBox_Mittelwertfindung"
+            && (fEingabe < 0
+                || fEingabe > 0)) {
+            this->ShowErrorWindow("Die Grenzen müssen noch definiert werden.\nSolange ist erstmal alles erlaubt");
+            /*tbAktuelleTextBox->Text = "";*/
+        }
+        else {
+            return;
+        }
+    }
+    else {
+        this->ShowErrorWindow("Es sind nur ganze oder Gleitkommezahlen erlaubt");
+        this->textBox_Geschwindigkeit->Text = "";
+    }
 }
 #pragma endregion EventHandler
 
@@ -645,10 +695,14 @@ System::Boolean UI::RoboPathForm::ShowYesNoWindow(System::String^ message)
 
 #pragma region helpers
 System::Void UI::RoboPathForm::AppendLog(System::String^ sMessage) {
+    System::DateTime aktuelleUhrzeit = System::DateTime::Now;
+    System::String^ formartierteZeit = aktuelleUhrzeit.ToString("HH:mm:ss");
+    this->richTextBox_Log->AppendText(formartierteZeit + "\n");
     this->richTextBox_Log->AppendText(sMessage);
+    this->richTextBox_Log->ScrollToCaret();
 }
 System::Void UI::RoboPathForm::SetVersion() {
-    Projectdata::Version xVersion;
+    Projectdata::VersionInfo xVersion;
     this->textBox_Version->Text = xVersion.getVersion();
 }
 System::Void UI::RoboPathForm::AllesZurücksetzen() {
