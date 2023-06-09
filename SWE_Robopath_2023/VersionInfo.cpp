@@ -2,7 +2,7 @@
 #include "VersionInfo.h"
 //Hier wird die Version manuell angepasst. Diese wird dann in Hauptfesnter unten links angezeigt
 Projectdata::VersionInfo::VersionInfo() {
-	sVersion = "v1.3";
+	sVersion = "v1.4";
 }
 //Erhalte die aktuelle Version
 System::String^ Projectdata::VersionInfo::getVersion() {
