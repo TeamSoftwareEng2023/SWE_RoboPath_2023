@@ -1,98 +1,104 @@
 #include "pch.h"
 #include "ReadCSV.h"
 
+Logic::ReadCSV::ReadCSV(UserInterface::RoboPathForm^ UI) {
+    lstCSV = gcnew System::Collections::Generic::List<Projectdata::RoboPathStruct<float>^>();
+    UIControl = UI;
+}
+
 System::Collections::Generic::List<Projectdata::RoboPathStruct<float>^>^ Logic::ReadCSV::ReadAndReturnCSV(System::String^ sFilepath)
 {
-	UI::RoboPathForm^ UIControl = gcnew UI::RoboPathForm();
-	System::Collections::Generic::List<Projectdata::RoboPathStruct<float>^>^ lstLeer;
-	std::ifstream CSV(msclr::interop::marshal_as<std::string>(sFilepath));
-	std::string sLine;
-	char cTrennzeichen = ' ';
-
-	try
-	{
-		//Prüfen, ob die Datei geöffnet werden könnte
-		if (CSV.is_open())
-		{
-			while (std::getline(CSV, sLine))
-			{
-				std::stringstream ssWerte(sLine);
-				std::string sEinzelwert;
-				Projectdata::RoboPathStruct<float>^ strctRoboPathWerte;
-
-				while (std::getline(ssWerte, sEinzelwert, cTrennzeichen))
-				{
-					int i = 0;
-					switch (i)
-					{
-					case 0:
-						strctRoboPathWerte->fZeitstempel = std::stof(sEinzelwert);
-						i++;
-						continue;
-					case 1:
-						strctRoboPathWerte->fX = std::stof(sEinzelwert);
-						i++;
-						continue;
-					case 2:
-						strctRoboPathWerte->fY = std::stof(sEinzelwert);
-						i++;
-						continue;
-					case 3:
-						strctRoboPathWerte->fZ = std::stof(sEinzelwert);
-						i++;
-						continue;
-					case 4:
-						strctRoboPathWerte->fXx = std::stof(sEinzelwert);
-						i++;
-						continue;
-					case 5:
-						strctRoboPathWerte->fXy = std::stof(sEinzelwert);
-						i++;
-						continue;
-					case 6:
-						strctRoboPathWerte->fXz = std::stof(sEinzelwert);
-						i++;
-						continue;
-					case 7:
-						strctRoboPathWerte->fYx = std::stof(sEinzelwert);
-						i++;
-						continue;
-					case 8:
-						strctRoboPathWerte->fYy = std::stof(sEinzelwert);
-						i++;
-						continue;
-					case 9:
-						strctRoboPathWerte->fYz = std::stof(sEinzelwert);
-						i++;
-						continue;
-					case 10:
-						strctRoboPathWerte->fZx = std::stof(sEinzelwert);
-						i++;
-						continue;
-					case 11:
-						strctRoboPathWerte->fZy = std::stof(sEinzelwert);
-						i++;
-						continue;
-					case 12:
-						strctRoboPathWerte->fZz = std::stof(sEinzelwert);
-						i++;
-						continue;
-					default:
-						break;
-					}
-				}
-				lstCSV->Add(strctRoboPathWerte);
-			}
-			return lstCSV;
-		}
-		else
-		{
-			UIControl->AppendLog("Datei wurde verschoben, gelöscht oder ist schreibgeschützt!\n");
-			return lstLeer;
-		}
-	}
-	catch (const std::exception&)
-	{
-		return lstLeer;
-	}
+    System::Collections::Generic::List<Projectdata::RoboPathStruct<float>^>^ lstEmpty = gcnew System::Collections::Generic::List<Projectdata::RoboPathStruct<float>^>();
+    System::IO::StreamReader^ srReader = gcnew System::IO::StreamReader(sFilepath);
+    System::String^ sLine;
+    try
+    {
+        throw gcnew System::Exception("Ein Fehler ist aufgetreten");
+        //Prüfen, ob die Datei geöffnet werden könnte
+        if (!srReader->EndOfStream)
+        {
+            while ((sLine = srReader->ReadLine()) != nullptr)
+            {
+                array<System::String^>^ Lines = sLine->Split(' ');
+                Projectdata::RoboPathStruct<float>^ strctRoboPathWerte = gcnew Projectdata::RoboPathStruct<float>();
+                int i = 0;
+                for each (System::String^ sValue in Lines)
+                {
+                    if (sValue->Contains(".")) {
+                        sValue = sValue->Replace(".", ",");
+                    }
+                    switch (i)
+                    {
+                    case 0:
+                        strctRoboPathWerte->fTimestamp = System::Single::Parse(sValue);
+                        i++;
+                        continue;
+                    case 1:
+                        strctRoboPathWerte->fX = System::Single::Parse(sValue);
+                        i++;
+                        continue;
+                    case 2:
+                        strctRoboPathWerte->fY = System::Single::Parse(sValue);
+                        i++;
+                        continue;
+                    case 3:
+                        strctRoboPathWerte->fZ = System::Single::Parse(sValue);
+                        i++;
+                        continue;
+                    case 4:
+                        strctRoboPathWerte->fXx = System::Single::Parse(sValue);
+                        i++;
+                        continue;
+                    case 5:
+                        strctRoboPathWerte->fXy = System::Single::Parse(sValue);
+                        i++;
+                        continue;
+                    case 6:
+                        strctRoboPathWerte->fXz = System::Single::Parse(sValue);
+                        i++;
+                        continue;
+                    case 7:
+                        strctRoboPathWerte->fYx = System::Single::Parse(sValue);
+                        i++;
+                        continue;
+                    case 8:
+                        strctRoboPathWerte->fYy = System::Single::Parse(sValue);
+                        i++;
+                        continue;
+                    case 9:
+                        strctRoboPathWerte->fYz = System::Single::Parse(sValue);
+                        i++;
+                        continue;
+                    case 10:
+                        strctRoboPathWerte->fZx = System::Single::Parse(sValue);
+                        i++;
+                        continue;
+                    case 11:
+                        strctRoboPathWerte->fZy = System::Single::Parse(sValue);
+                        i++;
+                        continue;
+                    case 12:
+                        strctRoboPathWerte->fZz = System::Single::Parse(sValue);
+                        i++;
+                        continue;
+                    default:
+                        break;
+                    }
+                }
+                lstCSV->Add(strctRoboPathWerte);
+            }
+            UIControl->AppendLog("CSV wurde eingelesen\n\n");
+            System::Threading::Thread::Sleep(1000);
+            return lstCSV;
+        }
+        else
+        {
+            return lstEmpty;
+        }
+    }
+    catch (System::Exception^ e)
+    {
+        UIControl->AppendLog("Fehler beim Einlesen der CSV:\n" + e->Message + "\n\n");
+        return lstEmpty;
+    }
 }

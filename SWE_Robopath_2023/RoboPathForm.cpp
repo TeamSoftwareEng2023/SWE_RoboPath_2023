@@ -1,14 +1,18 @@
 #include "pch.h"
 #include"RoboPathForm.h"
-
-UI::RoboPathForm::RoboPathForm(void)
+#include"ReadCSV.h"
+//Konstruktor
+UserInterface::RoboPathForm::RoboPathForm(void)
 {
+    //Initialisierung aller Elemente auf der Oberfläche
     InitializeComponent();
+    //Erstellung des Objekts, in dem alle benutzerdefinierte Werte auzs der Oberfläche gespeichert werden
     Datastore = gcnew Projectdata::RoboPath();
+    //Funktion, um sich die aktuelle Version zu holen
     SetVersion();
 }
-
-UI::RoboPathForm::~RoboPathForm()
+//Dekonstruktor
+UserInterface::RoboPathForm::~RoboPathForm()
 {
     if (components)
     {
@@ -16,250 +20,251 @@ UI::RoboPathForm::~RoboPathForm()
     }
 }
 
-void UI::RoboPathForm::InitializeComponent()
+//Initialisierung aller Elemente der Oberfläche
+void UserInterface::RoboPathForm::InitializeComponent()
 {
-    this->SetButton = (gcnew System::Windows::Forms::Button());
-    this->textBox_Geschwindigkeit = (gcnew System::Windows::Forms::TextBox());
-    this->textBox_Orientierung_A = (gcnew System::Windows::Forms::TextBox());
-    this->textBox_Toleranz = (gcnew System::Windows::Forms::TextBox());
-    this->textBox_Mittelwertfindung = (gcnew System::Windows::Forms::TextBox());
-    this->checkBox_Geschwindigkeit = (gcnew System::Windows::Forms::CheckBox());
-    this->checkBox_Orientierung = (gcnew System::Windows::Forms::CheckBox());
-    this->label_Geschwindigkeit = (gcnew System::Windows::Forms::Label());
-    this->label_Orientierung = (gcnew System::Windows::Forms::Label());
-    this->label_Toleranz = (gcnew System::Windows::Forms::Label());
-    this->label_Mittelwertfindung = (gcnew System::Windows::Forms::Label());
-    this->CSVÖffnenButton = (gcnew System::Windows::Forms::Button());
-    this->StartButton = (gcnew System::Windows::Forms::Button());
-    this->textBoxGeschwindigkeit_Aktuell = (gcnew System::Windows::Forms::TextBox());
-    this->textBox_Orientierung_A_Aktuell = (gcnew System::Windows::Forms::TextBox());
-    this->textBox_Toleranz_Aktuell = (gcnew System::Windows::Forms::TextBox());
-    this->textBox_Mittelwert_Aktuell = (gcnew System::Windows::Forms::TextBox());
-    this->label_ActWerte_1 = (gcnew System::Windows::Forms::Label());
-    this->textBox_Version = (gcnew System::Windows::Forms::TextBox());
+    this->btn_Set = (gcnew System::Windows::Forms::Button());
+    this->tb_Velo = (gcnew System::Windows::Forms::TextBox());
+    this->tb_Orientation_A = (gcnew System::Windows::Forms::TextBox());
+    this->tb_Tolerance = (gcnew System::Windows::Forms::TextBox());
+    this->tb_Average = (gcnew System::Windows::Forms::TextBox());
+    this->cb_Velo = (gcnew System::Windows::Forms::CheckBox());
+    this->cb_Orientation = (gcnew System::Windows::Forms::CheckBox());
+    this->label_Velo = (gcnew System::Windows::Forms::Label());
+    this->label_Orientation = (gcnew System::Windows::Forms::Label());
+    this->label_Tolerance = (gcnew System::Windows::Forms::Label());
+    this->label_Average = (gcnew System::Windows::Forms::Label());
+    this->btn_OpenCSV = (gcnew System::Windows::Forms::Button());
+    this->btn_Start = (gcnew System::Windows::Forms::Button());
+    this->tb_Velo_Act = (gcnew System::Windows::Forms::TextBox());
+    this->tb_Orientation_Act_A = (gcnew System::Windows::Forms::TextBox());
+    this->tb_Tolerance_Act = (gcnew System::Windows::Forms::TextBox());
+    this->tb_Average_Act = (gcnew System::Windows::Forms::TextBox());
+    this->label_ActValues = (gcnew System::Windows::Forms::Label());
+    this->tb_Version = (gcnew System::Windows::Forms::TextBox());
     this->openFileDialog_CSV = (gcnew System::Windows::Forms::OpenFileDialog());
-    this->richTextBox_Log = (gcnew System::Windows::Forms::RichTextBox());
-    this->textBox_Orientierung_C_Aktuell = (gcnew System::Windows::Forms::TextBox());
-    this->textBox_Orientierung_B_Aktuell = (gcnew System::Windows::Forms::TextBox());
-    this->textBox_Orientierung_C = (gcnew System::Windows::Forms::TextBox());
-    this->textBox_Orientierung_B = (gcnew System::Windows::Forms::TextBox());
+    this->tb_Log = (gcnew System::Windows::Forms::RichTextBox());
+    this->tb_Orientation_Act_C = (gcnew System::Windows::Forms::TextBox());
+    this->tb_Orientation_Act_B = (gcnew System::Windows::Forms::TextBox());
+    this->tb_Orientation_C = (gcnew System::Windows::Forms::TextBox());
+    this->tb_Orientation_B = (gcnew System::Windows::Forms::TextBox());
     this->label_C = (gcnew System::Windows::Forms::Label());
     this->label_B = (gcnew System::Windows::Forms::Label());
     this->label_ActB = (gcnew System::Windows::Forms::Label());
     this->label_ActA = (gcnew System::Windows::Forms::Label());
     this->label_ActC = (gcnew System::Windows::Forms::Label());
     this->label_A = (gcnew System::Windows::Forms::Label());
-    this->label_ActWerte_2 = (gcnew System::Windows::Forms::Label());
+    this->label_ActValues_ABC = (gcnew System::Windows::Forms::Label());
     this->label_Geschwindigkeit_Einheit_Wert = (gcnew System::Windows::Forms::Label());
     this->label_Geschwindigkeit_Einheit_Act_Wert = (gcnew System::Windows::Forms::Label());
     this->label_Toleranz_Wert = (gcnew System::Windows::Forms::Label());
     this->label_Toleranz_Act_Wert = (gcnew System::Windows::Forms::Label());
-    this->label_Überschrift = (gcnew System::Windows::Forms::Label());
-    this->ClearButton = (gcnew System::Windows::Forms::Button());
+    this->label_Header = (gcnew System::Windows::Forms::Label());
+    this->btn_Reset = (gcnew System::Windows::Forms::Button());
     this->SuspendLayout();
     // 
-    // SetButton
+    // btn_Set
     // 
-    this->SetButton->BackColor = System::Drawing::SystemColors::ButtonFace;
-    this->SetButton->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 20, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+    this->btn_Set->BackColor = System::Drawing::SystemColors::ButtonFace;
+    this->btn_Set->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 20, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
         static_cast<System::Byte>(0)));
-    this->SetButton->Location = System::Drawing::Point(649, 213);
-    this->SetButton->Name = L"SetButton";
-    this->SetButton->Size = System::Drawing::Size(110, 50);
-    this->SetButton->TabIndex = 3;
-    this->SetButton->Text = L"Set";
-    this->SetButton->UseVisualStyleBackColor = false;
-    this->SetButton->Click += gcnew System::EventHandler(this, &RoboPathForm::SetButton_Click);
+    this->btn_Set->Location = System::Drawing::Point(649, 213);
+    this->btn_Set->Name = L"btn_Set";
+    this->btn_Set->Size = System::Drawing::Size(110, 50);
+    this->btn_Set->TabIndex = 9;
+    this->btn_Set->Text = L"Set";
+    this->btn_Set->UseVisualStyleBackColor = false;
+    this->btn_Set->Click += gcnew System::EventHandler(this, &RoboPathForm::btn_Set_Click);
     // 
-    // textBox_Geschwindigkeit
+    // tb_Velo
     // 
-    this->textBox_Geschwindigkeit->Location = System::Drawing::Point(169, 101);
-    this->textBox_Geschwindigkeit->Name = L"textBox_Geschwindigkeit";
-    this->textBox_Geschwindigkeit->Size = System::Drawing::Size(100, 20);
-    this->textBox_Geschwindigkeit->TabIndex = 1;
-    this->textBox_Geschwindigkeit->Leave += gcnew System::EventHandler(this, &RoboPathForm::ValidiereEingabe);
+    this->tb_Velo->Location = System::Drawing::Point(169, 101);
+    this->tb_Velo->Name = L"tb_Velo";
+    this->tb_Velo->Size = System::Drawing::Size(100, 20);
+    this->tb_Velo->TabIndex = 1;
+    this->tb_Velo->Leave += gcnew System::EventHandler(this, &RoboPathForm::ValidateInput);
     // 
-    // textBox_Orientierung_A
+    // tb_Orientation_A
     // 
-    this->textBox_Orientierung_A->Location = System::Drawing::Point(319, 101);
-    this->textBox_Orientierung_A->Name = L"textBox_Orientierung_A";
-    this->textBox_Orientierung_A->Size = System::Drawing::Size(100, 20);
-    this->textBox_Orientierung_A->TabIndex = 2;
-    this->textBox_Orientierung_A->Leave += gcnew System::EventHandler(this, &RoboPathForm::ValidiereEingabe);
+    this->tb_Orientation_A->Location = System::Drawing::Point(319, 101);
+    this->tb_Orientation_A->Name = L"tb_Orientation_A";
+    this->tb_Orientation_A->Size = System::Drawing::Size(100, 20);
+    this->tb_Orientation_A->TabIndex = 2;
+    this->tb_Orientation_A->Leave += gcnew System::EventHandler(this, &RoboPathForm::ValidateInput);
     // 
-    // textBox_Toleranz
+    // tb_Tolerance
     // 
-    this->textBox_Toleranz->Location = System::Drawing::Point(469, 101);
-    this->textBox_Toleranz->Name = L"textBox_Toleranz";
-    this->textBox_Toleranz->Size = System::Drawing::Size(100, 20);
-    this->textBox_Toleranz->TabIndex = 6;
-    this->textBox_Toleranz->Leave += gcnew System::EventHandler(this, &RoboPathForm::ValidiereEingabe);
+    this->tb_Tolerance->Location = System::Drawing::Point(469, 101);
+    this->tb_Tolerance->Name = L"tb_Tolerance";
+    this->tb_Tolerance->Size = System::Drawing::Size(100, 20);
+    this->tb_Tolerance->TabIndex = 5;
+    this->tb_Tolerance->Leave += gcnew System::EventHandler(this, &RoboPathForm::ValidateInput);
     // 
-    // textBox_Mittelwertfindung
+    // tb_Average
     // 
-    this->textBox_Mittelwertfindung->Location = System::Drawing::Point(619, 101);
-    this->textBox_Mittelwertfindung->Name = L"textBox_Mittelwertfindung";
-    this->textBox_Mittelwertfindung->Size = System::Drawing::Size(100, 20);
-    this->textBox_Mittelwertfindung->TabIndex = 7;
-    this->textBox_Mittelwertfindung->Leave += gcnew System::EventHandler(this, &RoboPathForm::ValidiereEingabe);
+    this->tb_Average->Location = System::Drawing::Point(619, 101);
+    this->tb_Average->Name = L"tb_Average";
+    this->tb_Average->Size = System::Drawing::Size(100, 20);
+    this->tb_Average->TabIndex = 6;
+    this->tb_Average->Leave += gcnew System::EventHandler(this, &RoboPathForm::ValidateInput);
     // 
-    // checkBox_Geschwindigkeit
+    // cb_Velo
     // 
-    this->checkBox_Geschwindigkeit->AutoSize = true;
-    this->checkBox_Geschwindigkeit->Location = System::Drawing::Point(12, 175);
-    this->checkBox_Geschwindigkeit->Name = L"checkBox_Geschwindigkeit";
-    this->checkBox_Geschwindigkeit->Size = System::Drawing::Size(147, 17);
-    this->checkBox_Geschwindigkeit->TabIndex = 8;
-    this->checkBox_Geschwindigkeit->Text = L"Geschwindigkeit aus .csv";
-    this->checkBox_Geschwindigkeit->UseVisualStyleBackColor = true;
-    this->checkBox_Geschwindigkeit->CheckedChanged += gcnew System::EventHandler(this, &RoboPathForm::checkbox_GeschwindigkeitAusCSV_CheckChanged);
+    this->cb_Velo->AutoSize = true;
+    this->cb_Velo->Location = System::Drawing::Point(12, 175);
+    this->cb_Velo->Name = L"cb_Velo";
+    this->cb_Velo->Size = System::Drawing::Size(147, 17);
+    this->cb_Velo->TabIndex = 7;
+    this->cb_Velo->Text = L"Geschwindigkeit aus .csv";
+    this->cb_Velo->UseVisualStyleBackColor = true;
+    this->cb_Velo->CheckedChanged += gcnew System::EventHandler(this, &RoboPathForm::cb_Velo_CheckChanged);
     // 
-    // checkBox_Orientierung
+    // cb_Orientation
     // 
-    this->checkBox_Orientierung->AutoSize = true;
-    this->checkBox_Orientierung->Location = System::Drawing::Point(12, 194);
-    this->checkBox_Orientierung->Name = L"checkBox_Orientierung";
-    this->checkBox_Orientierung->Size = System::Drawing::Size(126, 17);
-    this->checkBox_Orientierung->TabIndex = 9;
-    this->checkBox_Orientierung->Text = L"Orientierung aus .csv";
-    this->checkBox_Orientierung->UseVisualStyleBackColor = true;
-    this->checkBox_Orientierung->CheckedChanged += gcnew System::EventHandler(this, &RoboPathForm::checkBox_OrientierugnngsCSV_CheckChanged);
+    this->cb_Orientation->AutoSize = true;
+    this->cb_Orientation->Location = System::Drawing::Point(12, 194);
+    this->cb_Orientation->Name = L"cb_Orientation";
+    this->cb_Orientation->Size = System::Drawing::Size(126, 17);
+    this->cb_Orientation->TabIndex = 8;
+    this->cb_Orientation->Text = L"Orientierung aus .csv";
+    this->cb_Orientation->UseVisualStyleBackColor = true;
+    this->cb_Orientation->CheckedChanged += gcnew System::EventHandler(this, &RoboPathForm::cb_Orientation_CheckChanged);
     // 
-    // label_Geschwindigkeit
+    // label_Velo
     // 
-    this->label_Geschwindigkeit->AutoSize = true;
-    this->label_Geschwindigkeit->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, static_cast<System::Drawing::FontStyle>((System::Drawing::FontStyle::Bold | System::Drawing::FontStyle::Underline)),
+    this->label_Velo->AutoSize = true;
+    this->label_Velo->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, static_cast<System::Drawing::FontStyle>((System::Drawing::FontStyle::Bold | System::Drawing::FontStyle::Underline)),
         System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
-    this->label_Geschwindigkeit->Location = System::Drawing::Point(165, 75);
-    this->label_Geschwindigkeit->Name = L"label_Geschwindigkeit";
-    this->label_Geschwindigkeit->Size = System::Drawing::Size(140, 20);
-    this->label_Geschwindigkeit->TabIndex = 0;
-    this->label_Geschwindigkeit->Text = L"Geschwindigkeit";
+    this->label_Velo->Location = System::Drawing::Point(165, 75);
+    this->label_Velo->Name = L"label_Velo";
+    this->label_Velo->Size = System::Drawing::Size(140, 20);
+    this->label_Velo->TabIndex = 0;
+    this->label_Velo->Text = L"Geschwindigkeit";
     // 
-    // label_Orientierung
+    // label_Orientation
     // 
-    this->label_Orientierung->AutoSize = true;
-    this->label_Orientierung->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, static_cast<System::Drawing::FontStyle>((System::Drawing::FontStyle::Bold | System::Drawing::FontStyle::Underline)),
+    this->label_Orientation->AutoSize = true;
+    this->label_Orientation->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, static_cast<System::Drawing::FontStyle>((System::Drawing::FontStyle::Bold | System::Drawing::FontStyle::Underline)),
         System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
-    this->label_Orientierung->Location = System::Drawing::Point(315, 75);
-    this->label_Orientierung->Name = L"label_Orientierung";
-    this->label_Orientierung->Size = System::Drawing::Size(108, 20);
-    this->label_Orientierung->TabIndex = 0;
-    this->label_Orientierung->Text = L"Orientierung";
+    this->label_Orientation->Location = System::Drawing::Point(315, 75);
+    this->label_Orientation->Name = L"label_Orientation";
+    this->label_Orientation->Size = System::Drawing::Size(108, 20);
+    this->label_Orientation->TabIndex = 0;
+    this->label_Orientation->Text = L"Orientierung";
     // 
-    // label_Toleranz
+    // label_Tolerance
     // 
-    this->label_Toleranz->AutoSize = true;
-    this->label_Toleranz->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, static_cast<System::Drawing::FontStyle>((System::Drawing::FontStyle::Bold | System::Drawing::FontStyle::Underline)),
+    this->label_Tolerance->AutoSize = true;
+    this->label_Tolerance->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, static_cast<System::Drawing::FontStyle>((System::Drawing::FontStyle::Bold | System::Drawing::FontStyle::Underline)),
         System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
-    this->label_Toleranz->Location = System::Drawing::Point(465, 75);
-    this->label_Toleranz->Name = L"label_Toleranz";
-    this->label_Toleranz->Size = System::Drawing::Size(78, 20);
-    this->label_Toleranz->TabIndex = 13;
-    this->label_Toleranz->Text = L"Toleranz";
+    this->label_Tolerance->Location = System::Drawing::Point(465, 75);
+    this->label_Tolerance->Name = L"label_Tolerance";
+    this->label_Tolerance->Size = System::Drawing::Size(78, 20);
+    this->label_Tolerance->TabIndex = 13;
+    this->label_Tolerance->Text = L"Toleranz";
     // 
-    // label_Mittelwertfindung
+    // label_Average
     // 
-    this->label_Mittelwertfindung->AutoSize = true;
-    this->label_Mittelwertfindung->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, static_cast<System::Drawing::FontStyle>((System::Drawing::FontStyle::Bold | System::Drawing::FontStyle::Underline)),
+    this->label_Average->AutoSize = true;
+    this->label_Average->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, static_cast<System::Drawing::FontStyle>((System::Drawing::FontStyle::Bold | System::Drawing::FontStyle::Underline)),
         System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
-    this->label_Mittelwertfindung->Location = System::Drawing::Point(615, 75);
-    this->label_Mittelwertfindung->Name = L"label_Mittelwertfindung";
-    this->label_Mittelwertfindung->Size = System::Drawing::Size(147, 20);
-    this->label_Mittelwertfindung->TabIndex = 14;
-    this->label_Mittelwertfindung->Text = L"Mittelwertfindung";
+    this->label_Average->Location = System::Drawing::Point(615, 75);
+    this->label_Average->Name = L"label_Average";
+    this->label_Average->Size = System::Drawing::Size(147, 20);
+    this->label_Average->TabIndex = 14;
+    this->label_Average->Text = L"Mittelwertfindung";
     // 
-    // CSVÖffnenButton
+    // btn_OpenCSV
     // 
-    this->CSVÖffnenButton->BackColor = System::Drawing::SystemColors::ButtonFace;
-    this->CSVÖffnenButton->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 10, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+    this->btn_OpenCSV->BackColor = System::Drawing::SystemColors::ButtonFace;
+    this->btn_OpenCSV->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 10, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
         static_cast<System::Byte>(0)));
-    this->CSVÖffnenButton->Location = System::Drawing::Point(12, 417);
-    this->CSVÖffnenButton->Name = L"CSVÖffnenButton";
-    this->CSVÖffnenButton->Size = System::Drawing::Size(110, 50);
-    this->CSVÖffnenButton->TabIndex = 15;
-    this->CSVÖffnenButton->Text = L".csv öffnen";
-    this->CSVÖffnenButton->UseVisualStyleBackColor = false;
-    this->CSVÖffnenButton->Click += gcnew System::EventHandler(this, &RoboPathForm::CSVÖffnen_Click);
+    this->btn_OpenCSV->Location = System::Drawing::Point(12, 417);
+    this->btn_OpenCSV->Name = L"btn_OpenCSV";
+    this->btn_OpenCSV->Size = System::Drawing::Size(110, 50);
+    this->btn_OpenCSV->TabIndex = 11;
+    this->btn_OpenCSV->Text = L".csv öffnen";
+    this->btn_OpenCSV->UseVisualStyleBackColor = false;
+    this->btn_OpenCSV->Click += gcnew System::EventHandler(this, &RoboPathForm::btn_OpenCSV_Click);
     // 
-    // StartButton
+    // btn_Start
     // 
-    this->StartButton->BackColor = System::Drawing::SystemColors::ButtonFace;
-    this->StartButton->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 20, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+    this->btn_Start->BackColor = System::Drawing::SystemColors::ButtonFace;
+    this->btn_Start->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 20, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
         static_cast<System::Byte>(0)));
-    this->StartButton->Location = System::Drawing::Point(12, 473);
-    this->StartButton->Name = L"StartButton";
-    this->StartButton->Size = System::Drawing::Size(110, 50);
-    this->StartButton->TabIndex = 16;
-    this->StartButton->Text = L"Start";
-    this->StartButton->UseVisualStyleBackColor = false;
-    this->StartButton->Click += gcnew System::EventHandler(this, &RoboPathForm::StartButton_Click);
+    this->btn_Start->Location = System::Drawing::Point(12, 473);
+    this->btn_Start->Name = L"btn_Start";
+    this->btn_Start->Size = System::Drawing::Size(110, 50);
+    this->btn_Start->TabIndex = 12;
+    this->btn_Start->Text = L"Start";
+    this->btn_Start->UseVisualStyleBackColor = false;
+    this->btn_Start->Click += gcnew System::EventHandler(this, &RoboPathForm::btn_Start_Click);
     // 
-    // textBoxGeschwindigkeit_Aktuell
+    // tb_Velo_Act
     // 
-    this->textBoxGeschwindigkeit_Aktuell->AcceptsTab = true;
-    this->textBoxGeschwindigkeit_Aktuell->Enabled = false;
-    this->textBoxGeschwindigkeit_Aktuell->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Bold,
-        System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
-    this->textBoxGeschwindigkeit_Aktuell->Location = System::Drawing::Point(169, 127);
-    this->textBoxGeschwindigkeit_Aktuell->Name = L"textBoxGeschwindigkeit_Aktuell";
-    this->textBoxGeschwindigkeit_Aktuell->ReadOnly = true;
-    this->textBoxGeschwindigkeit_Aktuell->Size = System::Drawing::Size(100, 20);
-    this->textBoxGeschwindigkeit_Aktuell->TabIndex = 17;
-    // 
-    // textBox_Orientierung_A_Aktuell
-    // 
-    this->textBox_Orientierung_A_Aktuell->Enabled = false;
-    this->textBox_Orientierung_A_Aktuell->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Bold,
-        System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
-    this->textBox_Orientierung_A_Aktuell->Location = System::Drawing::Point(319, 191);
-    this->textBox_Orientierung_A_Aktuell->Name = L"textBox_Orientierung_A_Aktuell";
-    this->textBox_Orientierung_A_Aktuell->ReadOnly = true;
-    this->textBox_Orientierung_A_Aktuell->Size = System::Drawing::Size(100, 20);
-    this->textBox_Orientierung_A_Aktuell->TabIndex = 18;
-    // 
-    // textBox_Toleranz_Aktuell
-    // 
-    this->textBox_Toleranz_Aktuell->Enabled = false;
-    this->textBox_Toleranz_Aktuell->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Bold,
-        System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
-    this->textBox_Toleranz_Aktuell->Location = System::Drawing::Point(469, 127);
-    this->textBox_Toleranz_Aktuell->Name = L"textBox_Toleranz_Aktuell";
-    this->textBox_Toleranz_Aktuell->ReadOnly = true;
-    this->textBox_Toleranz_Aktuell->Size = System::Drawing::Size(100, 20);
-    this->textBox_Toleranz_Aktuell->TabIndex = 19;
-    // 
-    // textBox_Mittelwert_Aktuell
-    // 
-    this->textBox_Mittelwert_Aktuell->Enabled = false;
-    this->textBox_Mittelwert_Aktuell->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Bold,
-        System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
-    this->textBox_Mittelwert_Aktuell->Location = System::Drawing::Point(619, 127);
-    this->textBox_Mittelwert_Aktuell->Name = L"textBox_Mittelwert_Aktuell";
-    this->textBox_Mittelwert_Aktuell->ReadOnly = true;
-    this->textBox_Mittelwert_Aktuell->Size = System::Drawing::Size(100, 20);
-    this->textBox_Mittelwert_Aktuell->TabIndex = 20;
-    // 
-    // label_ActWerte_1
-    // 
-    this->label_ActWerte_1->AutoSize = true;
-    this->label_ActWerte_1->Location = System::Drawing::Point(86, 130);
-    this->label_ActWerte_1->Name = L"label_ActWerte_1";
-    this->label_ActWerte_1->Size = System::Drawing::Size(77, 13);
-    this->label_ActWerte_1->TabIndex = 21;
-    this->label_ActWerte_1->Text = L"Aktuelle Werte";
-    // 
-    // textBox_Version
-    // 
-    this->textBox_Version->Enabled = false;
-    this->textBox_Version->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+    this->tb_Velo_Act->AcceptsTab = true;
+    this->tb_Velo_Act->Enabled = false;
+    this->tb_Velo_Act->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
         static_cast<System::Byte>(0)));
-    this->textBox_Version->Location = System::Drawing::Point(12, 529);
-    this->textBox_Version->Name = L"textBox_Version";
-    this->textBox_Version->ReadOnly = true;
-    this->textBox_Version->Size = System::Drawing::Size(71, 20);
-    this->textBox_Version->TabIndex = 22;
-    this->textBox_Version->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
+    this->tb_Velo_Act->Location = System::Drawing::Point(169, 127);
+    this->tb_Velo_Act->Name = L"tb_Velo_Act";
+    this->tb_Velo_Act->ReadOnly = true;
+    this->tb_Velo_Act->Size = System::Drawing::Size(100, 20);
+    this->tb_Velo_Act->TabIndex = 17;
+    // 
+    // tb_Orientation_Act_A
+    // 
+    this->tb_Orientation_Act_A->Enabled = false;
+    this->tb_Orientation_Act_A->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Bold,
+        System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
+    this->tb_Orientation_Act_A->Location = System::Drawing::Point(319, 191);
+    this->tb_Orientation_Act_A->Name = L"tb_Orientation_Act_A";
+    this->tb_Orientation_Act_A->ReadOnly = true;
+    this->tb_Orientation_Act_A->Size = System::Drawing::Size(100, 20);
+    this->tb_Orientation_Act_A->TabIndex = 18;
+    // 
+    // tb_Tolerance_Act
+    // 
+    this->tb_Tolerance_Act->Enabled = false;
+    this->tb_Tolerance_Act->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+        static_cast<System::Byte>(0)));
+    this->tb_Tolerance_Act->Location = System::Drawing::Point(469, 127);
+    this->tb_Tolerance_Act->Name = L"tb_Tolerance_Act";
+    this->tb_Tolerance_Act->ReadOnly = true;
+    this->tb_Tolerance_Act->Size = System::Drawing::Size(100, 20);
+    this->tb_Tolerance_Act->TabIndex = 19;
+    // 
+    // tb_Average_Act
+    // 
+    this->tb_Average_Act->Enabled = false;
+    this->tb_Average_Act->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+        static_cast<System::Byte>(0)));
+    this->tb_Average_Act->Location = System::Drawing::Point(619, 127);
+    this->tb_Average_Act->Name = L"tb_Average_Act";
+    this->tb_Average_Act->ReadOnly = true;
+    this->tb_Average_Act->Size = System::Drawing::Size(100, 20);
+    this->tb_Average_Act->TabIndex = 20;
+    // 
+    // label_ActValues
+    // 
+    this->label_ActValues->AutoSize = true;
+    this->label_ActValues->Location = System::Drawing::Point(86, 130);
+    this->label_ActValues->Name = L"label_ActValues";
+    this->label_ActValues->Size = System::Drawing::Size(77, 13);
+    this->label_ActValues->TabIndex = 21;
+    this->label_ActValues->Text = L"Aktuelle Werte";
+    // 
+    // tb_Version
+    // 
+    this->tb_Version->Enabled = false;
+    this->tb_Version->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+        static_cast<System::Byte>(0)));
+    this->tb_Version->Location = System::Drawing::Point(12, 529);
+    this->tb_Version->Name = L"tb_Version";
+    this->tb_Version->ReadOnly = true;
+    this->tb_Version->Size = System::Drawing::Size(71, 20);
+    this->tb_Version->TabIndex = 22;
+    this->tb_Version->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
     // 
     // openFileDialog_CSV
     // 
@@ -267,54 +272,55 @@ void UI::RoboPathForm::InitializeComponent()
     this->openFileDialog_CSV->InitialDirectory = L"c:\\";
     this->openFileDialog_CSV->FileOk += gcnew System::ComponentModel::CancelEventHandler(this, &RoboPathForm::openFileDialog_CSV_FileOk);
     // 
-    // richTextBox_Log
+    // tb_Log
     // 
-    this->richTextBox_Log->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+    this->tb_Log->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
         static_cast<System::Byte>(0)));
-    this->richTextBox_Log->Location = System::Drawing::Point(169, 273);
-    this->richTextBox_Log->Name = L"richTextBox_Log";
-    this->richTextBox_Log->ReadOnly = true;
-    this->richTextBox_Log->Size = System::Drawing::Size(590, 267);
-    this->richTextBox_Log->TabIndex = 23;
-    this->richTextBox_Log->Text = L"";
+    this->tb_Log->Location = System::Drawing::Point(169, 273);
+    this->tb_Log->Name = L"tb_Log";
+    this->tb_Log->ReadOnly = true;
+    this->tb_Log->Size = System::Drawing::Size(590, 267);
+    this->tb_Log->TabIndex = 23;
+    this->tb_Log->TabStop = false;
+    this->tb_Log->Text = L"";
     // 
-    // textBox_Orientierung_C_Aktuell
+    // tb_Orientation_Act_C
     // 
-    this->textBox_Orientierung_C_Aktuell->Enabled = false;
-    this->textBox_Orientierung_C_Aktuell->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Bold,
+    this->tb_Orientation_Act_C->Enabled = false;
+    this->tb_Orientation_Act_C->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Bold,
         System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
-    this->textBox_Orientierung_C_Aktuell->Location = System::Drawing::Point(319, 243);
-    this->textBox_Orientierung_C_Aktuell->Name = L"textBox_Orientierung_C_Aktuell";
-    this->textBox_Orientierung_C_Aktuell->ReadOnly = true;
-    this->textBox_Orientierung_C_Aktuell->Size = System::Drawing::Size(100, 20);
-    this->textBox_Orientierung_C_Aktuell->TabIndex = 24;
+    this->tb_Orientation_Act_C->Location = System::Drawing::Point(319, 243);
+    this->tb_Orientation_Act_C->Name = L"tb_Orientation_Act_C";
+    this->tb_Orientation_Act_C->ReadOnly = true;
+    this->tb_Orientation_Act_C->Size = System::Drawing::Size(100, 20);
+    this->tb_Orientation_Act_C->TabIndex = 24;
     // 
-    // textBox_Orientierung_B_Aktuell
+    // tb_Orientation_Act_B
     // 
-    this->textBox_Orientierung_B_Aktuell->Enabled = false;
-    this->textBox_Orientierung_B_Aktuell->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Bold,
+    this->tb_Orientation_Act_B->Enabled = false;
+    this->tb_Orientation_Act_B->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Bold,
         System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
-    this->textBox_Orientierung_B_Aktuell->Location = System::Drawing::Point(319, 217);
-    this->textBox_Orientierung_B_Aktuell->Name = L"textBox_Orientierung_B_Aktuell";
-    this->textBox_Orientierung_B_Aktuell->ReadOnly = true;
-    this->textBox_Orientierung_B_Aktuell->Size = System::Drawing::Size(100, 20);
-    this->textBox_Orientierung_B_Aktuell->TabIndex = 25;
+    this->tb_Orientation_Act_B->Location = System::Drawing::Point(319, 217);
+    this->tb_Orientation_Act_B->Name = L"tb_Orientation_Act_B";
+    this->tb_Orientation_Act_B->ReadOnly = true;
+    this->tb_Orientation_Act_B->Size = System::Drawing::Size(100, 20);
+    this->tb_Orientation_Act_B->TabIndex = 25;
     // 
-    // textBox_Orientierung_C
+    // tb_Orientation_C
     // 
-    this->textBox_Orientierung_C->Location = System::Drawing::Point(319, 153);
-    this->textBox_Orientierung_C->Name = L"textBox_Orientierung_C";
-    this->textBox_Orientierung_C->Size = System::Drawing::Size(100, 20);
-    this->textBox_Orientierung_C->TabIndex = 26;
-    this->textBox_Orientierung_C->Leave += gcnew System::EventHandler(this, &RoboPathForm::ValidiereEingabe);
+    this->tb_Orientation_C->Location = System::Drawing::Point(319, 153);
+    this->tb_Orientation_C->Name = L"tb_Orientation_C";
+    this->tb_Orientation_C->Size = System::Drawing::Size(100, 20);
+    this->tb_Orientation_C->TabIndex = 4;
+    this->tb_Orientation_C->Leave += gcnew System::EventHandler(this, &RoboPathForm::ValidateInput);
     // 
-    // textBox_Orientierung_B
+    // tb_Orientation_B
     // 
-    this->textBox_Orientierung_B->Location = System::Drawing::Point(319, 127);
-    this->textBox_Orientierung_B->Name = L"textBox_Orientierung_B";
-    this->textBox_Orientierung_B->Size = System::Drawing::Size(100, 20);
-    this->textBox_Orientierung_B->TabIndex = 27;
-    this->textBox_Orientierung_B->Leave += gcnew System::EventHandler(this, &RoboPathForm::ValidiereEingabe);
+    this->tb_Orientation_B->Location = System::Drawing::Point(319, 127);
+    this->tb_Orientation_B->Name = L"tb_Orientation_B";
+    this->tb_Orientation_B->Size = System::Drawing::Size(100, 20);
+    this->tb_Orientation_B->TabIndex = 3;
+    this->tb_Orientation_B->Leave += gcnew System::EventHandler(this, &RoboPathForm::ValidateInput);
     // 
     // label_C
     // 
@@ -370,14 +376,14 @@ void UI::RoboPathForm::InitializeComponent()
     this->label_A->TabIndex = 33;
     this->label_A->Text = L"A";
     // 
-    // label_ActWerte_2
+    // label_ActValues_ABC
     // 
-    this->label_ActWerte_2->AutoSize = true;
-    this->label_ActWerte_2->Location = System::Drawing::Point(330, 175);
-    this->label_ActWerte_2->Name = L"label_ActWerte_2";
-    this->label_ActWerte_2->Size = System::Drawing::Size(77, 13);
-    this->label_ActWerte_2->TabIndex = 34;
-    this->label_ActWerte_2->Text = L"Aktuelle Werte";
+    this->label_ActValues_ABC->AutoSize = true;
+    this->label_ActValues_ABC->Location = System::Drawing::Point(330, 175);
+    this->label_ActValues_ABC->Name = L"label_ActValues_ABC";
+    this->label_ActValues_ABC->Size = System::Drawing::Size(77, 13);
+    this->label_ActValues_ABC->TabIndex = 34;
+    this->label_ActValues_ABC->Text = L"Aktuelle Werte";
     // 
     // label_Geschwindigkeit_Einheit_Wert
     // 
@@ -415,29 +421,29 @@ void UI::RoboPathForm::InitializeComponent()
     this->label_Toleranz_Act_Wert->TabIndex = 39;
     this->label_Toleranz_Act_Wert->Text = L"mm";
     // 
-    // label_Überschrift
+    // label_Header
     // 
-    this->label_Überschrift->AutoSize = true;
-    this->label_Überschrift->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 25, static_cast<System::Drawing::FontStyle>((System::Drawing::FontStyle::Bold | System::Drawing::FontStyle::Underline)),
+    this->label_Header->AutoSize = true;
+    this->label_Header->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 25, static_cast<System::Drawing::FontStyle>((System::Drawing::FontStyle::Bold | System::Drawing::FontStyle::Underline)),
         System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
-    this->label_Überschrift->Location = System::Drawing::Point(8, 9);
-    this->label_Überschrift->Name = L"label_Überschrift";
-    this->label_Überschrift->Size = System::Drawing::Size(384, 39);
-    this->label_Überschrift->TabIndex = 40;
-    this->label_Überschrift->Text = L"RoboPath Konfigurator";
+    this->label_Header->Location = System::Drawing::Point(8, 9);
+    this->label_Header->Name = L"label_Header";
+    this->label_Header->Size = System::Drawing::Size(384, 39);
+    this->label_Header->TabIndex = 40;
+    this->label_Header->Text = L"RoboPath Konfigurator";
     // 
-    // ClearButton
+    // btn_Reset
     // 
-    this->ClearButton->BackColor = System::Drawing::SystemColors::ButtonFace;
-    this->ClearButton->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+    this->btn_Reset->BackColor = System::Drawing::SystemColors::ButtonFace;
+    this->btn_Reset->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
         static_cast<System::Byte>(0)));
-    this->ClearButton->Location = System::Drawing::Point(12, 361);
-    this->ClearButton->Name = L"ClearButton";
-    this->ClearButton->Size = System::Drawing::Size(110, 50);
-    this->ClearButton->TabIndex = 41;
-    this->ClearButton->Text = L"Zurücksetzen";
-    this->ClearButton->UseVisualStyleBackColor = false;
-    this->ClearButton->Click += gcnew System::EventHandler(this, &RoboPathForm::ZurücksetzenButton_Click);
+    this->btn_Reset->Location = System::Drawing::Point(12, 361);
+    this->btn_Reset->Name = L"btn_Reset";
+    this->btn_Reset->Size = System::Drawing::Size(110, 50);
+    this->btn_Reset->TabIndex = 10;
+    this->btn_Reset->Text = L"Zurücksetzen";
+    this->btn_Reset->UseVisualStyleBackColor = false;
+    this->btn_Reset->Click += gcnew System::EventHandler(this, &RoboPathForm::btn_Reset_Click);
     // 
     // RoboPathForm
     // 
@@ -445,43 +451,43 @@ void UI::RoboPathForm::InitializeComponent()
     this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
     this->BackColor = System::Drawing::SystemColors::ButtonShadow;
     this->ClientSize = System::Drawing::Size(784, 561);
-    this->Controls->Add(this->ClearButton);
-    this->Controls->Add(this->label_Überschrift);
+    this->Controls->Add(this->btn_Reset);
+    this->Controls->Add(this->label_Header);
     this->Controls->Add(this->label_Toleranz_Act_Wert);
     this->Controls->Add(this->label_Toleranz_Wert);
     this->Controls->Add(this->label_Geschwindigkeit_Einheit_Act_Wert);
     this->Controls->Add(this->label_Geschwindigkeit_Einheit_Wert);
-    this->Controls->Add(this->label_ActWerte_2);
+    this->Controls->Add(this->label_ActValues_ABC);
     this->Controls->Add(this->label_A);
     this->Controls->Add(this->label_ActC);
     this->Controls->Add(this->label_ActA);
     this->Controls->Add(this->label_ActB);
     this->Controls->Add(this->label_B);
     this->Controls->Add(this->label_C);
-    this->Controls->Add(this->textBox_Orientierung_B);
-    this->Controls->Add(this->textBox_Orientierung_C);
-    this->Controls->Add(this->textBox_Orientierung_B_Aktuell);
-    this->Controls->Add(this->textBox_Orientierung_C_Aktuell);
-    this->Controls->Add(this->richTextBox_Log);
-    this->Controls->Add(this->textBox_Version);
-    this->Controls->Add(this->label_ActWerte_1);
-    this->Controls->Add(this->textBox_Mittelwert_Aktuell);
-    this->Controls->Add(this->textBox_Toleranz_Aktuell);
-    this->Controls->Add(this->textBox_Orientierung_A_Aktuell);
-    this->Controls->Add(this->textBoxGeschwindigkeit_Aktuell);
-    this->Controls->Add(this->StartButton);
-    this->Controls->Add(this->CSVÖffnenButton);
-    this->Controls->Add(this->label_Mittelwertfindung);
-    this->Controls->Add(this->label_Toleranz);
-    this->Controls->Add(this->label_Orientierung);
-    this->Controls->Add(this->label_Geschwindigkeit);
-    this->Controls->Add(this->checkBox_Orientierung);
-    this->Controls->Add(this->checkBox_Geschwindigkeit);
-    this->Controls->Add(this->textBox_Mittelwertfindung);
-    this->Controls->Add(this->textBox_Toleranz);
-    this->Controls->Add(this->textBox_Orientierung_A);
-    this->Controls->Add(this->textBox_Geschwindigkeit);
-    this->Controls->Add(this->SetButton);
+    this->Controls->Add(this->tb_Orientation_B);
+    this->Controls->Add(this->tb_Orientation_C);
+    this->Controls->Add(this->tb_Orientation_Act_B);
+    this->Controls->Add(this->tb_Orientation_Act_C);
+    this->Controls->Add(this->tb_Log);
+    this->Controls->Add(this->tb_Version);
+    this->Controls->Add(this->label_ActValues);
+    this->Controls->Add(this->tb_Average_Act);
+    this->Controls->Add(this->tb_Tolerance_Act);
+    this->Controls->Add(this->tb_Orientation_Act_A);
+    this->Controls->Add(this->tb_Velo_Act);
+    this->Controls->Add(this->btn_Start);
+    this->Controls->Add(this->btn_OpenCSV);
+    this->Controls->Add(this->label_Average);
+    this->Controls->Add(this->label_Tolerance);
+    this->Controls->Add(this->label_Orientation);
+    this->Controls->Add(this->label_Velo);
+    this->Controls->Add(this->cb_Orientation);
+    this->Controls->Add(this->cb_Velo);
+    this->Controls->Add(this->tb_Average);
+    this->Controls->Add(this->tb_Tolerance);
+    this->Controls->Add(this->tb_Orientation_A);
+    this->Controls->Add(this->tb_Velo);
+    this->Controls->Add(this->btn_Set);
     this->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
         static_cast<System::Byte>(0)));
     this->MaximizeBox = false;
@@ -493,231 +499,332 @@ void UI::RoboPathForm::InitializeComponent()
 }
 
 #pragma region EventHandler
-System::Void UI::RoboPathForm::checkbox_GeschwindigkeitAusCSV_CheckChanged(System::Object^ sender, System::EventArgs^ e) {
-    if (this->checkBox_Geschwindigkeit->Checked) {
+//Ereignis, nachdem die Velo Checkbox un/checked wird
+System::Void UserInterface::RoboPathForm::cb_Velo_CheckChanged(System::Object^ sender, System::EventArgs^ e) {
+    //Wenn die Checkbock true ist, möchte der Benutzer die Geschwindigkeit aus der CSV benutzen.
+    //Somit wird der Inhalt der beiden Velo Textbox gelöscht und disabled.
+    if (this->cb_Velo->Checked) {
 
-        this->textBox_Geschwindigkeit->Text = "";
+        this->tb_Velo->Clear();
 
-        this->textBox_Geschwindigkeit->Enabled = false;
+        this->tb_Velo->Enabled = false;
 
-        this->textBoxGeschwindigkeit_Aktuell->Text = "";
+        this->tb_Velo_Act->Clear();
     }
+    //Wenn die Checkbox false ist, möchte der Benutzer die Geschwindigkeit selbst definieren.
+    //Die TextBox wird enabled
     else {
-        this->textBox_Geschwindigkeit->Enabled = true;
+        this->tb_Velo->Enabled = true;
     }
 }
-System::Void UI::RoboPathForm::checkBox_OrientierugnngsCSV_CheckChanged(System::Object^ sender, System::EventArgs^ e) {
-    if (this->checkBox_Orientierung->Checked) {
+//Ereignis, nachdem die Orientation Checbox un/checked wird
+System::Void UserInterface::RoboPathForm::cb_Orientation_CheckChanged(System::Object^ sender, System::EventArgs^ e) {
+    //Wenn die Orientation Checkbox true ist, möchte der Benutzer die Orientierung aus der CSV benutzen
+    //Somit wird der Inhalt alles Orientation Textboxen gelöscht und disabled
+    if (this->cb_Orientation->Checked) {
+        
+        this->tb_Orientation_A->Clear();
+        this->tb_Orientation_B->Clear();
+        this->tb_Orientation_C->Clear();
 
-        this->textBox_Orientierung_A->Text = "";
-        this->textBox_Orientierung_B->Text = "";
-        this->textBox_Orientierung_C->Text = "";
+        this->tb_Orientation_A->Enabled = false;
+        this->tb_Orientation_B->Enabled = false;
+        this->tb_Orientation_C->Enabled = false;
 
-        this->textBox_Orientierung_A->Enabled = false;
-        this->textBox_Orientierung_B->Enabled = false;
-        this->textBox_Orientierung_C->Enabled = false;
-
-        this->textBox_Orientierung_A_Aktuell->Text = "";
-        this->textBox_Orientierung_B_Aktuell->Text = "";
-        this->textBox_Orientierung_C_Aktuell->Text = "";
+        this->tb_Orientation_Act_A->Clear();
+        this->tb_Orientation_Act_B->Clear();
+        this->tb_Orientation_Act_C->Clear();
     }
+    //Wenn die Checkbox false ist, möchte der Benutzer die Orientierung selbst bestimmen
+    //Somit werden alle Orientation Textboxen enabled
     else {
-        this->textBox_Orientierung_A->Enabled = true;
-        this->textBox_Orientierung_B->Enabled = true;
-        this->textBox_Orientierung_C->Enabled = true;
+        this->tb_Orientation_A->Enabled = true;
+        this->tb_Orientation_B->Enabled = true;
+        this->tb_Orientation_C->Enabled = true;
     }
 }
-System::Void UI::RoboPathForm::SetButton_Click(System::Object^ sender, System::EventArgs^ e) {
+//Eregnis, nachdem der Set Button geklickt worden ist. Damit möchte der Nutzer alle eingegebene Werte setzen/speichern.
+System::Void UserInterface::RoboPathForm::btn_Set_Click(System::Object^ sender, System::EventArgs^ e) {
     try {
-        if ((this->checkBox_Geschwindigkeit->Checked == false
-            && this->textBox_Geschwindigkeit->Text == "")
-            || (this->checkBox_Orientierung->Checked == false
-                && (this->textBox_Orientierung_A->Text == ""
-                    || this->textBox_Orientierung_B->Text == ""
-                    || this->textBox_Orientierung_C->Text == ""))
-            || this->textBox_Toleranz->Text == ""
-            || this->textBox_Mittelwertfindung->Text == ""
+        //Fehlerabfrage
+        //Falls einer der Textboxen leer ist, wird emittelt welche und eine entsprechende Fehlermeldung wird ausgegeben
+        if ((this->cb_Velo->Checked == false
+            && this->tb_Velo->Text == "")
+            || (this->cb_Orientation->Checked == false
+                && (this->tb_Orientation_A->Text == ""
+                    || this->tb_Orientation_B->Text == ""
+                    || this->tb_Orientation_C->Text == ""))
+            || this->tb_Tolerance->Text == ""
+            || this->tb_Average->Text == ""
             || Datastore->GetFilePath() == "") {
-
-            System::Collections::Generic::List<System::String^> lstFehlermeldungen;
+            //Fehler: Es wurde keine CSV geladen
+            System::Collections::Generic::List<System::String^> lstErrorMessages;
             if (Datastore->GetFilePath() == "") {
-                lstFehlermeldungen.Add("Laden Sie eine CSV-Datei");
+                lstErrorMessages.Add("Laden Sie eine CSV-Datei");
             }
-            if (this->checkBox_Geschwindigkeit->Checked == false
-                && this->textBox_Geschwindigkeit->Text == "") {
-                lstFehlermeldungen.Add("Geben Sie eine Geschwindigkeit ein");
+            //Fehler: Kein Wert in der Velo Textbox
+            if (this->cb_Velo->Checked == false
+                && this->tb_Velo->Text == "") {
+                lstErrorMessages.Add("Geben Sie eine Geschwindigkeit ein");
             }
-            if (this->checkBox_Orientierung->Checked == false
-                && (this->textBox_Orientierung_A->Text == ""
-                    || this->textBox_Orientierung_B->Text == ""
-                    || this->textBox_Orientierung_C->Text == "")) {
-                if (this->textBox_Orientierung_A->Text == "") {
-                    lstFehlermeldungen.Add("Geben Sie einen Wert in der Orientierung \"A\" ein");
+            //Fehler: Kein/e Wert/e in den Orientation Textboxen
+            if (this->cb_Orientation->Checked == false
+                && (this->tb_Orientation_A->Text == ""
+                    || this->tb_Orientation_B->Text == ""
+                    || this->tb_Orientation_C->Text == "")) {
+                //Fehler: Kein Wert in der Orientation Textbox A
+                if (this->tb_Orientation_A->Text == "") {
+                    lstErrorMessages.Add("Geben Sie einen Wert in der Orientierung \"A\" ein");
                 }
-                if (this->textBox_Orientierung_B->Text == "") {
-                    lstFehlermeldungen.Add("Geben Sie einen Wert in der Orientierung \"B\" ein");
+                //Fehler: Kein Wert in der Orientation Textbox B
+                if (this->tb_Orientation_B->Text == "") {
+                    lstErrorMessages.Add("Geben Sie einen Wert in der Orientierung \"B\" ein");
                 }
-                if (this->textBox_Orientierung_C->Text == "") {
-                    lstFehlermeldungen.Add("Geben Sie einen Wert in der Orientierung \"C\" ein");
+                //Fehler: Kein Wert in der Orientation Textbox C
+                if (this->tb_Orientation_C->Text == "") {
+                    lstErrorMessages.Add("Geben Sie einen Wert in der Orientierung \"C\" ein");
                 }
             }
-            if (this->textBox_Toleranz->Text == "") {
-                lstFehlermeldungen.Add("Geben Sie eine Toleranz ein");
+            //Fehler: Kein Wert in der Tolerance Textbox
+            if (this->tb_Tolerance->Text == "") {
+                lstErrorMessages.Add("Geben Sie eine Toleranz ein");
             }
-            if (this->textBox_Mittelwertfindung->Text == "") {
-                lstFehlermeldungen.Add("Geben Sie eine Mittelwert ein");
+            //Fehler: Kein Wert in der Average Textbox
+            if (this->tb_Average->Text == "") {
+                lstErrorMessages.Add("Geben Sie eine Mittelwert ein");
             }
-
+            //Alle Fehlermeldungen wurden in einer Liste aufgenommen und werden jetzt in einen String aneinandergehängt um diesen dann
+            //im Logfenster und in einem Fehlerfenster auszugeben
             System::String^ sFehlerMeldung = "Folgende Fehler sind aufgetreten:\n";
 
-            for (int i = 0; i < lstFehlermeldungen.Count; i++) {
-                sFehlerMeldung = sFehlerMeldung + "\n" + lstFehlermeldungen[i];
+            for (int i = 0; i < lstErrorMessages.Count; i++) {
+                sFehlerMeldung = sFehlerMeldung + "\n" + lstErrorMessages[i];
                 /*this->richTextBox_Log->AppendText(lstFehlermeldungen[i] + "\n");*/
             }
+            //Ausgabe im Logfesnter
             this->AppendLog(sFehlerMeldung + "\n\n");
+            //Ausgabe im Fehlerfenster
             this->ShowErrorWindow(sFehlerMeldung);
 
         }
+        //Falls alle Daten ausgefüllt worden sind, werden diese in dem dafür erstellten Klasse/Objekt gespeichert
         else {
-            if (this->checkBox_Geschwindigkeit->Checked == false) {
-                Datastore->SetGeschwindigkeit(Single::Parse(this->textBox_Geschwindigkeit->Text));
+            if (this->cb_Velo->Checked == false) {
+                //Der Text wird in den passenden Datentyp umgewandelt und übergeben.
+                Datastore->SetVelo(Single::Parse(this->tb_Velo->Text));
             }
-            if (this->checkBox_Orientierung->Checked == false) {
-                Datastore->SetOrientierungA(Single::Parse(this->textBox_Orientierung_A->Text));
-                Datastore->SetOrientierungB(Single::Parse(this->textBox_Orientierung_B->Text));
-                Datastore->SetOrientierungC(Single::Parse(this->textBox_Orientierung_C->Text));
+            if (this->cb_Orientation->Checked == false) {
+                //Der Text wird in den passenden Datentyp umgewandelt und übergeben.
+                Datastore->SetOrientationA(Single::Parse(this->tb_Orientation_A->Text));
+                Datastore->SetOrientationB(Single::Parse(this->tb_Orientation_B->Text));
+                Datastore->SetOrientationC(Single::Parse(this->tb_Orientation_C->Text));
             }
-            Datastore->SetToleranz(Single::Parse(this->textBox_Toleranz->Text));
-            Datastore->SetMittelWert(Single::Parse(this->textBox_Mittelwertfindung->Text));
-            Datastore->SetNutzerdefinierteGeschwindigkeit(this->checkBox_Geschwindigkeit->Checked);
-            Datastore->SetNutzerdefinierteOrientierung(this->checkBox_Orientierung->Checked);
-
-            this->textBoxGeschwindigkeit_Aktuell->Text = this->textBox_Geschwindigkeit->Text;
-            this->textBox_Orientierung_A_Aktuell->Text = this->textBox_Orientierung_A->Text;
-            this->textBox_Orientierung_B_Aktuell->Text = this->textBox_Orientierung_B->Text;
-            this->textBox_Orientierung_C_Aktuell->Text = this->textBox_Orientierung_C->Text;
-            this->textBox_Toleranz_Aktuell->Text = this->textBox_Toleranz->Text;
-            this->textBox_Mittelwert_Aktuell->Text = this->textBox_Mittelwertfindung->Text;
+            //Der Text wird in den passenden Datentyp umgewandelt und übergeben.
+            Datastore->SetTolerance(Single::Parse(this->tb_Tolerance->Text));
+            Datastore->SetAverage(Single::Parse(this->tb_Average->Text));
+            //Der Status der Checkboxen wird übergeben
+            Datastore->SetUserDefVelo(this->cb_Velo->Checked);
+            Datastore->SetUserDefOrientation(this->cb_Orientation->Checked);
+            //Die gespeicherten Werte werden in den dafür vorgesehenen Textboxen übernommen, um die aktuell geladenen Werte anzuzeigen
+            this->tb_Velo_Act->Text = this->tb_Velo->Text;
+            this->tb_Orientation_Act_A->Text = this->tb_Orientation_A->Text;
+            this->tb_Orientation_Act_B->Text = this->tb_Orientation_B->Text;
+            this->tb_Orientation_Act_C->Text = this->tb_Orientation_C->Text;
+            this->tb_Tolerance_Act->Text = this->tb_Tolerance->Text;
+            this->tb_Average_Act->Text = this->tb_Average->Text;
+            //Zusätzlich gibt es noch eine Meldung über die erfolgreiche Speicherung
             this->AppendLog("Laden der Werte erfolgreich\n\n");
+            //Gibt den Start Button frei
+            bSetted = true;
         }
     }
-    catch (const std::exception&) {
-        this->AppendLog("Fehler beim Laden der Werte\n\n");
+    catch (System::Exception^ e) {
+        this->AppendLog("Fehler beim Laden der Werte:\n" + e->Message + "\n");
     }
 }
-System::Void UI::RoboPathForm::ZurücksetzenButton_Click(System::Object^ sender, System::EventArgs^ e) {
+//Ereignis, wenn der Reset Button geklickt wird
+System::Void UserInterface::RoboPathForm::btn_Reset_Click(System::Object^ sender, System::EventArgs^ e) {
     try
     {
+        //Fenster, in dem der Nutzer nochmals gefragt wird, ob wirklich alle Daten gelöscht werden sollen
+        //Soll verhindern, dass durch fäschliches anklicken gleich alles weg ist
         System::Boolean bJaNein = this->ShowYesNoWindow("Sollen alle Daten gelöscht werden?");
-
+        //Je nachdem was der Nutzer angeklickt hat, wird alles gelöscht oder auch nicht
         if (bJaNein) {
-            Datastore->Zurücksetzen();
-            this->AllesZurücksetzen();
+            //Alle gespeicherten Werte werden zurückgesetzt
+            Datastore->Reset();
+            //Die Oberfläche wird zurückgesetzt
+            this->ResetAll();
         }
         else {
             return;
         }
     }
-    catch (const std::exception&)
+    catch (System::Exception^ e)
     {
-        this->AppendLog("Fehler beim Zurücksetzen der Werte\n\n");
+        this->AppendLog("Fehler beim Zurücksetzen der Werte:\n" + e->Message + "\n");
     }
 }
-System::Void UI::RoboPathForm::CSVÖffnen_Click(System::Object^ sender, System::EventArgs^ e) {
+//Ereignis, nachdem der .csv öffnen Button geklickt wird
+System::Void UserInterface::RoboPathForm::btn_OpenCSV_Click(System::Object^ sender, System::EventArgs^ e) {
+    //Es wird ein Fenster angezeigt, in dem Dateien auswählen kann
     openFileDialog_CSV->ShowDialog();
 }
-System::Void UI::RoboPathForm::openFileDialog_CSV_FileOk(System::Object^ sender, System::ComponentModel::CancelEventArgs^ e) {
+//Ereignis, dass nach dem öffnen einer Datei eintritt
+System::Void UserInterface::RoboPathForm::openFileDialog_CSV_FileOk(System::Object^ sender, System::ComponentModel::CancelEventArgs^ e) {
+    //Falls eine valide csv Datei geladen worden ist, wird der Pfad der Datei im Log ausgegeben und gespeichert
     this->AppendLog("Folgende .csv ist geladen: " + openFileDialog_CSV->FileName + "\n\n");
     Datastore->SetFilePath(openFileDialog_CSV->FileName);
 }
-System::Void UI::RoboPathForm::StartButton_Click(System::Object^ sender, System::EventArgs^ e) {
-    /*LogicReadCSV::ReadCSV Reader;*/
-    /*Reader.ReadAndReturnCSV(DataStore.GetFilePath());*/
+
+
+
+
+//Ereignis, nachdem der Start Button geklickt wird
+System::Void UserInterface::RoboPathForm::btn_Start_Click(System::Object^ sender, System::EventArgs^ e) {
+    try {
+        if (bSetted) {
+            Logic::ReadCSV^ Reader = gcnew Logic::ReadCSV(this);
+            /*Reader->ReadAndReturnCSV("test", this);*/
+            this->AppendLog("CSV wird eingelesen\n\n");
+            System::Threading::Thread::Sleep(1000);
+            Datastore->SetlstPathData(Reader->ReadAndReturnCSV(Datastore->GetFilePath()));
+        }
+        else
+        {
+            this->ShowErrorWindow("Der Set-Button wurde noch nicht gedrückt");
+            this->AppendLog("Der Set-Button wurde noch nicht gedrückt\n\n");
+        }
+    }
+    catch (System::Exception^ e) {
+        this->AppendLog("Fehler beim Starten:\n" + e->Message + "\n\n");
+    }
 }
-System::Void UI::RoboPathForm::ValidiereEingabe(System::Object^ sender, System::EventArgs^ e) {
-    TextBox^ tbAktuelleTextBox = dynamic_cast<TextBox^>(sender);
-    if (tbAktuelleTextBox->Text == "") {
+
+
+
+
+
+
+//Ereignis, nachdem ein Wert in irgendeine Textbox eingegeben wird und diese Textbox dann den Fokus verliert
+System::Void UserInterface::RoboPathForm::ValidateInput(System::Object^ sender, System::EventArgs^ e) {
+    //Die Textbox wird in einem Objekt gespeichert. Somit kann man mit dieser Funktion alle Textboxen anfangen
+    TextBox^ tbCurrentTextBox = dynamic_cast<TextBox^>(sender);
+    //Wenn gar nichts eingegeben wurde, passiert nichts
+    if (tbCurrentTextBox->Text == "") {
         return;
     }
-    if (tbAktuelleTextBox->Text->Contains(".")) {
-        tbAktuelleTextBox->Text = tbAktuelleTextBox->Text->Replace(".", ",");
+    //Man kann GLeitkommazahlen mit einem Punkt oder einem Komma eingeben. Gültig ist aber nur ein Komma.
+    //Deswegen wird geprüft, ob der eingegebene Text ein Punkt beinhaltet. Falls ja, wird dieser durch ein Komma ersetzt
+    if (tbCurrentTextBox->Text->Contains(".")) {
+        tbCurrentTextBox->Text = tbCurrentTextBox->Text->Replace(".", ",");
     }
-    float fEingabe;
-    if (float::TryParse(tbAktuelleTextBox->Text, fEingabe)) {
-        if (tbAktuelleTextBox->Name == "textBox_Geschwindigkeit"
-            && (fEingabe <= 0
-                || fEingabe > 2)) {
-            this->ShowErrorWindow("Die Geschwindigkeit muss größer als 0 sein und darf maximal 2m/s betragen");
-            tbAktuelleTextBox->Text = "";
+    float fInput;
+    //Der eingegebene Text wird in ein float umgewandelt. Falls dies gelingt, wird der Float in der Variable fInput gespeichert
+    if (float::TryParse(tbCurrentTextBox->Text, fInput)) {
+        //Da jede Textbox andere Bedingungen hat, wird ermittelt, um welche Textbox es sich handelt
+        //Wenn es die Velo Textbox ist, darf der Wert nicht keliner als 0 und größer als 2 sein.
+        if (tbCurrentTextBox->Name == "tb_Velo") {
+            if (fInput <= 0 || fInput > 2) {
+                //Falls doch, wird eine Fehlermeldung ausgegeben und der Text wird resettet.
+                this->ShowErrorWindow("Die Geschwindigkeit muss größer als 0 sein und darf maximal 2m/s betragen");
+                tbCurrentTextBox->Clear();
+            }
+            return;
         }
-        else if (tbAktuelleTextBox->Name->Contains("textBox_Orientierung_")
-                && (fEingabe < 0
-                    || fEingabe > 360)) {
-            this->ShowErrorWindow("Der Winkel muss zwischen 0° und 360° betragen");
-            tbAktuelleTextBox->Text = "";
+        //Wenn es einer der Orientation Textboxen ist, darf der Winkel nur zwischen 0 und 360 grad betragen
+        else if (tbCurrentTextBox->Name->Contains("tb_Orientation_")) {
+            if (fInput < 0 || fInput > 360) {
+                //Falls doch, wird eine Fehlermeldung ausgegeben und der Text wird resettet.
+                this->ShowErrorWindow("Der Winkel muss zwischen 0° und 360° betragen");
+                tbCurrentTextBox->Text = "";
+            }
+            return;
         }
-        else if (tbAktuelleTextBox->Name == "textBox_Toleranz"
-                && (fEingabe < 0
-                    || fEingabe > 0)) {
-            this->ShowErrorWindow("Die Grenzen müssen noch definiert werden.\nSolange ist erstmal alles erlaubt");
-            /*tbAktuelleTextBox->Text = "";*/
+        //Wenn es die Toelrance Textbox ist, ...
+        else if (tbCurrentTextBox->Name == "tb_Tolerance") {
+            if (fInput < 0 || fInput > 0) {
+                //Falls doch, wird eine Fehlermeldung ausgegeben und der Text wird resettet.
+                this->ShowErrorWindow("Die Grenzen müssen noch definiert werden.\nSolange ist erstmal alles erlaubt");
+                /*tbAktuelleTextBox->Text = "";*/
+            }
+            return;
         }
-        else if (tbAktuelleTextBox->Name == "textBox_Mittelwertfindung"
-            && (fEingabe < 0
-                || fEingabe > 0)) {
-            this->ShowErrorWindow("Die Grenzen müssen noch definiert werden.\nSolange ist erstmal alles erlaubt");
-            /*tbAktuelleTextBox->Text = "";*/
+        //Falls es die Average Textbox ist, ...
+        else if (tbCurrentTextBox->Name == "tb_Average") {
+            if (fInput < 0 || fInput > 0) {
+                //Falls doch, wird eine Fehlermeldung ausgegeben und der Text wird resettet.
+                this->ShowErrorWindow("Die Grenzen müssen noch definiert werden.\nSolange ist erstmal alles erlaubt");
+                /*tbAktuelleTextBox->Text = "";*/
+            }
+            return;
         }
+        //Falls else erreicht wird, wurde eine Textbox hinzugefügt, ohne diese hier zu implementieren
         else {
+            this->AppendLog("Unbekannte TextBox\n\n");
             return;
         }
     }
+    //Falls der eingegebene Wert nicht in ein float umgewandelt werden kann, wird die folgende Fehlermeldung ausgegeben
     else {
         this->ShowErrorWindow("Es sind nur ganze oder Gleitkommezahlen erlaubt");
-        this->textBox_Geschwindigkeit->Text = "";
+        tbCurrentTextBox->Text = "";
     }
 }
 #pragma endregion EventHandler
 
 #pragma region windows forms helper
-System::Void UI::RoboPathForm::ShowErrorWindow(String^ errorMessage)
+//Standardfunktion für ein Fehlerfenster
+System::Void UserInterface::RoboPathForm::ShowErrorWindow(String^ errorMessage)
 {
+    //Anzeige des Fehlerfensters. Mit OK kann man das Fesnter verlassen
     MessageBox::Show(errorMessage, "Fehler", MessageBoxButtons::OK, MessageBoxIcon::Error);
 }
-System::Boolean UI::RoboPathForm::ShowYesNoWindow(System::String^ message)
+//Standardfunktion für ein Entscheidungsfesnter
+System::Boolean UserInterface::RoboPathForm::ShowYesNoWindow(System::String^ message)
 {
-
-    // Anzeigen des Ja-Nein-Fensters und Rückgabe der Benutzerantwort
+    // Anzeigen des Ja-Nein-Fensters und Rückgabe der Benutzerantwort als boolchen Wert
     System::Windows::Forms::DialogResult xDialogResult = MessageBox::Show(message, "", MessageBoxButtons::YesNo, MessageBoxIcon::Question);
     return xDialogResult == System::Windows::Forms::DialogResult::Yes;
 }
 #pragma endregion windows forms helper
 
 #pragma region helpers
-System::Void UI::RoboPathForm::AppendLog(System::String^ sMessage) {
+//Standardfunktion um Text im Log anzuzeigen
+System::Void UserInterface::RoboPathForm::AppendLog(System::String^ sMessage) {
+    //Ein Objekt, dass die aktuelle Uhrzeit enthält, wird erstellt
     System::DateTime aktuelleUhrzeit = System::DateTime::Now;
+    //Diese Uhrzeit wird noch in gewünschte Format gebracht
     System::String^ formartierteZeit = aktuelleUhrzeit.ToString("HH:mm:ss");
-    this->richTextBox_Log->AppendText(formartierteZeit + "\n");
-    this->richTextBox_Log->AppendText(sMessage);
-    this->richTextBox_Log->ScrollToCaret();
+    //Bevor der Text ausgegeben wird, wird die Uhrzeit darüber ausgebeben als Zeitstempel
+    this->tb_Log->AppendText(formartierteZeit + "\n");
+    //Ausgabe des Textes
+    this->tb_Log->AppendText(sMessage);
+    //Scrollen bis ganz unten
+    this->tb_Log->ScrollToCaret();
+    System::Windows::Forms::Application::DoEvents();
 }
-System::Void UI::RoboPathForm::SetVersion() {
+System::Void UserInterface::RoboPathForm::SetVersion() {
+    //Es wird ein Objekt erstellt, in dem die Version gepfelgt wird
     Projectdata::VersionInfo xVersion;
-    this->textBox_Version->Text = xVersion.getVersion();
+    //Die Versionsnummer wird der Textbox zugewiesen
+    this->tb_Version->Text = xVersion.getVersion();
 }
-System::Void UI::RoboPathForm::AllesZurücksetzen() {
-    this->textBox_Geschwindigkeit->Clear();
-    this->textBoxGeschwindigkeit_Aktuell->Clear();
-    this->textBox_Orientierung_A->Clear();
-    this->textBox_Orientierung_A_Aktuell->Clear();
-    this->textBox_Orientierung_B->Clear();
-    this->textBox_Orientierung_B_Aktuell->Clear();
-    this->textBox_Orientierung_C->Clear();
-    this->textBox_Orientierung_C_Aktuell->Clear();
-    this->textBox_Toleranz->Clear();
-    this->textBox_Toleranz_Aktuell->Clear();
-    this->textBox_Mittelwertfindung->Clear();
-    this->textBox_Mittelwert_Aktuell->Clear();
-    this->richTextBox_Log->Clear();
+//Funktion, um alles zurück zu setzen
+System::Void UserInterface::RoboPathForm::ResetAll() {
+    this->tb_Velo->Clear();
+    this->tb_Velo_Act->Clear();
+    this->tb_Orientation_A->Clear();
+    this->tb_Orientation_Act_A->Clear();
+    this->tb_Orientation_B->Clear();
+    this->tb_Orientation_Act_B->Clear();
+    this->tb_Orientation_C->Clear();
+    this->tb_Orientation_Act_C->Clear();
+    this->tb_Tolerance->Clear();
+    this->tb_Tolerance_Act->Clear();
+    this->tb_Average->Clear();
+    this->tb_Average_Act->Clear();
+    this->tb_Log->Clear();
+    bSetted = false;
 }
 #pragma endregion helpers

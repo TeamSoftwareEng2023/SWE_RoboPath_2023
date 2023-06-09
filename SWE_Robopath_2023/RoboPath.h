@@ -18,43 +18,43 @@ namespace Projectdata
 		void SetFilePath(System::String^);
 		System::String^ GetFilePath();
 		//Erhalte/Setze die nutzerdefinierte Geschwindigkeit
-		void SetGeschwindigkeit(float);
-		float GetGeschwindigkeit();
+		void SetVelo(float);
+		float GetVelo();
 		//Erhalte/Setze die nutzerdefinierte Toleranzangabe
-		void SetToleranz(float);
-		float GetToleranz();
+		void SetTolerance(float);
+		float GetTolerance();
 		//Erhalte/Setze die nutzerdefinierte Mittelwertfindung
-		void SetMittelWert(float);
-		float GetMittelwert();
+		void SetAverage(float);
+		float GetAverage();
 		//Erhalte/Setze die nutzerdefinierte Orientierung für A
-		void SetOrientierungA(float);
-		float GetOrientierungA();
+		void SetOrientationA(float);
+		float GetOrientationA();
 		//Erhalte/Setze die nutzerdefinierte Orientierung für B
-		void SetOrientierungB(float);
-		float GetOrientierungB();
+		void SetOrientationB(float);
+		float GetOrientationB();
 		//Erhalte/Setze die nutzerdefinierte Orientierung für C
-		void SetOrientierungC(float);
-		float GetOrientierungC();
+		void SetOrientationC(float);
+		float GetOrientationC();
 		//Erhalte/Setze die boolsche Variable für die Option "Geschwindigkeit aus CSV"
-		void SetNutzerdefinierteGeschwindigkeit(bool);
-		bool GetNutzerdefinierteGeschwindigkeit();
+		void SetUserDefVelo(bool);
+		bool GetUserDefVelo();
 		//Erhalte/Setze die boolsche Variable für die Option "Orientierung aus CSV"
-		void SetNutzerdefinierteOrientierung(bool);
-		bool GetNutzerdefinierteOrientierung();
+		void SetUserDefOrientation(bool);
+		bool GetUserDefOrientation();
         //Setze alles zurück
-        void Zurücksetzen();
+        void Reset();
 
 	private:
 		System::String^ sFilepath;
 		System::Collections::Generic::List<Projectdata::RoboPathStruct<float>^>^ lstPathData;
-		float fNutzerGeschwindigkeit;
-		float fNutzerToleranz;
-		float fNutzerMittelwertfindung;
-		float fNutzerOrientierungA;
-		float fNutzerOrientierungB;
-		float fNutzerOrientierungC;
-		bool bGeschwindigkeitAusCSV;
-		bool bOrientierungAusCSV;
+		float fUserDefVelo;
+		float fUserDefTolerance;
+		float fUserDefAverage;
+		float fUserDefOrientationA;
+		float fUserDefOrientationB;
+		float fUserDefOrientationC;
+		bool bCSVDefVelo;
+		bool bCSVDefOrientation;
 	};
 }
 
