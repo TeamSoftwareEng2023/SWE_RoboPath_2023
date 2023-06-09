@@ -15,5 +15,6 @@
 #include<fstream>
 #include<sstream>
 #include<msclr/marshal_cppstd.h>
+#include <stdexcept>
 
 #endif //PCH_H

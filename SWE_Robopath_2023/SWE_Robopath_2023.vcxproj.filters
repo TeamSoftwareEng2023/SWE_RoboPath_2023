@@ -1,19 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="UI">
-      <UniqueIdentifier>{89d4aec7-3280-4990-a3f3-f52edf2ae49a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Logic">
       <UniqueIdentifier>{4733f38a-f961-41ab-9adc-f1481ba71a6c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="UI\Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="UI\Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
     <Filter Include="Logic\Source">
       <UniqueIdentifier>{97560361-7f18-42eb-9667-79ad812fcc5d}</UniqueIdentifier>
@@ -30,22 +19,33 @@
     <Filter Include="Projectdata\Header">
       <UniqueIdentifier>{2c2ce482-47c5-47c2-bd43-6b76cc7cddea}</UniqueIdentifier>
     </Filter>
-    <Filter Include="UI\Source Files">
+    <Filter Include="UserInterface">
+      <UniqueIdentifier>{89d4aec7-3280-4990-a3f3-f52edf2ae49a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UserInterface\Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="UserInterface\Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="UserInterface\Source Files">
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="app.rc">
-      <Filter>UI\Resource Files</Filter>
+      <Filter>UserInterface\Resource Files</Filter>
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Resource.h">
-      <Filter>UI\Header Files</Filter>
+      <Filter>UserInterface\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RoboPathForm.h">
-      <Filter>UI\Header Files</Filter>
+      <Filter>UserInterface\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RoboPath.h">
       <Filter>Projectdata\Header</Filter>
@@ -65,18 +65,18 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
-      <Filter>UI\Source Files</Filter>
+      <Filter>UserInterface\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AssemblyInfo.cpp">
-      <Filter>UI\Source Files</Filter>
+      <Filter>UserInterface\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="RoboPathForm.cpp">
-      <Filter>UI\Source Files</Filter>
+      <Filter>UserInterface\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="RoboPath.cpp">
       <Filter>Projectdata\Source</Filter>
     </ClCompile>
-    <ClCompile Include="Version.cpp">
+    <ClCompile Include="VersionInfo.cpp">
       <Filter>Projectdata\Source</Filter>
     </ClCompile>
     <ClCompile Include="ReadCSV.cpp">
@@ -88,7 +88,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="app.ico">
-      <Filter>UI\Resource Files</Filter>
+      <Filter>UserInterface\Resource Files</Filter>
     </Image>
   </ItemGroup>
 </Project>

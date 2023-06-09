@@ -4,14 +4,14 @@
 //Konstruktor
 Projectdata::RoboPath::RoboPath() {
 	sFilepath = "";
-	fNutzerGeschwindigkeit = 0;
-	fNutzerToleranz = 0;
-	fNutzerMittelwertfindung = 0;
-	fNutzerOrientierungA = 0;
-	fNutzerOrientierungB = 0;
-	fNutzerOrientierungC = 0;
-	bGeschwindigkeitAusCSV = false;
-	bOrientierungAusCSV = false;
+	fUserDefVelo = 0;
+	fUserDefTolerance = 0;
+	fUserDefAverage = 0;
+	fUserDefOrientationA = 0;
+	fUserDefOrientationB = 0;
+	fUserDefOrientationC = 0;
+	bCSVDefOrientation = false;
+	bCSVDefVelo = false;
 	lstPathData = gcnew System::Collections::Generic::List<Projectdata::RoboPathStruct<float>^>();
 }
 //Destruktor
@@ -33,70 +33,71 @@ System::String^ Projectdata::RoboPath::GetFilePath() {
 	return sFilepath;
 }
 //Erhalte/Setze die nutzerdefinierte Geschwindigkeit
-void Projectdata::RoboPath::SetGeschwindigkeit(float fGeschwindigkeit) {
-	fNutzerGeschwindigkeit = fGeschwindigkeit;
+void Projectdata::RoboPath::SetVelo(float fGeschwindigkeit) {
+    fUserDefVelo = fGeschwindigkeit;
 }
-float Projectdata::RoboPath::GetGeschwindigkeit() {
-	return fNutzerGeschwindigkeit;
+float Projectdata::RoboPath::GetVelo() {
+	return fUserDefVelo;
 }
 //Erhalte/Setze die nutzerdefinierte Toleranzangabe
-void Projectdata::RoboPath::SetToleranz(float fToleranz) {
-	fNutzerToleranz = fToleranz;
+void Projectdata::RoboPath::SetTolerance(float fToleranz) {
+	fUserDefTolerance = fToleranz;
 }
-float Projectdata::RoboPath::GetToleranz() {
-	return fNutzerToleranz;
+float Projectdata::RoboPath::GetTolerance() {
+	return fUserDefTolerance;
 }
 //Erhalte/Setze die nutzerdefinierte Mittelwertfindung
-void Projectdata::RoboPath::SetMittelWert(float fMittelwert) {
-	fNutzerMittelwertfindung = fMittelwert;
+void Projectdata::RoboPath::SetAverage(float fMittelwert) {
+	fUserDefAverage = fMittelwert;
 }
-float Projectdata::RoboPath::GetMittelwert() {
-	return fNutzerMittelwertfindung;
+float Projectdata::RoboPath::GetAverage() {
+	return fUserDefAverage;
 }
 //Erhalte/Setze die nutzerdefinierte Orientierung für A
-void Projectdata::RoboPath::SetOrientierungA(float fA) {
-	fNutzerOrientierungA = fA;
+void Projectdata::RoboPath::SetOrientationA(float fA) {
+	fUserDefOrientationA = fA;
 }
-float Projectdata::RoboPath::GetOrientierungA() {
-	return fNutzerOrientierungA;
+float Projectdata::RoboPath::GetOrientationA() {
+	return fUserDefOrientationA;
 }
 //Erhalte/Setze die nutzerdefinierte Orientierung für B
-void Projectdata::RoboPath::SetOrientierungB(float fB) {
-	fNutzerOrientierungB = fB;
+void Projectdata::RoboPath::SetOrientationB(float fB) {
+    fUserDefOrientationB = fB;
 }
-float Projectdata::RoboPath::GetOrientierungB() {
-	return fNutzerOrientierungB;
+float Projectdata::RoboPath::GetOrientationB() {
+	return fUserDefOrientationB;
 }
 //Erhalte/Setze die nutzerdefinierte Orientierung für C
-void Projectdata::RoboPath::SetOrientierungC(float fC) {
-	fNutzerOrientierungC = fC;
+void Projectdata::RoboPath::SetOrientationC(float fC) {
+    fUserDefOrientationC = fC;
 }
-float Projectdata::RoboPath::GetOrientierungC() {
-	return fNutzerOrientierungC;
+float Projectdata::RoboPath::GetOrientationC() {
+	return fUserDefOrientationC;
 }
 //Erhalte/Setze die boolsche Variable für die Option "Geschwindigkeit aus CSV"
-void Projectdata::RoboPath::SetNutzerdefinierteGeschwindigkeit(bool bSetGeschwindigkeit) {
-	bGeschwindigkeitAusCSV = bSetGeschwindigkeit;
+void Projectdata::RoboPath::SetUserDefVelo(bool bSetGeschwindigkeit) {
+	bCSVDefVelo = bSetGeschwindigkeit;
 }
-bool Projectdata::RoboPath::GetNutzerdefinierteGeschwindigkeit() {
-	return bGeschwindigkeitAusCSV;
+bool Projectdata::RoboPath::GetUserDefVelo() {
+	return bCSVDefVelo;
 }
 //Erhalte/Setze die boolsche Variable für die Option "Orientierung aus CSV"
-void Projectdata::RoboPath::SetNutzerdefinierteOrientierung(bool bSetOrientierung) {
-	bOrientierungAusCSV = bSetOrientierung;
+void Projectdata::RoboPath::SetUserDefOrientation(bool bSetOrientierung) {
+	bCSVDefOrientation = bSetOrientierung;
 }
-bool Projectdata::RoboPath::GetNutzerdefinierteOrientierung() {
-	return bOrientierungAusCSV;
+bool Projectdata::RoboPath::GetUserDefOrientation() {
+	return bCSVDefOrientation;
 }
-void Projectdata::RoboPath::Zurücksetzen() {
+//Standardwerte setzen
+void Projectdata::RoboPath::Reset() {
     sFilepath = "";
-    fNutzerGeschwindigkeit = 0;
-    fNutzerToleranz = 0;
-    fNutzerMittelwertfindung = 0;
-    fNutzerOrientierungA = 0;
-    fNutzerOrientierungB = 0;
-    fNutzerOrientierungC = 0;
-    bGeschwindigkeitAusCSV = false;
-    bOrientierungAusCSV = false;
+    fUserDefVelo = 0;
+    fUserDefTolerance = 0;
+    fUserDefAverage = 0;
+    fUserDefOrientationA = 0;
+    fUserDefOrientationB = 0;
+    fUserDefOrientationC = 0;
+    bCSVDefOrientation = false;
+    bCSVDefVelo = false;
     lstPathData->Clear();
 }

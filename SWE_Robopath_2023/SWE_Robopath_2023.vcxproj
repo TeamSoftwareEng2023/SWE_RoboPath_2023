@@ -152,7 +152,7 @@
     </ClCompile>
     <ClCompile Include="ReadCSV.cpp" />
     <ClCompile Include="RoboPath.cpp" />
-    <ClCompile Include="Version.cpp" />
+    <ClCompile Include="VersionInfo.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="app.ico" />

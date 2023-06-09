@@ -16,6 +16,6 @@ int main()
 {
   Application::EnableVisualStyles();
   Application::SetCompatibleTextRenderingDefault(false);
-  Application::Run(gcnew UI::RoboPathForm());
+  Application::Run(gcnew UserInterface::RoboPathForm());
   return 0;
 }
