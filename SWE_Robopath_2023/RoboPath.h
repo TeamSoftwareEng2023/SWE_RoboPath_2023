@@ -12,11 +12,17 @@ namespace Projectdata
 		//Dekonstruktor
 		~RoboPath();
 		//Erhalte/Setze die eingelesene CSV-Datei in einer Liste
-		void SetlstPathData(System::Collections::Generic::List<Projectdata::RoboPathStruct<float>^>^);
-		System::Collections::Generic::List<Projectdata::RoboPathStruct<float>^>^ GetlstPathData();
+		void SetlstRawPathData(System::Collections::Generic::List<Projectdata::RoboPathStruct<float>^>^);
+		System::Collections::Generic::List<Projectdata::RoboPathStruct<float>^>^ GetlstRawPathData();
+        //Erhalte/Setze die approximierte CSV-Datei in einer Liste
+        void SetlstAproxedPathData(System::Collections::Generic::List<Projectdata::RoboPathStruct<float>^>^);
+        System::Collections::Generic::List<Projectdata::RoboPathStruct<float>^>^ GetlstAproxedPathData();
 		//Erhalte/Setze den Dateipfad
 		void SetFilePath(System::String^);
 		System::String^ GetFilePath();
+        //Erhalte/Setze den Speicherpfad
+        void SetSavePath(System::String^);
+        System::String^ GetSavePath();
 		//Erhalte/Setze die nutzerdefinierte Geschwindigkeit
 		void SetVelo(float);
 		float GetVelo();
@@ -46,7 +52,9 @@ namespace Projectdata
 
 	private:
 		System::String^ sFilepath;
-		System::Collections::Generic::List<Projectdata::RoboPathStruct<float>^>^ lstPathData;
+        System::String^ sSavePath;
+		System::Collections::Generic::List<Projectdata::RoboPathStruct<float>^>^ lstRawPathData;
+        System::Collections::Generic::List<Projectdata::RoboPathStruct<float>^>^ lstAproxedPathData;
 		float fUserDefVelo;
 		float fUserDefTolerance;
 		float fUserDefAverage;

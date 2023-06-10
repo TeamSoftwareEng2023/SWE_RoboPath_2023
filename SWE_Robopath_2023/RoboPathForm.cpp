@@ -1,6 +1,8 @@
 #include "pch.h"
 #include"RoboPathForm.h"
 #include"ReadCSV.h"
+#include"DPAprox.h"
+#include"WriteCSV.h"
 //Konstruktor
 UserInterface::RoboPathForm::RoboPathForm(void)
 {
@@ -61,6 +63,7 @@ void UserInterface::RoboPathForm::InitializeComponent()
     this->label_Toleranz_Act_Wert = (gcnew System::Windows::Forms::Label());
     this->label_Header = (gcnew System::Windows::Forms::Label());
     this->btn_Reset = (gcnew System::Windows::Forms::Button());
+    this->saveFileDialog_CSV = (gcnew System::Windows::Forms::SaveFileDialog());
     this->SuspendLayout();
     // 
     // btn_Set
@@ -445,6 +448,12 @@ void UserInterface::RoboPathForm::InitializeComponent()
     this->btn_Reset->UseVisualStyleBackColor = false;
     this->btn_Reset->Click += gcnew System::EventHandler(this, &RoboPathForm::btn_Reset_Click);
     // 
+    // saveFileDialog_CSV
+    // 
+    this->saveFileDialog_CSV->Filter = L"csv files (*.csv) |*.csv";
+    this->saveFileDialog_CSV->InitialDirectory = L"c:\\";
+    this->saveFileDialog_CSV->FileOk += gcnew System::ComponentModel::CancelEventHandler(this, &RoboPathForm::saveFileDialog_CSV_FileOk);
+    // 
     // RoboPathForm
     // 
     this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -676,7 +685,10 @@ System::Void UserInterface::RoboPathForm::openFileDialog_CSV_FileOk(System::Obje
     this->AppendLog("Folgende .csv ist geladen: " + openFileDialog_CSV->FileName + "\n\n");
     Datastore->SetFilePath(openFileDialog_CSV->FileName);
 }
-
+System::Void UserInterface::RoboPathForm::saveFileDialog_CSV_FileOk(System::Object^ sender, System::ComponentModel::CancelEventArgs^ e) {
+    this->AppendLog("Die Datei wird in " + saveFileDialog_CSV->FileName + " gespeichert" + "\n\n");
+    Datastore->SetSavePath(saveFileDialog_CSV->FileName);
+}
 
 
 
@@ -685,10 +697,20 @@ System::Void UserInterface::RoboPathForm::btn_Start_Click(System::Object^ sender
     try {
         if (bSetted) {
             Logic::ReadCSV^ Reader = gcnew Logic::ReadCSV(this);
-            /*Reader->ReadAndReturnCSV("test", this);*/
             this->AppendLog("CSV wird eingelesen\n\n");
             System::Threading::Thread::Sleep(1000);
-            Datastore->SetlstPathData(Reader->ReadAndReturnCSV(Datastore->GetFilePath()));
+            Reader->ReadAndSaveCSV(Datastore);
+            delete Reader;
+            if (Datastore->GetTolerance() != 0) {
+                this->AppendLog("Daten werden approximiert\n\n");
+                System::Threading::Thread::Sleep(1000);
+                Logic::DPAprox^ DPAproxer = gcnew Logic::DPAprox(this);
+                DPAproxer->approx(Datastore);
+                delete DPAproxer;
+                Logic::WriteCSV^ FileCreater = gcnew Logic::WriteCSV(this);
+                FileCreater->WriteForMatLab(Datastore);
+                this->AppendLog("Testfile erstellt\n\n");
+            }
         }
         else
         {

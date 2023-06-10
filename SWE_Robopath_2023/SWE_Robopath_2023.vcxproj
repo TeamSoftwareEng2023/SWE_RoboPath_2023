@@ -130,6 +130,8 @@
     <ResourceCompile Include="app.rc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Point3DStruct.h" />
+    <ClInclude Include="DPAprox.h" />
     <ClInclude Include="RoboPathForm.h">
       <FileType>CppForm</FileType>
     </ClInclude>
@@ -139,9 +141,11 @@
     <ClInclude Include="RoboPath.h" />
     <ClInclude Include="RoboPathStruct.h" />
     <ClInclude Include="VersionInfo.h" />
+    <ClInclude Include="WriteCSV.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp" />
+    <ClCompile Include="DPAprox.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="RoboPathForm.cpp" />
     <ClCompile Include="pch.cpp">
@@ -153,6 +157,7 @@
     <ClCompile Include="ReadCSV.cpp" />
     <ClCompile Include="RoboPath.cpp" />
     <ClCompile Include="VersionInfo.cpp" />
+    <ClCompile Include="WriteCSV.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="app.ico" />

@@ -62,6 +62,8 @@ namespace UserInterface {
     private: System::Windows::Forms::Label^ label_Toleranz_Act_Wert;
     private: System::Windows::Forms::Label^ label_Header;
     private: System::Windows::Forms::Button^ btn_Reset;
+    public: System::Windows::Forms::SaveFileDialog^ saveFileDialog_CSV;
+
     private: System::ComponentModel::IContainer^ components;
 
     //Definition aller Funktionen
@@ -93,6 +95,7 @@ namespace UserInterface {
     private: System::Void ResetAll();
     //Funktion, die den eingegeben Wert kontrolliert, nachdem die Textbox den Fokus verliert
     private: System::Void ValidateInput(System::Object^ sender, System::EventArgs^ e);
+    private: System::Void saveFileDialog_CSV_FileOk(System::Object^ sender, System::ComponentModel::CancelEventArgs^ e);
     };
 }
 #pragma endregion

@@ -12,9 +12,13 @@
 #include<string>
 #include<iostream>
 #include<list>
-#include<fstream>
-#include<sstream>
-#include<msclr/marshal_cppstd.h>
-#include <stdexcept>
+//#include<fstream>
+//#include<sstream>
+//#include<msclr/marshal_cppstd.h>
+#include<stdexcept>
+//#include<math.h>
+//#include<vector>
+//#include<iterator>
+//#include<algorithm>
 
 #endif //PCH_H
