@@ -1,0 +1,4 @@
+C:\Users\PG\Source\Repos\TeamSoftwareEng2023\SWE_RoboPath_2023\SWE_Robopath_2023\Debug\SWE_Robopath_2023.vcxproj.AssemblyReference.cache
+C:\Users\PG\Source\Repos\TeamSoftwareEng2023\SWE_RoboPath_2023\SWE_Robopath_2023\Debug\SWE_Robopath_2023.vcxproj.SuggestedBindingRedirects.cache
+C:\Users\PG\Source\Repos\TeamSoftwareEng2023\SWE_RoboPath_2023\SWE_Robopath_2023\Debug\SWE_Robopath_2023.RoboPathForm.resources
+C:\Users\PG\Source\Repos\TeamSoftwareEng2023\SWE_RoboPath_2023\SWE_Robopath_2023\Debug\SWE_Robopath_2023.vcxproj.GenerateResource.cache

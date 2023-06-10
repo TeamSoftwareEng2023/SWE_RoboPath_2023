@@ -62,6 +62,15 @@
     <ClInclude Include="pch.h">
       <Filter>Projectdata\Header</Filter>
     </ClInclude>
+    <ClInclude Include="DPAprox.h">
+      <Filter>Logic\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Point3DStruct.h">
+      <Filter>Projectdata\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="WriteCSV.h">
+      <Filter>Logic\Header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -84,6 +93,12 @@
     </ClCompile>
     <ClCompile Include="pch.cpp">
       <Filter>Projectdata\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="DPAprox.cpp">
+      <Filter>Logic\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="WriteCSV.cpp">
+      <Filter>Logic\Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

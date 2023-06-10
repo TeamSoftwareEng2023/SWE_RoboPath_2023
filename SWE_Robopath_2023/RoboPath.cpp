@@ -4,6 +4,7 @@
 //Konstruktor
 Projectdata::RoboPath::RoboPath() {
 	sFilepath = "";
+    sSavePath = "";
 	fUserDefVelo = 0;
 	fUserDefTolerance = 0;
 	fUserDefAverage = 0;
@@ -12,18 +13,27 @@ Projectdata::RoboPath::RoboPath() {
 	fUserDefOrientationC = 0;
 	bCSVDefOrientation = false;
 	bCSVDefVelo = false;
-	lstPathData = gcnew System::Collections::Generic::List<Projectdata::RoboPathStruct<float>^>();
+	lstRawPathData = gcnew System::Collections::Generic::List<Projectdata::RoboPathStruct<float>^>();
+    lstAproxedPathData = gcnew System::Collections::Generic::List<Projectdata::RoboPathStruct<float>^>();
 }
 //Destruktor
 Projectdata::RoboPath::~RoboPath() {
-	lstPathData->Clear();
+	lstRawPathData->Clear();
+    lstAproxedPathData->Clear();
 }
 //Erhalte/Setze die eingelesene CSV-Datei in einer Liste
-void Projectdata::RoboPath::SetlstPathData(System::Collections::Generic::List<Projectdata::RoboPathStruct<float>^>^ lstCSV) {
-	lstPathData = lstCSV;
+void Projectdata::RoboPath::SetlstRawPathData(System::Collections::Generic::List<Projectdata::RoboPathStruct<float>^>^ lstCSV) {
+	lstRawPathData = lstCSV;
 }
-System::Collections::Generic::List<Projectdata::RoboPathStruct<float>^>^ Projectdata::RoboPath::GetlstPathData() {
-	return lstPathData;
+System::Collections::Generic::List<Projectdata::RoboPathStruct<float>^>^ Projectdata::RoboPath::GetlstRawPathData() {
+	return lstRawPathData;
+}
+//Erhalte/Setze die approximierte CSV-Datei in einer Liste
+void Projectdata::RoboPath::SetlstAproxedPathData(System::Collections::Generic::List<Projectdata::RoboPathStruct<float>^>^ lstAproxedCSV) {
+    lstAproxedPathData = lstAproxedCSV;
+}
+System::Collections::Generic::List<Projectdata::RoboPathStruct<float>^>^ Projectdata::RoboPath::GetlstAproxedPathData() {
+    return lstAproxedPathData;
 }
 //Erhalte/Setze den Dateipfad
 void Projectdata::RoboPath::SetFilePath(System::String^ sActFilepath) {
@@ -31,6 +41,13 @@ void Projectdata::RoboPath::SetFilePath(System::String^ sActFilepath) {
 }
 System::String^ Projectdata::RoboPath::GetFilePath() {
 	return sFilepath;
+}
+//Erhalte/Setze den Speicherpfad
+void Projectdata::RoboPath::SetSavePath(System::String^ sActSavePath) {
+    sSavePath = sActSavePath;
+}
+System::String^ Projectdata::RoboPath::GetSavePath() {
+    return sSavePath;
 }
 //Erhalte/Setze die nutzerdefinierte Geschwindigkeit
 void Projectdata::RoboPath::SetVelo(float fGeschwindigkeit) {
@@ -99,5 +116,5 @@ void Projectdata::RoboPath::Reset() {
     fUserDefOrientationC = 0;
     bCSVDefOrientation = false;
     bCSVDefVelo = false;
-    lstPathData->Clear();
+    lstRawPathData->Clear();
 }

@@ -6,14 +6,12 @@ Logic::ReadCSV::ReadCSV(UserInterface::RoboPathForm^ UI) {
     UIControl = UI;
 }
 
-System::Collections::Generic::List<Projectdata::RoboPathStruct<float>^>^ Logic::ReadCSV::ReadAndReturnCSV(System::String^ sFilepath)
+System::Void Logic::ReadCSV::ReadAndSaveCSV(Projectdata::RoboPath^ RoboPathData)
 {
-    System::Collections::Generic::List<Projectdata::RoboPathStruct<float>^>^ lstEmpty = gcnew System::Collections::Generic::List<Projectdata::RoboPathStruct<float>^>();
-    System::IO::StreamReader^ srReader = gcnew System::IO::StreamReader(sFilepath);
+    System::IO::StreamReader^ srReader = gcnew System::IO::StreamReader(RoboPathData->GetFilePath());
     System::String^ sLine;
     try
     {
-        throw gcnew System::Exception("Ein Fehler ist aufgetreten");
         //Prüfen, ob die Datei geöffnet werden könnte
         if (!srReader->EndOfStream)
         {
@@ -87,18 +85,19 @@ System::Collections::Generic::List<Projectdata::RoboPathStruct<float>^>^ Logic::
                 }
                 lstCSV->Add(strctRoboPathWerte);
             }
+            RoboPathData->SetlstRawPathData(lstCSV);
             UIControl->AppendLog("CSV wurde eingelesen\n\n");
             System::Threading::Thread::Sleep(1000);
-            return lstCSV;
+            return;
         }
         else
         {
-            return lstEmpty;
+            return;
         }
     }
     catch (System::Exception^ e)
     {
         UIControl->AppendLog("Fehler beim Einlesen der CSV:\n" + e->Message + "\n\n");
-        return lstEmpty;
+        return;
     }
 }
