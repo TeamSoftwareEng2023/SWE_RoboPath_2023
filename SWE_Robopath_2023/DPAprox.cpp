@@ -4,92 +4,116 @@
 Logic::DPAprox::DPAprox(UserInterface::RoboPathForm^ UI) {
     UIControl = UI;
 }
-void Logic::DPAprox::approx(Projectdata::RoboPath^ RoboPathData) {
+System::Boolean Logic::DPAprox::approx(Projectdata::RoboPath^ RoboPathData) {
     try
     {
-        lstAproxedPath = gcnew System::Collections::Generic::List<Projectdata::RoboPathStruct<float>^>(RoboPathData->GetlstRawPathData());
-        douglasPeuckerRecursive(0, lstAproxedPath->Count-1, RoboPathData->GetTolerance());
-        RoboPathData->SetlstAproxedPathData(lstAproxedPath);
-        UIControl->AppendLog("Daten wurden erfolgreich approximiert\n\n");
+        System::Boolean bAporxDone = false;
+        lstAproxedPath = gcnew System::Collections::Generic::List<Projectdata::RoboPathStruct<System::Double>^>(RoboPathData->GetlstFilteredPathData());
+        bAporxDone = douglasPeuckerRecursive(0, lstAproxedPath->Count-1, RoboPathData->GetTolerance());
+        if (bAporxDone) {
+            RoboPathData->SetlstAproxedPathData(lstAproxedPath);
+            UIControl->AppendLog("Daten wurden erfolgreich approximiert\n" + lstAproxedPath->Count.ToString() + " Datensätze verbleibend\n\n");
+            return true;
+        }
+        else {
+            return false;
+        }
     }
     catch (System::Exception^ e)
     {
         UIControl->AppendLog("Fehler beim Approximieren der CSV:\n" + e->Message + "\n\n");
-        return;
+        return false;
     }
 }
-void Logic::DPAprox::douglasPeuckerRecursive(int iStartItr, int iEndItr, float fMaxDistance) {
+System::Boolean Logic::DPAprox::douglasPeuckerRecursive(int iStartItr, int iEndItr, System::Double fMaxDistance) {
     try
     {
         Projectdata::Point3D^ pStart = gcnew Projectdata::Point3D();
         Projectdata::Point3D^ pEnd = gcnew Projectdata::Point3D();
         Projectdata::Point3D^ pAct = gcnew Projectdata::Point3D();
-        float fDist = 0, fMaxDist = 0;
+        System::Double dDist = 0, dMaxDist = 0;
+        System::Boolean bCalcDone = true;
         int iMaxItr = 0;
 
         if (lstAproxedPath->Count < 3) {
-            return;
+            return true;
         }
         if (System::Math::Abs(iEndItr - iStartItr) == 1) {
-            return;
+            return true;
         }
-        pStart->fX = lstAproxedPath[iStartItr]->fX;
-        pStart->fY = lstAproxedPath[iStartItr]->fY;
-        pStart->fZ = lstAproxedPath[iStartItr]->fZ;
+        pStart->dX = lstAproxedPath[iStartItr]->dX;
+        pStart->dY = lstAproxedPath[iStartItr]->dY;
+        pStart->dZ = lstAproxedPath[iStartItr]->dZ;
 
-        pEnd->fX = lstAproxedPath[iEndItr]->fX;
-        pEnd->fY = lstAproxedPath[iEndItr]->fY;
-        pEnd->fZ = lstAproxedPath[iEndItr]->fZ;
+        pEnd->dX = lstAproxedPath[iEndItr]->dX;
+        pEnd->dY = lstAproxedPath[iEndItr]->dY;
+        pEnd->dZ = lstAproxedPath[iEndItr]->dZ;
 
-        for (int iItr = iStartItr; iItr < iEndItr; iItr++) {
+        for (int iItr = iStartItr + 1; iItr != iEndItr; iItr++) {
 
-            pAct->fX = lstAproxedPath[iItr]->fX;
-            pAct->fY = lstAproxedPath[iItr]->fY;
-            pAct->fZ = lstAproxedPath[iItr]->fZ;
+            pAct->dX = lstAproxedPath[iItr]->dX;
+            pAct->dY = lstAproxedPath[iItr]->dY;
+            pAct->dZ = lstAproxedPath[iItr]->dZ;
 
-            fDist = PointDistanceToLine(pStart, pEnd, pAct);
+            dDist = PointDistanceToLine(pStart, pEnd, pAct);
+            if (dDist == -1) {
+                return false;
+            }
 
-            if (fDist > fMaxDist) {
-                fMaxDist = fDist;
+            if (dDist > dMaxDist) {
+                dMaxDist = dDist;
                 iMaxItr = iItr;
             }
         }
-        if (fMaxDist <= fMaxDistance) {
+        if (dMaxDist <= fMaxDistance) {
             lstAproxedPath->RemoveRange(iStartItr + 1, (iEndItr - iStartItr) - 1);
-            return;
+            return true;
         }
-        douglasPeuckerRecursive(iMaxItr, iEndItr, fMaxDistance);
-        douglasPeuckerRecursive(iStartItr, iMaxItr, fMaxDistance);
-        
+        bCalcDone = douglasPeuckerRecursive(iMaxItr, iEndItr, fMaxDistance);
+        if (!bCalcDone) {
+            return false;
+        }
+        bCalcDone = douglasPeuckerRecursive(iStartItr, iMaxItr, fMaxDistance);
+        if (!bCalcDone) {
+            return false;
+        }
     }
     catch (System::Exception^ e)
     {
         UIControl->AppendLog("Fehler beim Approximieren der CSV:\n" + e->Message + "\n\n");
-        return;
+        return false;
     }
+    return true;
 }
-float Logic::DPAprox::PointDistanceToLine(Projectdata::Point3D^ pStartPoint, Projectdata::Point3D^ pEndPoint, Projectdata::Point3D^ pActPoint) {
+System::Double Logic::DPAprox::PointDistanceToLine(Projectdata::Point3D^ pStartPoint, Projectdata::Point3D^ pEndPoint, Projectdata::Point3D^ pActPoint) {
     try
     {
-        float fBX, fBY, fBZ, fRV_SQ, fDist, fRVX, fRVY, fRVZ;
+        System::Double dBX, dBY, dBZ, dDist, dCrossProductX, dCrossProductY, dCrossProductZ, dScalarA, dScalarB, dRVX, dRVY, dRVZ;
 
-        fRVX = pStartPoint->fX - pEndPoint->fX;
-        fRVY = pStartPoint->fY - pEndPoint->fY;
-        fRVZ = pStartPoint->fZ - pEndPoint->fZ;
+        dRVX = pEndPoint->dX - pStartPoint->dX;
+        dRVY = pEndPoint->dY - pStartPoint->dY;
+        dRVZ = pEndPoint->dZ - pStartPoint->dZ;
 
-        fRV_SQ = fRVX * fRVX + fRVY * fRVY + fRVZ * fRVZ;
+        dBX = pActPoint->dX - pStartPoint->dX;
+        dBY = pActPoint->dY - pStartPoint->dY;
+        dBZ = pActPoint->dZ - pStartPoint->dZ;
 
-        fBX = pActPoint->fX - pStartPoint->fX;
-        fBY = pActPoint->fY - pStartPoint->fY;
-        fBZ = pActPoint->fZ - pStartPoint->fZ;
+        dCrossProductX = dRVY * dBZ - dRVZ * dBY;
+        dCrossProductY = dRVZ * dBX - dRVX * dBZ;
+        dCrossProductZ = dRVX * dBY - dRVY * dBX;
 
-        fDist = static_cast<float>(System::Math::Abs((fBX * (fRVY * fRVZ) - fBY * (fRVX * fRVZ) + fBZ * (fRVX * fRVY))) / System::Math::Sqrt(fRV_SQ));
-        
-        return fDist;
+        dScalarA = System::Math::Sqrt(dCrossProductX * dCrossProductX + dCrossProductY * dCrossProductY + dCrossProductZ * dCrossProductZ);
+
+        dScalarB = System::Math::Sqrt(dRVX * dRVX + dRVY * dRVY + dRVZ * dRVZ);
+
+        dDist = dScalarA / dScalarB;
+
+        return dDist;
     }
     catch (System::Exception^ e)
     {
-        UIControl->AppendLog("Fehler beim Approximieren der CSV:\n" + e->Message + "\n\n");
+        UIControl->AppendLog("Fehler bei dem Lotpunktfußverfahren:\n" + e->Message + "\n\n");
         return -1;
     }
 }
+

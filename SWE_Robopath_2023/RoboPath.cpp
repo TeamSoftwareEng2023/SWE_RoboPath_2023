@@ -5,16 +5,17 @@
 Projectdata::RoboPath::RoboPath() {
 	sFilepath = "";
     sSavePath = "";
-	fUserDefVelo = 0;
-	fUserDefTolerance = 0;
-	fUserDefAverage = 0;
-	fUserDefOrientationA = 0;
-	fUserDefOrientationB = 0;
-	fUserDefOrientationC = 0;
+	dUserDefVelo = 0;
+	dUserDefTolerance = 0;
+    iUserDefSampleSize = 0;
+	dUserDefOrientationA = 0;
+	dUserDefOrientationB = 0;
+	dUserDefOrientationC = 0;
 	bCSVDefOrientation = false;
 	bCSVDefVelo = false;
-	lstRawPathData = gcnew System::Collections::Generic::List<Projectdata::RoboPathStruct<float>^>();
-    lstAproxedPathData = gcnew System::Collections::Generic::List<Projectdata::RoboPathStruct<float>^>();
+	lstRawPathData = gcnew System::Collections::Generic::List<Projectdata::RoboPathStruct<System::Double>^>();
+    lstFilteredPathData = gcnew System::Collections::Generic::List<Projectdata::RoboPathStruct<System::Double>^>();
+    lstAproxedPathData = gcnew System::Collections::Generic::List<Projectdata::RoboPathStruct<System::Double>^>();
 }
 //Destruktor
 Projectdata::RoboPath::~RoboPath() {
@@ -22,17 +23,24 @@ Projectdata::RoboPath::~RoboPath() {
     lstAproxedPathData->Clear();
 }
 //Erhalte/Setze die eingelesene CSV-Datei in einer Liste
-void Projectdata::RoboPath::SetlstRawPathData(System::Collections::Generic::List<Projectdata::RoboPathStruct<float>^>^ lstCSV) {
+void Projectdata::RoboPath::SetlstRawPathData(System::Collections::Generic::List<Projectdata::RoboPathStruct<System::Double>^>^ lstCSV) {
 	lstRawPathData = lstCSV;
 }
-System::Collections::Generic::List<Projectdata::RoboPathStruct<float>^>^ Projectdata::RoboPath::GetlstRawPathData() {
+System::Collections::Generic::List<Projectdata::RoboPathStruct<System::Double>^>^ Projectdata::RoboPath::GetlstRawPathData() {
 	return lstRawPathData;
 }
+//Erhalte/Setze die gefilterte CSV-Datei in einer Liste
+void Projectdata::RoboPath::SetlstFilteredPathData(System::Collections::Generic::List<Projectdata::RoboPathStruct<System::Double>^>^ lstFilteredCSV) {
+    lstFilteredPathData = lstFilteredCSV;
+}
+System::Collections::Generic::List<Projectdata::RoboPathStruct<System::Double>^>^ Projectdata::RoboPath::GetlstFilteredPathData() {
+    return lstFilteredPathData;
+}
 //Erhalte/Setze die approximierte CSV-Datei in einer Liste
-void Projectdata::RoboPath::SetlstAproxedPathData(System::Collections::Generic::List<Projectdata::RoboPathStruct<float>^>^ lstAproxedCSV) {
+void Projectdata::RoboPath::SetlstAproxedPathData(System::Collections::Generic::List<Projectdata::RoboPathStruct<System::Double>^>^ lstAproxedCSV) {
     lstAproxedPathData = lstAproxedCSV;
 }
-System::Collections::Generic::List<Projectdata::RoboPathStruct<float>^>^ Projectdata::RoboPath::GetlstAproxedPathData() {
+System::Collections::Generic::List<Projectdata::RoboPathStruct<System::Double>^>^ Projectdata::RoboPath::GetlstAproxedPathData() {
     return lstAproxedPathData;
 }
 //Erhalte/Setze den Dateipfad
@@ -50,57 +58,57 @@ System::String^ Projectdata::RoboPath::GetSavePath() {
     return sSavePath;
 }
 //Erhalte/Setze die nutzerdefinierte Geschwindigkeit
-void Projectdata::RoboPath::SetVelo(float fGeschwindigkeit) {
-    fUserDefVelo = fGeschwindigkeit;
+void Projectdata::RoboPath::SetVelo(System::Double dVelo) {
+    dUserDefVelo = dVelo;
 }
-float Projectdata::RoboPath::GetVelo() {
-	return fUserDefVelo;
+System::Double Projectdata::RoboPath::GetVelo() {
+	return dUserDefVelo;
 }
 //Erhalte/Setze die nutzerdefinierte Toleranzangabe
-void Projectdata::RoboPath::SetTolerance(float fToleranz) {
-	fUserDefTolerance = fToleranz;
+void Projectdata::RoboPath::SetTolerance(System::Double fTolerance) {
+	dUserDefTolerance = fTolerance;
 }
-float Projectdata::RoboPath::GetTolerance() {
-	return fUserDefTolerance;
+System::Double Projectdata::RoboPath::GetTolerance() {
+	return dUserDefTolerance;
 }
 //Erhalte/Setze die nutzerdefinierte Mittelwertfindung
-void Projectdata::RoboPath::SetAverage(float fMittelwert) {
-	fUserDefAverage = fMittelwert;
+void Projectdata::RoboPath::SetSampleSize(int iSampleSize) {
+    iUserDefSampleSize = iSampleSize;
 }
-float Projectdata::RoboPath::GetAverage() {
-	return fUserDefAverage;
+int Projectdata::RoboPath::GetSampleSize() {
+	return iUserDefSampleSize;
 }
 //Erhalte/Setze die nutzerdefinierte Orientierung für A
-void Projectdata::RoboPath::SetOrientationA(float fA) {
-	fUserDefOrientationA = fA;
+void Projectdata::RoboPath::SetOrientationA(System::Double dA) {
+	dUserDefOrientationA = dA;
 }
-float Projectdata::RoboPath::GetOrientationA() {
-	return fUserDefOrientationA;
+System::Double Projectdata::RoboPath::GetOrientationA() {
+	return dUserDefOrientationA;
 }
 //Erhalte/Setze die nutzerdefinierte Orientierung für B
-void Projectdata::RoboPath::SetOrientationB(float fB) {
-    fUserDefOrientationB = fB;
+void Projectdata::RoboPath::SetOrientationB(System::Double dB) {
+    dUserDefOrientationB = dB;
 }
-float Projectdata::RoboPath::GetOrientationB() {
-	return fUserDefOrientationB;
+System::Double Projectdata::RoboPath::GetOrientationB() {
+	return dUserDefOrientationB;
 }
 //Erhalte/Setze die nutzerdefinierte Orientierung für C
-void Projectdata::RoboPath::SetOrientationC(float fC) {
-    fUserDefOrientationC = fC;
+void Projectdata::RoboPath::SetOrientationC(System::Double dC) {
+    dUserDefOrientationC = dC;
 }
-float Projectdata::RoboPath::GetOrientationC() {
-	return fUserDefOrientationC;
+System::Double Projectdata::RoboPath::GetOrientationC() {
+	return dUserDefOrientationC;
 }
 //Erhalte/Setze die boolsche Variable für die Option "Geschwindigkeit aus CSV"
-void Projectdata::RoboPath::SetUserDefVelo(bool bSetGeschwindigkeit) {
-	bCSVDefVelo = bSetGeschwindigkeit;
+void Projectdata::RoboPath::SetUserDefVelo(bool bSetVelo) {
+	bCSVDefVelo = bSetVelo;
 }
 bool Projectdata::RoboPath::GetUserDefVelo() {
 	return bCSVDefVelo;
 }
 //Erhalte/Setze die boolsche Variable für die Option "Orientierung aus CSV"
-void Projectdata::RoboPath::SetUserDefOrientation(bool bSetOrientierung) {
-	bCSVDefOrientation = bSetOrientierung;
+void Projectdata::RoboPath::SetUserDefOrientation(bool bSetOrientation) {
+	bCSVDefOrientation = bSetOrientation;
 }
 bool Projectdata::RoboPath::GetUserDefOrientation() {
 	return bCSVDefOrientation;
@@ -108,13 +116,15 @@ bool Projectdata::RoboPath::GetUserDefOrientation() {
 //Standardwerte setzen
 void Projectdata::RoboPath::Reset() {
     sFilepath = "";
-    fUserDefVelo = 0;
-    fUserDefTolerance = 0;
-    fUserDefAverage = 0;
-    fUserDefOrientationA = 0;
-    fUserDefOrientationB = 0;
-    fUserDefOrientationC = 0;
+    dUserDefVelo = 0;
+    dUserDefTolerance = 0;
+    iUserDefSampleSize = 0;
+    dUserDefOrientationA = 0;
+    dUserDefOrientationB = 0;
+    dUserDefOrientationC = 0;
     bCSVDefOrientation = false;
     bCSVDefVelo = false;
     lstRawPathData->Clear();
+    lstFilteredPathData->Clear();
+    lstAproxedPathData->Clear();
 }

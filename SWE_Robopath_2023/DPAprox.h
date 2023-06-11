@@ -8,11 +8,11 @@ namespace Logic {
     {
     public:
         DPAprox(UserInterface::RoboPathForm^);
-        void approx(Projectdata::RoboPath^);
+        System::Boolean approx(Projectdata::RoboPath^);
     private:
-        void douglasPeuckerRecursive(int, int, float);
-        float PointDistanceToLine(Projectdata::Point3D^, Projectdata::Point3D^, Projectdata::Point3D^);
-        System::Collections::Generic::List<Projectdata::RoboPathStruct<float>^>^ lstAproxedPath;
+        System::Boolean douglasPeuckerRecursive(int, int, System::Double);
+        System::Double PointDistanceToLine(Projectdata::Point3D^, Projectdata::Point3D^, Projectdata::Point3D^);
+        System::Collections::Generic::List<Projectdata::RoboPathStruct<System::Double>^>^ lstAproxedPath;
         UserInterface::RoboPathForm^ UIControl;
     };
 }

@@ -2,8 +2,8 @@
 namespace Projectdata {
     ref struct Point3D
     {
-        float fX;
-        float fY;
-        float fZ;
+        System::Double dX;
+        System::Double dY;
+        System::Double dZ;
     };
 }

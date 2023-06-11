@@ -7,9 +7,9 @@ namespace Logic {
 	{
 	public:
         ReadCSV(UserInterface::RoboPathForm^);
-        System::Void ReadAndSaveCSV(Projectdata::RoboPath^);
+        System::Boolean ReadAndSaveCSV(Projectdata::RoboPath^);
 	private:
-		System::Collections::Generic::List<Projectdata::RoboPathStruct<float>^>^ lstCSV;
+		System::Collections::Generic::List<Projectdata::RoboPathStruct<System::Double>^>^ lstCSV;
         UserInterface::RoboPathForm^ UIControl;
 	};
 }
