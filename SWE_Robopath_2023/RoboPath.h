@@ -12,11 +12,14 @@ namespace Projectdata
 		//Dekonstruktor
 		~RoboPath();
 		//Erhalte/Setze die eingelesene CSV-Datei in einer Liste
-		void SetlstRawPathData(System::Collections::Generic::List<Projectdata::RoboPathStruct<float>^>^);
-		System::Collections::Generic::List<Projectdata::RoboPathStruct<float>^>^ GetlstRawPathData();
+		void SetlstRawPathData(System::Collections::Generic::List<Projectdata::RoboPathStruct<System::Double>^>^);
+		System::Collections::Generic::List<Projectdata::RoboPathStruct<System::Double>^>^ GetlstRawPathData();
+        //Erhalte/Setze die gefilterte CSV-Datei in einer Liste
+        void SetlstFilteredPathData(System::Collections::Generic::List<Projectdata::RoboPathStruct<System::Double>^>^);
+        System::Collections::Generic::List<Projectdata::RoboPathStruct<System::Double>^>^ GetlstFilteredPathData();
         //Erhalte/Setze die approximierte CSV-Datei in einer Liste
-        void SetlstAproxedPathData(System::Collections::Generic::List<Projectdata::RoboPathStruct<float>^>^);
-        System::Collections::Generic::List<Projectdata::RoboPathStruct<float>^>^ GetlstAproxedPathData();
+        void SetlstAproxedPathData(System::Collections::Generic::List<Projectdata::RoboPathStruct<System::Double>^>^);
+        System::Collections::Generic::List<Projectdata::RoboPathStruct<System::Double>^>^ GetlstAproxedPathData();
 		//Erhalte/Setze den Dateipfad
 		void SetFilePath(System::String^);
 		System::String^ GetFilePath();
@@ -24,23 +27,23 @@ namespace Projectdata
         void SetSavePath(System::String^);
         System::String^ GetSavePath();
 		//Erhalte/Setze die nutzerdefinierte Geschwindigkeit
-		void SetVelo(float);
-		float GetVelo();
+		void SetVelo(System::Double);
+        System::Double GetVelo();
 		//Erhalte/Setze die nutzerdefinierte Toleranzangabe
-		void SetTolerance(float);
-		float GetTolerance();
+		void SetTolerance(System::Double);
+        System::Double GetTolerance();
 		//Erhalte/Setze die nutzerdefinierte Mittelwertfindung
-		void SetAverage(float);
-		float GetAverage();
+		void SetSampleSize(int);
+        int GetSampleSize();
 		//Erhalte/Setze die nutzerdefinierte Orientierung für A
-		void SetOrientationA(float);
-		float GetOrientationA();
+		void SetOrientationA(System::Double);
+        System::Double GetOrientationA();
 		//Erhalte/Setze die nutzerdefinierte Orientierung für B
-		void SetOrientationB(float);
-		float GetOrientationB();
+		void SetOrientationB(System::Double);
+        System::Double GetOrientationB();
 		//Erhalte/Setze die nutzerdefinierte Orientierung für C
-		void SetOrientationC(float);
-		float GetOrientationC();
+		void SetOrientationC(System::Double);
+        System::Double GetOrientationC();
 		//Erhalte/Setze die boolsche Variable für die Option "Geschwindigkeit aus CSV"
 		void SetUserDefVelo(bool);
 		bool GetUserDefVelo();
@@ -53,14 +56,15 @@ namespace Projectdata
 	private:
 		System::String^ sFilepath;
         System::String^ sSavePath;
-		System::Collections::Generic::List<Projectdata::RoboPathStruct<float>^>^ lstRawPathData;
-        System::Collections::Generic::List<Projectdata::RoboPathStruct<float>^>^ lstAproxedPathData;
-		float fUserDefVelo;
-		float fUserDefTolerance;
-		float fUserDefAverage;
-		float fUserDefOrientationA;
-		float fUserDefOrientationB;
-		float fUserDefOrientationC;
+		System::Collections::Generic::List<Projectdata::RoboPathStruct<System::Double>^>^ lstRawPathData;
+        System::Collections::Generic::List<Projectdata::RoboPathStruct<System::Double>^>^ lstFilteredPathData;
+        System::Collections::Generic::List<Projectdata::RoboPathStruct<System::Double>^>^ lstAproxedPathData;
+        System::Double dUserDefVelo;
+        System::Double dUserDefTolerance;
+        int iUserDefSampleSize;
+        System::Double dUserDefOrientationA;
+        System::Double dUserDefOrientationB;
+        System::Double dUserDefOrientationC;
 		bool bCSVDefVelo;
 		bool bCSVDefOrientation;
 	};

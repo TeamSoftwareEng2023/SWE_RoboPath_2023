@@ -1,8 +1,9 @@
-#include "pch.h"
+#include"pch.h"
 #include"RoboPathForm.h"
 #include"ReadCSV.h"
 #include"DPAprox.h"
 #include"WriteCSV.h"
+#include"SampleFilter.h"
 //Konstruktor
 UserInterface::RoboPathForm::RoboPathForm(void)
 {
@@ -29,19 +30,19 @@ void UserInterface::RoboPathForm::InitializeComponent()
     this->tb_Velo = (gcnew System::Windows::Forms::TextBox());
     this->tb_Orientation_A = (gcnew System::Windows::Forms::TextBox());
     this->tb_Tolerance = (gcnew System::Windows::Forms::TextBox());
-    this->tb_Average = (gcnew System::Windows::Forms::TextBox());
+    this->tb_SampleSize = (gcnew System::Windows::Forms::TextBox());
     this->cb_Velo = (gcnew System::Windows::Forms::CheckBox());
     this->cb_Orientation = (gcnew System::Windows::Forms::CheckBox());
     this->label_Velo = (gcnew System::Windows::Forms::Label());
     this->label_Orientation = (gcnew System::Windows::Forms::Label());
     this->label_Tolerance = (gcnew System::Windows::Forms::Label());
-    this->label_Average = (gcnew System::Windows::Forms::Label());
+    this->label_SampleSize = (gcnew System::Windows::Forms::Label());
     this->btn_OpenCSV = (gcnew System::Windows::Forms::Button());
     this->btn_Start = (gcnew System::Windows::Forms::Button());
     this->tb_Velo_Act = (gcnew System::Windows::Forms::TextBox());
     this->tb_Orientation_Act_A = (gcnew System::Windows::Forms::TextBox());
     this->tb_Tolerance_Act = (gcnew System::Windows::Forms::TextBox());
-    this->tb_Average_Act = (gcnew System::Windows::Forms::TextBox());
+    this->tb_SampleSize_Act = (gcnew System::Windows::Forms::TextBox());
     this->label_ActValues = (gcnew System::Windows::Forms::Label());
     this->tb_Version = (gcnew System::Windows::Forms::TextBox());
     this->openFileDialog_CSV = (gcnew System::Windows::Forms::OpenFileDialog());
@@ -64,6 +65,12 @@ void UserInterface::RoboPathForm::InitializeComponent()
     this->label_Header = (gcnew System::Windows::Forms::Label());
     this->btn_Reset = (gcnew System::Windows::Forms::Button());
     this->saveFileDialog_CSV = (gcnew System::Windows::Forms::SaveFileDialog());
+    this->label_Degree_A = (gcnew System::Windows::Forms::Label());
+    this->label_Degree_B = (gcnew System::Windows::Forms::Label());
+    this->label_Degree_C = (gcnew System::Windows::Forms::Label());
+    this->label_Degree_Act_A = (gcnew System::Windows::Forms::Label());
+    this->label_Degree_Act_B = (gcnew System::Windows::Forms::Label());
+    this->label_Degree_Act_C = (gcnew System::Windows::Forms::Label());
     this->SuspendLayout();
     // 
     // btn_Set
@@ -103,13 +110,13 @@ void UserInterface::RoboPathForm::InitializeComponent()
     this->tb_Tolerance->TabIndex = 5;
     this->tb_Tolerance->Leave += gcnew System::EventHandler(this, &RoboPathForm::ValidateInput);
     // 
-    // tb_Average
+    // tb_SampleSize
     // 
-    this->tb_Average->Location = System::Drawing::Point(619, 101);
-    this->tb_Average->Name = L"tb_Average";
-    this->tb_Average->Size = System::Drawing::Size(100, 20);
-    this->tb_Average->TabIndex = 6;
-    this->tb_Average->Leave += gcnew System::EventHandler(this, &RoboPathForm::ValidateInput);
+    this->tb_SampleSize->Location = System::Drawing::Point(619, 101);
+    this->tb_SampleSize->Name = L"tb_SampleSize";
+    this->tb_SampleSize->Size = System::Drawing::Size(100, 20);
+    this->tb_SampleSize->TabIndex = 6;
+    this->tb_SampleSize->Leave += gcnew System::EventHandler(this, &RoboPathForm::ValidateInput);
     // 
     // cb_Velo
     // 
@@ -166,16 +173,16 @@ void UserInterface::RoboPathForm::InitializeComponent()
     this->label_Tolerance->TabIndex = 13;
     this->label_Tolerance->Text = L"Toleranz";
     // 
-    // label_Average
+    // label_SampleSize
     // 
-    this->label_Average->AutoSize = true;
-    this->label_Average->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, static_cast<System::Drawing::FontStyle>((System::Drawing::FontStyle::Bold | System::Drawing::FontStyle::Underline)),
+    this->label_SampleSize->AutoSize = true;
+    this->label_SampleSize->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, static_cast<System::Drawing::FontStyle>((System::Drawing::FontStyle::Bold | System::Drawing::FontStyle::Underline)),
         System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
-    this->label_Average->Location = System::Drawing::Point(615, 75);
-    this->label_Average->Name = L"label_Average";
-    this->label_Average->Size = System::Drawing::Size(147, 20);
-    this->label_Average->TabIndex = 14;
-    this->label_Average->Text = L"Mittelwertfindung";
+    this->label_SampleSize->Location = System::Drawing::Point(615, 75);
+    this->label_SampleSize->Name = L"label_SampleSize";
+    this->label_SampleSize->Size = System::Drawing::Size(87, 20);
+    this->label_SampleSize->TabIndex = 14;
+    this->label_SampleSize->Text = L"Mittelwert";
     // 
     // btn_OpenCSV
     // 
@@ -237,16 +244,16 @@ void UserInterface::RoboPathForm::InitializeComponent()
     this->tb_Tolerance_Act->Size = System::Drawing::Size(100, 20);
     this->tb_Tolerance_Act->TabIndex = 19;
     // 
-    // tb_Average_Act
+    // tb_SampleSize_Act
     // 
-    this->tb_Average_Act->Enabled = false;
-    this->tb_Average_Act->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+    this->tb_SampleSize_Act->Enabled = false;
+    this->tb_SampleSize_Act->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
         static_cast<System::Byte>(0)));
-    this->tb_Average_Act->Location = System::Drawing::Point(619, 127);
-    this->tb_Average_Act->Name = L"tb_Average_Act";
-    this->tb_Average_Act->ReadOnly = true;
-    this->tb_Average_Act->Size = System::Drawing::Size(100, 20);
-    this->tb_Average_Act->TabIndex = 20;
+    this->tb_SampleSize_Act->Location = System::Drawing::Point(619, 127);
+    this->tb_SampleSize_Act->Name = L"tb_SampleSize_Act";
+    this->tb_SampleSize_Act->ReadOnly = true;
+    this->tb_SampleSize_Act->Size = System::Drawing::Size(100, 20);
+    this->tb_SampleSize_Act->TabIndex = 20;
     // 
     // label_ActValues
     // 
@@ -454,12 +461,76 @@ void UserInterface::RoboPathForm::InitializeComponent()
     this->saveFileDialog_CSV->InitialDirectory = L"c:\\";
     this->saveFileDialog_CSV->FileOk += gcnew System::ComponentModel::CancelEventHandler(this, &RoboPathForm::saveFileDialog_CSV_FileOk);
     // 
+    // label_Degree_A
+    // 
+    this->label_Degree_A->AutoSize = true;
+    this->label_Degree_A->Location = System::Drawing::Point(423, 101);
+    this->label_Degree_A->Name = L"label_Degree_A";
+    this->label_Degree_A->Size = System::Drawing::Size(11, 13);
+    this->label_Degree_A->TabIndex = 41;
+    this->label_Degree_A->Text = L"°";
+    this->label_Degree_A->Click += gcnew System::EventHandler(this, &RoboPathForm::label1_Click);
+    // 
+    // label_Degree_B
+    // 
+    this->label_Degree_B->AutoSize = true;
+    this->label_Degree_B->Location = System::Drawing::Point(423, 127);
+    this->label_Degree_B->Name = L"label_Degree_B";
+    this->label_Degree_B->Size = System::Drawing::Size(11, 13);
+    this->label_Degree_B->TabIndex = 42;
+    this->label_Degree_B->Text = L"°";
+    this->label_Degree_B->Click += gcnew System::EventHandler(this, &RoboPathForm::label2_Click);
+    // 
+    // label_Degree_C
+    // 
+    this->label_Degree_C->AutoSize = true;
+    this->label_Degree_C->Location = System::Drawing::Point(423, 153);
+    this->label_Degree_C->Name = L"label_Degree_C";
+    this->label_Degree_C->Size = System::Drawing::Size(11, 13);
+    this->label_Degree_C->TabIndex = 43;
+    this->label_Degree_C->Text = L"°";
+    this->label_Degree_C->Click += gcnew System::EventHandler(this, &RoboPathForm::label3_Click);
+    // 
+    // label_Degree_Act_A
+    // 
+    this->label_Degree_Act_A->AutoSize = true;
+    this->label_Degree_Act_A->Location = System::Drawing::Point(423, 191);
+    this->label_Degree_Act_A->Name = L"label_Degree_Act_A";
+    this->label_Degree_Act_A->Size = System::Drawing::Size(11, 13);
+    this->label_Degree_Act_A->TabIndex = 44;
+    this->label_Degree_Act_A->Text = L"°";
+    this->label_Degree_Act_A->Click += gcnew System::EventHandler(this, &RoboPathForm::label_Degree_Act_A_Click);
+    // 
+    // label_Degree_Act_B
+    // 
+    this->label_Degree_Act_B->AutoSize = true;
+    this->label_Degree_Act_B->Location = System::Drawing::Point(423, 217);
+    this->label_Degree_Act_B->Name = L"label_Degree_Act_B";
+    this->label_Degree_Act_B->Size = System::Drawing::Size(11, 13);
+    this->label_Degree_Act_B->TabIndex = 45;
+    this->label_Degree_Act_B->Text = L"°";
+    // 
+    // label_Degree_Act_C
+    // 
+    this->label_Degree_Act_C->AutoSize = true;
+    this->label_Degree_Act_C->Location = System::Drawing::Point(423, 243);
+    this->label_Degree_Act_C->Name = L"label_Degree_Act_C";
+    this->label_Degree_Act_C->Size = System::Drawing::Size(11, 13);
+    this->label_Degree_Act_C->TabIndex = 46;
+    this->label_Degree_Act_C->Text = L"°";
+    // 
     // RoboPathForm
     // 
     this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
     this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
     this->BackColor = System::Drawing::SystemColors::ButtonShadow;
     this->ClientSize = System::Drawing::Size(784, 561);
+    this->Controls->Add(this->label_Degree_Act_C);
+    this->Controls->Add(this->label_Degree_Act_B);
+    this->Controls->Add(this->label_Degree_Act_A);
+    this->Controls->Add(this->label_Degree_C);
+    this->Controls->Add(this->label_Degree_B);
+    this->Controls->Add(this->label_Degree_A);
     this->Controls->Add(this->btn_Reset);
     this->Controls->Add(this->label_Header);
     this->Controls->Add(this->label_Toleranz_Act_Wert);
@@ -480,19 +551,19 @@ void UserInterface::RoboPathForm::InitializeComponent()
     this->Controls->Add(this->tb_Log);
     this->Controls->Add(this->tb_Version);
     this->Controls->Add(this->label_ActValues);
-    this->Controls->Add(this->tb_Average_Act);
+    this->Controls->Add(this->tb_SampleSize_Act);
     this->Controls->Add(this->tb_Tolerance_Act);
     this->Controls->Add(this->tb_Orientation_Act_A);
     this->Controls->Add(this->tb_Velo_Act);
     this->Controls->Add(this->btn_Start);
     this->Controls->Add(this->btn_OpenCSV);
-    this->Controls->Add(this->label_Average);
+    this->Controls->Add(this->label_SampleSize);
     this->Controls->Add(this->label_Tolerance);
     this->Controls->Add(this->label_Orientation);
     this->Controls->Add(this->label_Velo);
     this->Controls->Add(this->cb_Orientation);
     this->Controls->Add(this->cb_Velo);
-    this->Controls->Add(this->tb_Average);
+    this->Controls->Add(this->tb_SampleSize);
     this->Controls->Add(this->tb_Tolerance);
     this->Controls->Add(this->tb_Orientation_A);
     this->Controls->Add(this->tb_Velo);
@@ -564,7 +635,7 @@ System::Void UserInterface::RoboPathForm::btn_Set_Click(System::Object^ sender, 
                     || this->tb_Orientation_B->Text == ""
                     || this->tb_Orientation_C->Text == ""))
             || this->tb_Tolerance->Text == ""
-            || this->tb_Average->Text == ""
+            || this->tb_SampleSize->Text == ""
             || Datastore->GetFilePath() == "") {
             //Fehler: Es wurde keine CSV geladen
             System::Collections::Generic::List<System::String^> lstErrorMessages;
@@ -599,7 +670,7 @@ System::Void UserInterface::RoboPathForm::btn_Set_Click(System::Object^ sender, 
                 lstErrorMessages.Add("Geben Sie eine Toleranz ein");
             }
             //Fehler: Kein Wert in der Average Textbox
-            if (this->tb_Average->Text == "") {
+            if (this->tb_SampleSize->Text == "") {
                 lstErrorMessages.Add("Geben Sie eine Mittelwert ein");
             }
             //Alle Fehlermeldungen wurden in einer Liste aufgenommen und werden jetzt in einen String aneinandergehängt um diesen dann
@@ -620,17 +691,17 @@ System::Void UserInterface::RoboPathForm::btn_Set_Click(System::Object^ sender, 
         else {
             if (this->cb_Velo->Checked == false) {
                 //Der Text wird in den passenden Datentyp umgewandelt und übergeben.
-                Datastore->SetVelo(Single::Parse(this->tb_Velo->Text));
+                Datastore->SetVelo(Double::Parse(this->tb_Velo->Text));
             }
             if (this->cb_Orientation->Checked == false) {
                 //Der Text wird in den passenden Datentyp umgewandelt und übergeben.
-                Datastore->SetOrientationA(Single::Parse(this->tb_Orientation_A->Text));
-                Datastore->SetOrientationB(Single::Parse(this->tb_Orientation_B->Text));
-                Datastore->SetOrientationC(Single::Parse(this->tb_Orientation_C->Text));
+                Datastore->SetOrientationA(Double::Parse(this->tb_Orientation_A->Text));
+                Datastore->SetOrientationB(Double::Parse(this->tb_Orientation_B->Text));
+                Datastore->SetOrientationC(Double::Parse(this->tb_Orientation_C->Text));
             }
             //Der Text wird in den passenden Datentyp umgewandelt und übergeben.
-            Datastore->SetTolerance(Single::Parse(this->tb_Tolerance->Text));
-            Datastore->SetAverage(Single::Parse(this->tb_Average->Text));
+            Datastore->SetTolerance(Double::Parse(this->tb_Tolerance->Text));
+            Datastore->SetSampleSize(System::Convert::ToInt32(this->tb_SampleSize->Text));
             //Der Status der Checkboxen wird übergeben
             Datastore->SetUserDefVelo(this->cb_Velo->Checked);
             Datastore->SetUserDefOrientation(this->cb_Orientation->Checked);
@@ -640,7 +711,7 @@ System::Void UserInterface::RoboPathForm::btn_Set_Click(System::Object^ sender, 
             this->tb_Orientation_Act_B->Text = this->tb_Orientation_B->Text;
             this->tb_Orientation_Act_C->Text = this->tb_Orientation_C->Text;
             this->tb_Tolerance_Act->Text = this->tb_Tolerance->Text;
-            this->tb_Average_Act->Text = this->tb_Average->Text;
+            this->tb_SampleSize_Act->Text = this->tb_SampleSize->Text;
             //Zusätzlich gibt es noch eine Meldung über die erfolgreiche Speicherung
             this->AppendLog("Laden der Werte erfolgreich\n\n");
             //Gibt den Start Button frei
@@ -695,22 +766,48 @@ System::Void UserInterface::RoboPathForm::saveFileDialog_CSV_FileOk(System::Obje
 //Ereignis, nachdem der Start Button geklickt wird
 System::Void UserInterface::RoboPathForm::btn_Start_Click(System::Object^ sender, System::EventArgs^ e) {
     try {
+        System::Boolean bReadDone = false;
+        System::Boolean bFilteredDone = false;
+        System::Boolean bApproxedDone = false;
+
         if (bSetted) {
-            Logic::ReadCSV^ Reader = gcnew Logic::ReadCSV(this);
             this->AppendLog("CSV wird eingelesen\n\n");
-            System::Threading::Thread::Sleep(1000);
-            Reader->ReadAndSaveCSV(Datastore);
+            System::Threading::Thread::Sleep(500);
+            Logic::ReadCSV^ Reader = gcnew Logic::ReadCSV(this);
+            bReadDone = Reader->ReadAndSaveCSV(Datastore);
             delete Reader;
-            if (Datastore->GetTolerance() != 0) {
+            if (Datastore->GetSampleSize() > 1 && bReadDone) {
+                this->AppendLog("Daten werden gefiltert\n\n");
+                System::Threading::Thread::Sleep(500);
+                Logic::SampleFilter^ Filter = gcnew Logic::SampleFilter(this);
+                bFilteredDone = Filter->FilterData(Datastore);
+                delete Filter;
+            }
+            else if (Datastore->GetSampleSize() <= 1) {
+                bReadDone = true;
+                Datastore->SetlstFilteredPathData(Datastore->GetlstRawPathData());
+            }
+            if (Datastore->GetTolerance() != 0 && bReadDone) {
                 this->AppendLog("Daten werden approximiert\n\n");
-                System::Threading::Thread::Sleep(1000);
+                System::Threading::Thread::Sleep(500);
                 Logic::DPAprox^ DPAproxer = gcnew Logic::DPAprox(this);
-                DPAproxer->approx(Datastore);
+                bApproxedDone =  DPAproxer->approx(Datastore);
                 delete DPAproxer;
+            }
+            else if (Datastore->GetTolerance() == 0) {
+                bApproxedDone = true;
+                Datastore->SetlstAproxedPathData(Datastore->GetlstFilteredPathData());
+            }
+            if (bApproxedDone) {
+                this->AppendLog("Datei wird erstellt\n\n");
+                System::Threading::Thread::Sleep(500);
                 Logic::WriteCSV^ FileCreater = gcnew Logic::WriteCSV(this);
                 FileCreater->WriteForMatLab(Datastore);
-                this->AppendLog("Testfile erstellt\n\n");
+                delete FileCreater;
             }
+            this->ResetAll();
+            System::Windows::Forms::Application::DoEvents();
+            Datastore->Reset();
         }
         else
         {
@@ -741,56 +838,65 @@ System::Void UserInterface::RoboPathForm::ValidateInput(System::Object^ sender, 
     if (tbCurrentTextBox->Text->Contains(".")) {
         tbCurrentTextBox->Text = tbCurrentTextBox->Text->Replace(".", ",");
     }
-    float fInput;
-    //Der eingegebene Text wird in ein float umgewandelt. Falls dies gelingt, wird der Float in der Variable fInput gespeichert
-    if (float::TryParse(tbCurrentTextBox->Text, fInput)) {
-        //Da jede Textbox andere Bedingungen hat, wird ermittelt, um welche Textbox es sich handelt
-        //Wenn es die Velo Textbox ist, darf der Wert nicht keliner als 0 und größer als 2 sein.
-        if (tbCurrentTextBox->Name == "tb_Velo") {
-            if (fInput <= 0 || fInput > 2) {
-                //Falls doch, wird eine Fehlermeldung ausgegeben und der Text wird resettet.
-                this->ShowErrorWindow("Die Geschwindigkeit muss größer als 0 sein und darf maximal 2m/s betragen");
-                tbCurrentTextBox->Clear();
+    if (tbCurrentTextBox->Name != "tb_SampleSize") {
+        System::Double dInput;
+        //Der eingegebene Text wird in ein float umgewandelt. Falls dies gelingt, wird der Float in der Variable fInput gespeichert
+        if (System::Double::TryParse(tbCurrentTextBox->Text, dInput)) {
+            //Da jede Textbox andere Bedingungen hat, wird ermittelt, um welche Textbox es sich handelt
+            //Wenn es die Velo Textbox ist, darf der Wert nicht keliner als 0 und größer als 2 sein.
+            if (tbCurrentTextBox->Name == "tb_Velo") {
+                if (dInput <= 0 || dInput > 2) {
+                    //Falls doch, wird eine Fehlermeldung ausgegeben und der Text wird resettet.
+                    this->ShowErrorWindow("Die Geschwindigkeit muss größer als 0 sein und darf maximal 2m/s betragen");
+                    tbCurrentTextBox->Clear();
+                }
+                return;
             }
-            return;
+            //Wenn es einer der Orientation Textboxen ist, darf der Winkel nur zwischen 0 und 360 grad betragen
+            else if (tbCurrentTextBox->Name->Contains("tb_Orientation_")) {
+                if (dInput < 0 || dInput > 360) {
+                    //Falls doch, wird eine Fehlermeldung ausgegeben und der Text wird resettet.
+                    this->ShowErrorWindow("Der Winkel muss zwischen 0° und 360° betragen");
+                    tbCurrentTextBox->Text = "";
+                }
+                return;
+            }
+            //Wenn es die Toelrance Textbox ist, ...
+            else if (tbCurrentTextBox->Name == "tb_Tolerance") {
+                if (dInput < 0 || dInput > 10) {
+                    //Falls doch, wird eine Fehlermeldung ausgegeben und der Text wird resettet.
+                    this->ShowErrorWindow("Die Toleranz darf maximal 10mm betragen\nNegative Zahlen sind nicht erlaubt");
+                    tbCurrentTextBox->Text = "";
+                }
+                return;
+            }
+            //Falls else erreicht wird, wurde eine Textbox hinzugefügt, ohne diese hier zu implementieren
+            else {
+                this->AppendLog("Unbekannte TextBox\n\n");
+                return;
+            }
         }
-        //Wenn es einer der Orientation Textboxen ist, darf der Winkel nur zwischen 0 und 360 grad betragen
-        else if (tbCurrentTextBox->Name->Contains("tb_Orientation_")) {
-            if (fInput < 0 || fInput > 360) {
+        //Falls der eingegebene Wert nicht in ein float umgewandelt werden kann, wird die folgende Fehlermeldung ausgegeben
+        else {
+            this->ShowErrorWindow("Es sind nur ganze oder Gleitkommezahlen erlaubt");
+            tbCurrentTextBox->Text = "";
+        }
+    }
+    else if (tbCurrentTextBox->Name == "tb_SampleSize") {
+        int dInput;
+        //Der eingegebene Text wird in ein float umgewandelt. Falls dies gelingt, wird der Float in der Variable fInput gespeichert
+        if (System::Int32::TryParse(tbCurrentTextBox->Text, dInput)) {
+            if (dInput < 0 || dInput > 10) {
                 //Falls doch, wird eine Fehlermeldung ausgegeben und der Text wird resettet.
-                this->ShowErrorWindow("Der Winkel muss zwischen 0° und 360° betragen");
+                this->ShowErrorWindow("Die Anzahl an Datensätze, über die gemittelt werden darf, darf maximal 10 betragen\nNegative Zahlen sind nicht erlaubt");
                 tbCurrentTextBox->Text = "";
             }
             return;
         }
-        //Wenn es die Toelrance Textbox ist, ...
-        else if (tbCurrentTextBox->Name == "tb_Tolerance") {
-            if (fInput < 0 || fInput > 0) {
-                //Falls doch, wird eine Fehlermeldung ausgegeben und der Text wird resettet.
-                this->ShowErrorWindow("Die Grenzen müssen noch definiert werden.\nSolange ist erstmal alles erlaubt");
-                /*tbAktuelleTextBox->Text = "";*/
-            }
-            return;
-        }
-        //Falls es die Average Textbox ist, ...
-        else if (tbCurrentTextBox->Name == "tb_Average") {
-            if (fInput < 0 || fInput > 0) {
-                //Falls doch, wird eine Fehlermeldung ausgegeben und der Text wird resettet.
-                this->ShowErrorWindow("Die Grenzen müssen noch definiert werden.\nSolange ist erstmal alles erlaubt");
-                /*tbAktuelleTextBox->Text = "";*/
-            }
-            return;
-        }
-        //Falls else erreicht wird, wurde eine Textbox hinzugefügt, ohne diese hier zu implementieren
         else {
-            this->AppendLog("Unbekannte TextBox\n\n");
-            return;
+            this->ShowErrorWindow("Es sind nur ganze Zahlen erlaubt");
+            tbCurrentTextBox->Text = "";
         }
-    }
-    //Falls der eingegebene Wert nicht in ein float umgewandelt werden kann, wird die folgende Fehlermeldung ausgegeben
-    else {
-        this->ShowErrorWindow("Es sind nur ganze oder Gleitkommezahlen erlaubt");
-        tbCurrentTextBox->Text = "";
     }
 }
 #pragma endregion EventHandler
@@ -806,8 +912,8 @@ System::Void UserInterface::RoboPathForm::ShowErrorWindow(String^ errorMessage)
 System::Boolean UserInterface::RoboPathForm::ShowYesNoWindow(System::String^ message)
 {
     // Anzeigen des Ja-Nein-Fensters und Rückgabe der Benutzerantwort als boolchen Wert
-    System::Windows::Forms::DialogResult xDialogResult = MessageBox::Show(message, "", MessageBoxButtons::YesNo, MessageBoxIcon::Question);
-    return xDialogResult == System::Windows::Forms::DialogResult::Yes;
+    System::Windows::Forms::DialogResult DialogResult = MessageBox::Show(message, "", MessageBoxButtons::YesNo, MessageBoxIcon::Question);
+    return DialogResult == System::Windows::Forms::DialogResult::Yes;
 }
 #pragma endregion windows forms helper
 
@@ -815,11 +921,11 @@ System::Boolean UserInterface::RoboPathForm::ShowYesNoWindow(System::String^ mes
 //Standardfunktion um Text im Log anzuzeigen
 System::Void UserInterface::RoboPathForm::AppendLog(System::String^ sMessage) {
     //Ein Objekt, dass die aktuelle Uhrzeit enthält, wird erstellt
-    System::DateTime aktuelleUhrzeit = System::DateTime::Now;
+    System::DateTime ActTime = System::DateTime::Now;
     //Diese Uhrzeit wird noch in gewünschte Format gebracht
-    System::String^ formartierteZeit = aktuelleUhrzeit.ToString("HH:mm:ss");
+    System::String^ formattedTime = ActTime.ToString("HH:mm:ss");
     //Bevor der Text ausgegeben wird, wird die Uhrzeit darüber ausgebeben als Zeitstempel
-    this->tb_Log->AppendText(formartierteZeit + "\n");
+    this->tb_Log->AppendText(formattedTime + "\n");
     //Ausgabe des Textes
     this->tb_Log->AppendText(sMessage);
     //Scrollen bis ganz unten
@@ -828,9 +934,9 @@ System::Void UserInterface::RoboPathForm::AppendLog(System::String^ sMessage) {
 }
 System::Void UserInterface::RoboPathForm::SetVersion() {
     //Es wird ein Objekt erstellt, in dem die Version gepfelgt wird
-    Projectdata::VersionInfo xVersion;
+    Projectdata::VersionInfo Version;
     //Die Versionsnummer wird der Textbox zugewiesen
-    this->tb_Version->Text = xVersion.getVersion();
+    this->tb_Version->Text = Version.getVersion();
 }
 //Funktion, um alles zurück zu setzen
 System::Void UserInterface::RoboPathForm::ResetAll() {
@@ -844,9 +950,9 @@ System::Void UserInterface::RoboPathForm::ResetAll() {
     this->tb_Orientation_Act_C->Clear();
     this->tb_Tolerance->Clear();
     this->tb_Tolerance_Act->Clear();
-    this->tb_Average->Clear();
-    this->tb_Average_Act->Clear();
-    this->tb_Log->Clear();
+    this->tb_SampleSize->Clear();
+    this->tb_SampleSize_Act->Clear();
+    /*this->tb_Log->Clear();*/
     bSetted = false;
 }
 #pragma endregion helpers

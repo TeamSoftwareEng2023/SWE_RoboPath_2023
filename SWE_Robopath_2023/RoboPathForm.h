@@ -28,19 +28,22 @@ namespace UserInterface {
     private: System::Windows::Forms::TextBox^ tb_Velo;
     private: System::Windows::Forms::TextBox^ tb_Orientation_A;
     private: System::Windows::Forms::TextBox^ tb_Tolerance;
-    private: System::Windows::Forms::TextBox^ tb_Average;
+    private: System::Windows::Forms::TextBox^ tb_SampleSize;
+
     private: System::Windows::Forms::CheckBox^ cb_Velo;
     private: System::Windows::Forms::CheckBox^ cb_Orientation;
     private: System::Windows::Forms::Label^ label_Velo;
     private: System::Windows::Forms::Label^ label_Orientation;
     private: System::Windows::Forms::Label^ label_Tolerance;
-    private: System::Windows::Forms::Label^ label_Average;
+    private: System::Windows::Forms::Label^ label_SampleSize;
+
     private: System::Windows::Forms::Button^ btn_OpenCSV;
     private: System::Windows::Forms::Button^ btn_Start;
     private: System::Windows::Forms::TextBox^ tb_Velo_Act;
     private: System::Windows::Forms::TextBox^ tb_Orientation_Act_A;
     private: System::Windows::Forms::TextBox^ tb_Tolerance_Act;
-    private: System::Windows::Forms::TextBox^ tb_Average_Act;
+    private: System::Windows::Forms::TextBox^ tb_SampleSize_Act;
+
     private: System::Windows::Forms::Label^ label_ActValues;
     private: System::Windows::Forms::TextBox^ tb_Version;
     private: System::Windows::Forms::OpenFileDialog^ openFileDialog_CSV;
@@ -63,6 +66,20 @@ namespace UserInterface {
     private: System::Windows::Forms::Label^ label_Header;
     private: System::Windows::Forms::Button^ btn_Reset;
     public: System::Windows::Forms::SaveFileDialog^ saveFileDialog_CSV;
+    private: System::Windows::Forms::Label^ label_Degree_A;
+    private: System::Windows::Forms::Label^ label_Degree_B;
+    private: System::Windows::Forms::Label^ label_Degree_C;
+    private: System::Windows::Forms::Label^ label_Degree_Act_A;
+    private: System::Windows::Forms::Label^ label_Degree_Act_B;
+    private: System::Windows::Forms::Label^ label_Degree_Act_C;
+    public:
+
+    public:
+
+
+
+
+
 
     private: System::ComponentModel::IContainer^ components;
 
@@ -96,6 +113,14 @@ namespace UserInterface {
     //Funktion, die den eingegeben Wert kontrolliert, nachdem die Textbox den Fokus verliert
     private: System::Void ValidateInput(System::Object^ sender, System::EventArgs^ e);
     private: System::Void saveFileDialog_CSV_FileOk(System::Object^ sender, System::ComponentModel::CancelEventArgs^ e);
-    };
+    private: System::Void label1_Click(System::Object^ sender, System::EventArgs^ e) {
+    }
+    private: System::Void label2_Click(System::Object^ sender, System::EventArgs^ e) {
+    }
+    private: System::Void label3_Click(System::Object^ sender, System::EventArgs^ e) {
+    }
+    private: System::Void label_Degree_Act_A_Click(System::Object^ sender, System::EventArgs^ e) {
+    }
+};
 }
 #pragma endregion

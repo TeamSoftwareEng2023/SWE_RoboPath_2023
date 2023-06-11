@@ -140,6 +140,7 @@
     <ClInclude Include="Resource.h" />
     <ClInclude Include="RoboPath.h" />
     <ClInclude Include="RoboPathStruct.h" />
+    <ClInclude Include="SampleFilter.h" />
     <ClInclude Include="VersionInfo.h" />
     <ClInclude Include="WriteCSV.h" />
   </ItemGroup>
@@ -156,6 +157,7 @@
     </ClCompile>
     <ClCompile Include="ReadCSV.cpp" />
     <ClCompile Include="RoboPath.cpp" />
+    <ClCompile Include="SampleFilter.cpp" />
     <ClCompile Include="VersionInfo.cpp" />
     <ClCompile Include="WriteCSV.cpp" />
   </ItemGroup>
