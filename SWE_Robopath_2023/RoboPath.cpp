@@ -6,7 +6,8 @@ Projectdata::RoboPath::RoboPath() {
 	sFilepath = "";
     sSavePath = "";
 	dUserDefVelo = 0;
-	dUserDefTolerance = 0;
+	dUserDefToleranceApproximation = 0;
+    dUserDefToleranceOrientation = 0;
     iUserDefSampleSize = 0;
 	dUserDefOrientationA = 0;
 	dUserDefOrientationB = 0;
@@ -64,12 +65,19 @@ void Projectdata::RoboPath::SetVelo(System::Double dVelo) {
 System::Double Projectdata::RoboPath::GetVelo() {
 	return dUserDefVelo;
 }
-//Erhalte/Setze die nutzerdefinierte Toleranzangabe
-void Projectdata::RoboPath::SetTolerance(System::Double fTolerance) {
-	dUserDefTolerance = fTolerance;
+//Erhalte/Setze die nutzerdefinierte Toleranzangabe für die Approximation
+void Projectdata::RoboPath::SetToleranceApprox(System::Double fToleranceApprox) {
+    dUserDefToleranceApproximation = fToleranceApprox;
 }
-System::Double Projectdata::RoboPath::GetTolerance() {
-	return dUserDefTolerance;
+System::Double Projectdata::RoboPath::GetToleranceApprox() {
+	return dUserDefToleranceApproximation;
+}
+//Erhalte/Setze die nutzerdefinierte Toleranzangabe für die Orientierung
+void Projectdata::RoboPath::SetToleranceOrientation(System::Double dToleranceOrientation) {
+    dUserDefToleranceOrientation = dToleranceOrientation;
+}
+System::Double Projectdata::RoboPath::GetToleranceOrientation() {
+    return dUserDefToleranceOrientation;
 }
 //Erhalte/Setze die nutzerdefinierte Mittelwertfindung
 void Projectdata::RoboPath::SetSampleSize(int iSampleSize) {
@@ -117,7 +125,8 @@ bool Projectdata::RoboPath::GetUserDefOrientation() {
 void Projectdata::RoboPath::Reset() {
     sFilepath = "";
     dUserDefVelo = 0;
-    dUserDefTolerance = 0;
+    dUserDefToleranceApproximation = 0;
+    dUserDefToleranceOrientation = 0;
     iUserDefSampleSize = 0;
     dUserDefOrientationA = 0;
     dUserDefOrientationB = 0;

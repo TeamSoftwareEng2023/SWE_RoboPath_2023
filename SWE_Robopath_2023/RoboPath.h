@@ -9,7 +9,7 @@ namespace Projectdata
 	public:
 		//Konstruktor
 		RoboPath();
-		//Dekonstruktor
+		//Destruktor
 		~RoboPath();
 		//Erhalte/Setze die eingelesene CSV-Datei in einer Liste
 		void SetlstRawPathData(System::Collections::Generic::List<Projectdata::RoboPathStruct<System::Double>^>^);
@@ -29,9 +29,12 @@ namespace Projectdata
 		//Erhalte/Setze die nutzerdefinierte Geschwindigkeit
 		void SetVelo(System::Double);
         System::Double GetVelo();
-		//Erhalte/Setze die nutzerdefinierte Toleranzangabe
-		void SetTolerance(System::Double);
-        System::Double GetTolerance();
+		//Erhalte/Setze die nutzerdefinierte Toleranzangabe für die Approximation
+		void SetToleranceApprox(System::Double);
+        System::Double GetToleranceApprox();
+        //Erhalte/Setze die nutzerdefinierte Toleranzangabe für die Orientierung
+        void SetToleranceOrientation(System::Double);
+        System::Double GetToleranceOrientation();
 		//Erhalte/Setze die nutzerdefinierte Mittelwertfindung
 		void SetSampleSize(int);
         int GetSampleSize();
@@ -60,13 +63,14 @@ namespace Projectdata
         System::Collections::Generic::List<Projectdata::RoboPathStruct<System::Double>^>^ lstFilteredPathData;
         System::Collections::Generic::List<Projectdata::RoboPathStruct<System::Double>^>^ lstAproxedPathData;
         System::Double dUserDefVelo;
-        System::Double dUserDefTolerance;
+        System::Double dUserDefToleranceApproximation;
         int iUserDefSampleSize;
         System::Double dUserDefOrientationA;
         System::Double dUserDefOrientationB;
         System::Double dUserDefOrientationC;
-		bool bCSVDefVelo;
-		bool bCSVDefOrientation;
+        System::Double dUserDefToleranceOrientation;
+		System::Boolean bCSVDefVelo;
+		System::Boolean bCSVDefOrientation;
 	};
 }
 

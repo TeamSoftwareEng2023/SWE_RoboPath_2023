@@ -71,6 +71,18 @@
     <ClInclude Include="WriteCSV.h">
       <Filter>Logic\Header</Filter>
     </ClInclude>
+    <ClInclude Include="SampleFilter.h">
+      <Filter>Logic\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="VeloCalc.h">
+      <Filter>Logic\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcOrientation.h">
+      <Filter>Logic\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="ValidateRawCSV.h">
+      <Filter>Logic\Header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -98,6 +110,18 @@
       <Filter>Logic\Source</Filter>
     </ClCompile>
     <ClCompile Include="WriteCSV.cpp">
+      <Filter>Logic\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="SampleFilter.cpp">
+      <Filter>Logic\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="VeloCalc.cpp">
+      <Filter>Logic\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcOrientation.cpp">
+      <Filter>Logic\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="ValidateRawCSV.cpp">
       <Filter>Logic\Source</Filter>
     </ClCompile>
   </ItemGroup>
