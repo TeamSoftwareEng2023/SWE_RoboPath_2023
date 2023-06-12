@@ -4,7 +4,7 @@
 
 
 namespace UserInterface {
-    //Diese namespaces wurden automtaisch bei Erstellung des Projektes hinzugefügt.
+    //Diese namespaces wurden automatisch bei Erstellung des Projektes hinzugefügt.
     using namespace System;
     using namespace System::ComponentModel;
     using namespace System::Collections;
@@ -17,13 +17,13 @@ namespace UserInterface {
     {
         //Konstruktor
     public: RoboPathForm(void);
-        //Destruktor
+          //Destruktor
     protected: ~RoboPathForm();
-    //In diesem Objekt werden alle Daten gepsiechert, die der Nutzer über die Oberfläache eingibt
+             //In diesem Objekt werden alle Daten gepsiechert, die der Nutzer über die Oberfläache eingibt
     private: Projectdata::RoboPath^ Datastore;
-    //Wird true, wenn der Set Button erfolgreich gedrückt worden ist. Gibt dann den Start Button frei.
+           //Wird true, wenn der Set Button erfolgreich gedrückt worden ist. Gibt dann den Start Button frei.
     private: System::Boolean bSetted;
-    //Defintion alle Elemente in der Oberfläache
+           //Defintion alle Elemente in der Oberfläache
     private: System::Windows::Forms::Button^ btn_Set;
     private: System::Windows::Forms::TextBox^ tb_Velo;
     private: System::Windows::Forms::TextBox^ tb_Orientation_A;
@@ -72,55 +72,39 @@ namespace UserInterface {
     private: System::Windows::Forms::Label^ label_Degree_Act_A;
     private: System::Windows::Forms::Label^ label_Degree_Act_B;
     private: System::Windows::Forms::Label^ label_Degree_Act_C;
-    public:
-
-    public:
-
-
-
-
-
-
     private: System::ComponentModel::IContainer^ components;
 
-    //Definition aller Funktionen
-    //Alle Elemente der Oberfläche werden initialisiert. 
+           //Definition aller Funktionen
+           //Alle Elemente der Oberfläche werden initialisiert. 
     private: void InitializeComponent();
-    //Ereignis, nachdem eine valide Datei ausgfewählt worden ist
+           //Ereignis, nachdem eine valide Datei ausgfewählt worden ist
     private: System::Void openFileDialog_CSV_FileOk(System::Object^ sender, System::ComponentModel::CancelEventArgs^ e);
-    //Eregnis, nach dem Klicken auf den ".csv öffnen" Button
+           //Eregnis, nach dem Klicken auf den ".csv öffnen" Button
     private: System::Void btn_OpenCSV_Click(System::Object^ sender, System::EventArgs^ e);
-    //Funktion, um Text im Log anzuzeigen
+           //Funktion, um Text im Log anzuzeigen
     public: System::Void AppendLog(System::String^ sMessage);
-    //Ereignis, nach dem Klickenken auf den Start Button
+          //Ereignis, nach dem Klickenken auf den Start Button
     private: System::Void btn_Start_Click(System::Object^ sender, System::EventArgs^ e);
-    //Funktion, um die Versionnummer anzuzeigen
+           //Funktion, um die Versionnummer anzuzeigen
     private: System::Void SetVersion();
-    //Ereignis nach dem un/checken der Velo Checkbox
+           //Ereignis nach dem un/checken der Velo Checkbox
     private: System::Void cb_Velo_CheckChanged(System::Object^ sender, System::EventArgs^ e);
-    //Ereignis nach dem un/checken der Orientation Checkbox
+           //Ereignis nach dem un/checken der Orientation Checkbox
     private: System::Void cb_Orientation_CheckChanged(System::Object^ sender, System::EventArgs^ e);
-    //Ereignis nach dem Klicken auf den Set Button
+           //Ereignis nach dem Klicken auf den Set Button
     private: System::Void btn_Set_Click(System::Object^ sender, System::EventArgs^ e);
-    //Funktion, um ein Fehlerfesnter mit definierten Text anzuzeigen
+           //Funktion, um ein Fehlerfesnter mit definierten Text anzuzeigen
     private: System::Void ShowErrorWindow(String^ errorMessage);
-    //Ereignis nach dem Klicken auf den Reset Button
+           //Ereignis nach dem Klicken auf den Reset Button
     private: System::Void btn_Reset_Click(System::Object^ sender, System::EventArgs^ e);
-    //Funktion, um ein Entscheidungsfesnter (Ja oder Nein) mit definierten Text anzuzeigen
+           //Funktion, um ein Entscheidungsfesnter (Ja oder Nein) mit definierten Text anzuzeigen
     private: System::Boolean ShowYesNoWindow(String^ message);
-    //Funktion, um die Oberfläche zu clearen
+           //Funktion, um die Oberfläche zu clearen
     private: System::Void ResetAll();
-    //Funktion, die den eingegeben Wert kontrolliert, nachdem die Textbox den Fokus verliert
+           //Funktion, die den eingegeben Wert kontrolliert, nachdem die Textbox den Fokus verliert
     private: System::Void ValidateInput(System::Object^ sender, System::EventArgs^ e);
+           //Ereignis, nachdem ein gültiger Speicherort und Speichernamen ausgewählt worden ist
     private: System::Void saveFileDialog_CSV_FileOk(System::Object^ sender, System::ComponentModel::CancelEventArgs^ e);
-    private: System::Void label1_Click(System::Object^ sender, System::EventArgs^ e) {
-    }
-    private: System::Void label2_Click(System::Object^ sender, System::EventArgs^ e) {
-    }
-    private: System::Void label3_Click(System::Object^ sender, System::EventArgs^ e) {
-    }
-    private: System::Void label_Degree_Act_A_Click(System::Object^ sender, System::EventArgs^ e) {
-    }
-};
+    };
 }
 #pragma endregion

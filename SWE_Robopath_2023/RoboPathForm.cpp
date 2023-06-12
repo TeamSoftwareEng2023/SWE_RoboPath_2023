@@ -14,7 +14,7 @@ UserInterface::RoboPathForm::RoboPathForm(void)
     //Funktion, um sich die aktuelle Version zu holen
     SetVersion();
 }
-//Dekonstruktor
+//Destruktor
 UserInterface::RoboPathForm::~RoboPathForm()
 {
     if (components)
@@ -469,7 +469,6 @@ void UserInterface::RoboPathForm::InitializeComponent()
     this->label_Degree_A->Size = System::Drawing::Size(11, 13);
     this->label_Degree_A->TabIndex = 41;
     this->label_Degree_A->Text = L"°";
-    this->label_Degree_A->Click += gcnew System::EventHandler(this, &RoboPathForm::label1_Click);
     // 
     // label_Degree_B
     // 
@@ -479,7 +478,6 @@ void UserInterface::RoboPathForm::InitializeComponent()
     this->label_Degree_B->Size = System::Drawing::Size(11, 13);
     this->label_Degree_B->TabIndex = 42;
     this->label_Degree_B->Text = L"°";
-    this->label_Degree_B->Click += gcnew System::EventHandler(this, &RoboPathForm::label2_Click);
     // 
     // label_Degree_C
     // 
@@ -489,7 +487,6 @@ void UserInterface::RoboPathForm::InitializeComponent()
     this->label_Degree_C->Size = System::Drawing::Size(11, 13);
     this->label_Degree_C->TabIndex = 43;
     this->label_Degree_C->Text = L"°";
-    this->label_Degree_C->Click += gcnew System::EventHandler(this, &RoboPathForm::label3_Click);
     // 
     // label_Degree_Act_A
     // 
@@ -499,7 +496,6 @@ void UserInterface::RoboPathForm::InitializeComponent()
     this->label_Degree_Act_A->Size = System::Drawing::Size(11, 13);
     this->label_Degree_Act_A->TabIndex = 44;
     this->label_Degree_Act_A->Text = L"°";
-    this->label_Degree_Act_A->Click += gcnew System::EventHandler(this, &RoboPathForm::label_Degree_Act_A_Click);
     // 
     // label_Degree_Act_B
     // 
@@ -628,6 +624,7 @@ System::Void UserInterface::RoboPathForm::btn_Set_Click(System::Object^ sender, 
     try {
         //Fehlerabfrage
         //Falls einer der Textboxen leer ist, wird emittelt welche und eine entsprechende Fehlermeldung wird ausgegeben
+        //Hier werden alle Boxen gleichzeitig abgefragt.
         if ((this->cb_Velo->Checked == false
             && this->tb_Velo->Text == "")
             || (this->cb_Orientation->Checked == false
@@ -637,16 +634,20 @@ System::Void UserInterface::RoboPathForm::btn_Set_Click(System::Object^ sender, 
             || this->tb_Tolerance->Text == ""
             || this->tb_SampleSize->Text == ""
             || Datastore->GetFilePath() == "") {
-            //Fehler: Es wurde keine CSV geladen
+            //Liste, zum Sammeln der Fehlermeldungen
             System::Collections::Generic::List<System::String^> lstErrorMessages;
+
+            //Fehler: Es wurde keine CSV geladen
             if (Datastore->GetFilePath() == "") {
                 lstErrorMessages.Add("Laden Sie eine CSV-Datei");
             }
+
             //Fehler: Kein Wert in der Velo Textbox
             if (this->cb_Velo->Checked == false
                 && this->tb_Velo->Text == "") {
                 lstErrorMessages.Add("Geben Sie eine Geschwindigkeit ein");
             }
+
             //Fehler: Kein/e Wert/e in den Orientation Textboxen
             if (this->cb_Orientation->Checked == false
                 && (this->tb_Orientation_A->Text == ""
@@ -665,46 +666,52 @@ System::Void UserInterface::RoboPathForm::btn_Set_Click(System::Object^ sender, 
                     lstErrorMessages.Add("Geben Sie einen Wert in der Orientierung \"C\" ein");
                 }
             }
+
             //Fehler: Kein Wert in der Tolerance Textbox
             if (this->tb_Tolerance->Text == "") {
                 lstErrorMessages.Add("Geben Sie eine Toleranz ein");
             }
+
             //Fehler: Kein Wert in der Average Textbox
             if (this->tb_SampleSize->Text == "") {
                 lstErrorMessages.Add("Geben Sie eine Mittelwert ein");
             }
+
             //Alle Fehlermeldungen wurden in einer Liste aufgenommen und werden jetzt in einen String aneinandergehängt um diesen dann
             //im Logfenster und in einem Fehlerfenster auszugeben
-            System::String^ sFehlerMeldung = "Folgende Fehler sind aufgetreten:\n";
+            System::String^ sErrorMessage = "Folgende Fehler sind aufgetreten:\n";
 
             for (int i = 0; i < lstErrorMessages.Count; i++) {
-                sFehlerMeldung = sFehlerMeldung + "\n" + lstErrorMessages[i];
-                /*this->richTextBox_Log->AppendText(lstFehlermeldungen[i] + "\n");*/
+                sErrorMessage = sErrorMessage + "\n" + lstErrorMessages[i];
             }
             //Ausgabe im Logfesnter
-            this->AppendLog(sFehlerMeldung + "\n\n");
+            this->AppendLog(sErrorMessage + "\n\n");
             //Ausgabe im Fehlerfenster
-            this->ShowErrorWindow(sFehlerMeldung);
-
+            this->ShowErrorWindow(sErrorMessage);
         }
-        //Falls alle Daten ausgefüllt worden sind, werden diese in dem dafür erstellten Klasse/Objekt gespeichert
+
+        //Falls alle Daten ausgefüllt worden sind, werden diese in der/dem dafür erstellten Klasse/Objekt gespeichert
         else {
             if (this->cb_Velo->Checked == false) {
                 //Der Text wird in den passenden Datentyp umgewandelt und übergeben.
                 Datastore->SetVelo(Double::Parse(this->tb_Velo->Text));
             }
+
             if (this->cb_Orientation->Checked == false) {
                 //Der Text wird in den passenden Datentyp umgewandelt und übergeben.
                 Datastore->SetOrientationA(Double::Parse(this->tb_Orientation_A->Text));
                 Datastore->SetOrientationB(Double::Parse(this->tb_Orientation_B->Text));
                 Datastore->SetOrientationC(Double::Parse(this->tb_Orientation_C->Text));
             }
+
             //Der Text wird in den passenden Datentyp umgewandelt und übergeben.
-            Datastore->SetTolerance(Double::Parse(this->tb_Tolerance->Text));
+            Datastore->SetToleranceApprox(Double::Parse(this->tb_Tolerance->Text));
             Datastore->SetSampleSize(System::Convert::ToInt32(this->tb_SampleSize->Text));
+
             //Der Status der Checkboxen wird übergeben
             Datastore->SetUserDefVelo(this->cb_Velo->Checked);
             Datastore->SetUserDefOrientation(this->cb_Orientation->Checked);
+
             //Die gespeicherten Werte werden in den dafür vorgesehenen Textboxen übernommen, um die aktuell geladenen Werte anzuzeigen
             this->tb_Velo_Act->Text = this->tb_Velo->Text;
             this->tb_Orientation_Act_A->Text = this->tb_Orientation_A->Text;
@@ -712,8 +719,10 @@ System::Void UserInterface::RoboPathForm::btn_Set_Click(System::Object^ sender, 
             this->tb_Orientation_Act_C->Text = this->tb_Orientation_C->Text;
             this->tb_Tolerance_Act->Text = this->tb_Tolerance->Text;
             this->tb_SampleSize_Act->Text = this->tb_SampleSize->Text;
+
             //Zusätzlich gibt es noch eine Meldung über die erfolgreiche Speicherung
             this->AppendLog("Laden der Werte erfolgreich\n\n");
+
             //Gibt den Start Button frei
             bSetted = true;
         }
@@ -728,9 +737,9 @@ System::Void UserInterface::RoboPathForm::btn_Reset_Click(System::Object^ sender
     {
         //Fenster, in dem der Nutzer nochmals gefragt wird, ob wirklich alle Daten gelöscht werden sollen
         //Soll verhindern, dass durch fäschliches anklicken gleich alles weg ist
-        System::Boolean bJaNein = this->ShowYesNoWindow("Sollen alle Daten gelöscht werden?");
+        System::Boolean bYesNo = this->ShowYesNoWindow("Sollen alle Daten gelöscht werden?");
         //Je nachdem was der Nutzer angeklickt hat, wird alles gelöscht oder auch nicht
-        if (bJaNein) {
+        if (bYesNo) {
             //Alle gespeicherten Werte werden zurückgesetzt
             Datastore->Reset();
             //Die Oberfläche wird zurückgesetzt
@@ -756,26 +765,29 @@ System::Void UserInterface::RoboPathForm::openFileDialog_CSV_FileOk(System::Obje
     this->AppendLog("Folgende .csv ist geladen: " + openFileDialog_CSV->FileName + "\n\n");
     Datastore->SetFilePath(openFileDialog_CSV->FileName);
 }
+//Ereignis, dass nachdem ein gültiger Speicherpfad gewählt worden ist
 System::Void UserInterface::RoboPathForm::saveFileDialog_CSV_FileOk(System::Object^ sender, System::ComponentModel::CancelEventArgs^ e) {
+    //Der Speicherort mit Dateiname wird im Log ausgegeben und der Speicherpfad gespeichert
     this->AppendLog("Die Datei wird in " + saveFileDialog_CSV->FileName + " gespeichert" + "\n\n");
     Datastore->SetSavePath(saveFileDialog_CSV->FileName);
 }
-
-
-
 //Ereignis, nachdem der Start Button geklickt wird
 System::Void UserInterface::RoboPathForm::btn_Start_Click(System::Object^ sender, System::EventArgs^ e) {
     try {
+        //Boolsche Werte, die die erfolgreiche Abbarbeitung eines Abschnitts widerspiegeln
         System::Boolean bReadDone = false;
         System::Boolean bFilteredDone = false;
         System::Boolean bApproxedDone = false;
-
+         //Wenn der Set Button gedrückt und alle Werte erfolgreich geladen worden sind, ist bSetted true
         if (bSetted) {
+            //Ausgewählte Datei wird eingelesen
             this->AppendLog("CSV wird eingelesen\n\n");
             System::Threading::Thread::Sleep(500);
             Logic::ReadCSV^ Reader = gcnew Logic::ReadCSV(this);
             bReadDone = Reader->ReadAndSaveCSV(Datastore);
             delete Reader;
+            //Datensätze werden über die nutzerdefinierte Samplegröße gemittelt
+            //Falls die Samplegröße == 1 ist, dann muss nicht gemittelt werden
             if (Datastore->GetSampleSize() > 1 && bReadDone) {
                 this->AppendLog("Daten werden gefiltert\n\n");
                 System::Threading::Thread::Sleep(500);
@@ -783,21 +795,37 @@ System::Void UserInterface::RoboPathForm::btn_Start_Click(System::Object^ sender
                 bFilteredDone = Filter->FilterData(Datastore);
                 delete Filter;
             }
-            else if (Datastore->GetSampleSize() <= 1) {
-                bReadDone = true;
+            //Falls die Samplegröße ==1 ist, kommt man hier rein. Hier werden die Listen übergeben, damit die
+            //Reihenfolge noch funktioniert
+            else if (Datastore->GetSampleSize() <= 1 && bReadDone) {
+                bFilteredDone = true;
                 Datastore->SetlstFilteredPathData(Datastore->GetlstRawPathData());
             }
-            if (Datastore->GetTolerance() != 0 && bReadDone) {
+            //Falls nichts zutrifft ist etwas schief gelaufen. Eine enstprechende Fehlermeldung sollte durch die vorher durchgelaufenen Funktionen
+            //im Log erzeugt worden sein
+            else {
+                return;
+            }
+            //Datensätze werden über die nutzerdefinierte Toleranz wegapproximiert
+            if (Datastore->GetToleranceApprox() != 0 && bFilteredDone) {
                 this->AppendLog("Daten werden approximiert\n\n");
                 System::Threading::Thread::Sleep(500);
                 Logic::DPAprox^ DPAproxer = gcnew Logic::DPAprox(this);
                 bApproxedDone =  DPAproxer->approx(Datastore);
                 delete DPAproxer;
             }
-            else if (Datastore->GetTolerance() == 0) {
+            //Wenn die Toleranz == 0 ist, muss nicht aproximiert werden. Hier werden die Listen übergeben, damit die
+            //Reihenfolge noch funktioniert
+            else if (Datastore->GetToleranceApprox() == 0 && bFilteredDone) {
                 bApproxedDone = true;
                 Datastore->SetlstAproxedPathData(Datastore->GetlstFilteredPathData());
             }
+            //Falls nichts zutrifft ist etwas schief gelaufen. Eine enstprechende Fehlermeldung sollte durch die vorher durchgelaufenen Funktionen
+            //im Log erzeugt worden sein
+            else {
+                return;
+            }
+            //Die Datei wird erzeugt und unter dem nutzerdefinierten Pfad gespeichert
             if (bApproxedDone) {
                 this->AppendLog("Datei wird erstellt\n\n");
                 System::Threading::Thread::Sleep(500);
@@ -805,10 +833,13 @@ System::Void UserInterface::RoboPathForm::btn_Start_Click(System::Object^ sender
                 FileCreater->WriteForMatLab(Datastore);
                 delete FileCreater;
             }
+
+            //Nachdem alles durchgelaufen ist, wird alles resettet
             this->ResetAll();
             System::Windows::Forms::Application::DoEvents();
             Datastore->Reset();
         }
+        //Fehlermeldung, wenn der Set Button noch nicht gedrückt worden ist
         else
         {
             this->ShowErrorWindow("Der Set-Button wurde noch nicht gedrückt");
@@ -816,15 +847,9 @@ System::Void UserInterface::RoboPathForm::btn_Start_Click(System::Object^ sender
         }
     }
     catch (System::Exception^ e) {
-        this->AppendLog("Fehler beim Starten:\n" + e->Message + "\n\n");
+        this->AppendLog("Fehler beim Abarbeiten des Programms:\n" + e->Message + "\n\n");
     }
 }
-
-
-
-
-
-
 //Ereignis, nachdem ein Wert in irgendeine Textbox eingegeben wird und diese Textbox dann den Fokus verliert
 System::Void UserInterface::RoboPathForm::ValidateInput(System::Object^ sender, System::EventArgs^ e) {
     //Die Textbox wird in einem Objekt gespeichert. Somit kann man mit dieser Funktion alle Textboxen anfangen
@@ -833,17 +858,17 @@ System::Void UserInterface::RoboPathForm::ValidateInput(System::Object^ sender, 
     if (tbCurrentTextBox->Text == "") {
         return;
     }
-    //Man kann GLeitkommazahlen mit einem Punkt oder einem Komma eingeben. Gültig ist aber nur ein Komma.
+    //Man kann Gleitkommazahlen mit einem Punkt oder einem Komma eingeben. Gültig ist aber nur ein Komma.
     //Deswegen wird geprüft, ob der eingegebene Text ein Punkt beinhaltet. Falls ja, wird dieser durch ein Komma ersetzt
     if (tbCurrentTextBox->Text->Contains(".")) {
         tbCurrentTextBox->Text = tbCurrentTextBox->Text->Replace(".", ",");
     }
     if (tbCurrentTextBox->Name != "tb_SampleSize") {
         System::Double dInput;
-        //Der eingegebene Text wird in ein float umgewandelt. Falls dies gelingt, wird der Float in der Variable fInput gespeichert
+        //Der eingegebene Text wird in ein double umgewandelt. Falls dies gelingt, wird der Float in der Variable dInput gespeichert
         if (System::Double::TryParse(tbCurrentTextBox->Text, dInput)) {
             //Da jede Textbox andere Bedingungen hat, wird ermittelt, um welche Textbox es sich handelt
-            //Wenn es die Velo Textbox ist, darf der Wert nicht keliner als 0 und größer als 2 sein.
+            //Wenn es die Velo Textbox ist, darf der Wert nicht kleiner als 0 und größer als 2 sein.
             if (tbCurrentTextBox->Name == "tb_Velo") {
                 if (dInput <= 0 || dInput > 2) {
                     //Falls doch, wird eine Fehlermeldung ausgegeben und der Text wird resettet.
@@ -861,7 +886,7 @@ System::Void UserInterface::RoboPathForm::ValidateInput(System::Object^ sender, 
                 }
                 return;
             }
-            //Wenn es die Toelrance Textbox ist, ...
+            //Wenn es die Tolerance Textbox ist, ...
             else if (tbCurrentTextBox->Name == "tb_Tolerance") {
                 if (dInput < 0 || dInput > 10) {
                     //Falls doch, wird eine Fehlermeldung ausgegeben und der Text wird resettet.
@@ -876,23 +901,25 @@ System::Void UserInterface::RoboPathForm::ValidateInput(System::Object^ sender, 
                 return;
             }
         }
-        //Falls der eingegebene Wert nicht in ein float umgewandelt werden kann, wird die folgende Fehlermeldung ausgegeben
+        //Falls der eingegebene Wert nicht in ein double umgewandelt werden kann, wird die folgende Fehlermeldung ausgegeben
         else {
             this->ShowErrorWindow("Es sind nur ganze oder Gleitkommezahlen erlaubt");
             tbCurrentTextBox->Text = "";
         }
     }
+    //Die Textbox akzeptiert nur ganzue Zahlen
     else if (tbCurrentTextBox->Name == "tb_SampleSize") {
-        int dInput;
-        //Der eingegebene Text wird in ein float umgewandelt. Falls dies gelingt, wird der Float in der Variable fInput gespeichert
-        if (System::Int32::TryParse(tbCurrentTextBox->Text, dInput)) {
-            if (dInput < 0 || dInput > 10) {
+        int iInput;
+        //Der eingegebene Text wird in ein int32 umgewandelt. Falls dies gelingt, wird der int in der Variable iInput gespeichert
+        if (System::Int32::TryParse(tbCurrentTextBox->Text, iInput)) {
+            if (iInput < 0 || iInput > 10) {
                 //Falls doch, wird eine Fehlermeldung ausgegeben und der Text wird resettet.
                 this->ShowErrorWindow("Die Anzahl an Datensätze, über die gemittelt werden darf, darf maximal 10 betragen\nNegative Zahlen sind nicht erlaubt");
                 tbCurrentTextBox->Text = "";
             }
             return;
         }
+        //Falls keine ganze Zahl eingegeben wurde, kommt die folgende Fehlermeldung
         else {
             this->ShowErrorWindow("Es sind nur ganze Zahlen erlaubt");
             tbCurrentTextBox->Text = "";

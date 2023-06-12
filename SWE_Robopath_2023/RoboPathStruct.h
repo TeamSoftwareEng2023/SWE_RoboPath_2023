@@ -20,6 +20,6 @@ namespace Projectdata {
         T dVelo;
         T dA;
         T dB;
-        T dBC;
+        T dC;
     };
 }
