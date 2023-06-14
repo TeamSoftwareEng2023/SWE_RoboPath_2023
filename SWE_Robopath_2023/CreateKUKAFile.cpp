@@ -79,13 +79,13 @@ void Logic::CreateKUKAFile::WriteKUKA(Projectdata::RoboPath^ RoboPathData) {
 }
 //Funktion um eine Zahl auf ihre zweite Stelle nach dem Komma zu runden
 System::String^ Logic::CreateKUKAFile::RoundBasedOnThirdDecimalPlace(System::Double dValue) {
-    dValue = dValue * 100;
+    dValue = dValue * 1000;
     System::Double dTest = 1;
     System::Double dRoundedValue = fmod(dValue, dTest);
     System::String^ sRoundedValue;
 
     if (dRoundedValue < 5) {
-        dValue = System::Math::Floor(dValue) / 100;
+        dValue = System::Math::Floor(dValue) / 1000;
         sRoundedValue = dValue.ToString();
         return sRoundedValue;
     }
