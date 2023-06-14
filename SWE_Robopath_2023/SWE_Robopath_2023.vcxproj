@@ -131,6 +131,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CalcOrientation.h" />
+    <ClInclude Include="CreateKUKAFile.h" />
     <ClInclude Include="Point3DStruct.h" />
     <ClInclude Include="DPAprox.h" />
     <ClInclude Include="RoboPathForm.h">
@@ -145,11 +146,12 @@
     <ClInclude Include="ValidateRawCSV.h" />
     <ClInclude Include="VeloCalc.h" />
     <ClInclude Include="VersionInfo.h" />
-    <ClInclude Include="WriteCSV.h" />
+    <ClInclude Include="WriteCSVForMatLab.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp" />
     <ClCompile Include="CalcOrientation.cpp" />
+    <ClCompile Include="CreateKUKAFile.cpp" />
     <ClCompile Include="DPAprox.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="RoboPathForm.cpp" />
@@ -165,7 +167,7 @@
     <ClCompile Include="ValidateRawCSV.cpp" />
     <ClCompile Include="VeloCalc.cpp" />
     <ClCompile Include="VersionInfo.cpp" />
-    <ClCompile Include="WriteCSV.cpp" />
+    <ClCompile Include="WriteCSVForMatLab.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="app.ico" />

@@ -14,6 +14,16 @@ System::Boolean Logic::ReadCSV::ReadAndSaveCSV(Projectdata::RoboPath^ RoboPathDa
     System::String^ sLine;
     try
     {
+        //Hier wird die die CSV validiert. Bei einem Fehler wird der Programmdurchlauf abgebrochen
+        UIControl->AppendLog("Datei wird validiert\n\n");
+        System::Threading::Thread::Sleep(500);
+        Logic::ValidateRawCSV^ Validater = gcnew Logic::ValidateRawCSV(UIControl);
+        if (!Validater->ValidateCSV(srReader)) {
+            return false;
+        }
+        delete Validater;
+        srReader->Close();
+        srReader = gcnew System::IO::StreamReader(RoboPathData->GetFilePath());
         //Solange noch eine Zeile da ist, wird weitergelesen
         while ((sLine = srReader->ReadLine()) != nullptr)
         {
@@ -34,69 +44,69 @@ System::Boolean Logic::ReadCSV::ReadAndSaveCSV(Projectdata::RoboPath^ RoboPathDa
                 switch (i)
                 {
                     //Je nachdem bei welcher Zahl die variable "i" ist, wird der Wert in die entsprechende Strutktur gespeichert
-                        //Zeitstempel
+                    //Zeitstempel
                 case 0:
-                    strctRoboPathWerte->dTimestamp = System::Single::Parse(sValue);
+                    strctRoboPathWerte->dTimestamp = System::Double::Parse(sValue);
                     i++;
                     continue;
                     //X
                 case 1:
-                    strctRoboPathWerte->dX = System::Single::Parse(sValue);
+                    strctRoboPathWerte->dX = System::Double::Parse(sValue);
                     i++;
                     continue;
                     //Y
                 case 2:
-                    strctRoboPathWerte->dY = System::Single::Parse(sValue);
+                    strctRoboPathWerte->dY = System::Double::Parse(sValue);
                     i++;
                     continue;
                     //Z
                 case 3:
-                    strctRoboPathWerte->dZ = System::Single::Parse(sValue);
+                    strctRoboPathWerte->dZ = System::Double::Parse(sValue);
                     i++;
                     continue;
                     //Xx
                 case 4:
-                    strctRoboPathWerte->dXx = System::Single::Parse(sValue);
+                    strctRoboPathWerte->dXx = System::Double::Parse(sValue);
                     i++;
                     continue;
                     //Xy
                 case 5:
-                    strctRoboPathWerte->dXy = System::Single::Parse(sValue);
+                    strctRoboPathWerte->dXy = System::Double::Parse(sValue);
                     i++;
                     continue;
                     //Xz
                 case 6:
-                    strctRoboPathWerte->dXz = System::Single::Parse(sValue);
+                    strctRoboPathWerte->dXz = System::Double::Parse(sValue);
                     i++;
                     continue;
                     //Yx
                 case 7:
-                    strctRoboPathWerte->dYx = System::Single::Parse(sValue);
+                    strctRoboPathWerte->dYx = System::Double::Parse(sValue);
                     i++;
                     continue;
                     //Yy
                 case 8:
-                    strctRoboPathWerte->dYy = System::Single::Parse(sValue);
+                    strctRoboPathWerte->dYy = System::Double::Parse(sValue);
                     i++;
                     continue;
                     //Yz
                 case 9:
-                    strctRoboPathWerte->dYz = System::Single::Parse(sValue);
+                    strctRoboPathWerte->dYz = System::Double::Parse(sValue);
                     i++;
                     continue;
                     //Zx
                 case 10:
-                    strctRoboPathWerte->dZx = System::Single::Parse(sValue);
+                    strctRoboPathWerte->dZx = System::Double::Parse(sValue);
                     i++;
                     continue;
                     //Zy
                 case 11:
-                    strctRoboPathWerte->dZy = System::Single::Parse(sValue);
+                    strctRoboPathWerte->dZy = System::Double::Parse(sValue);
                     i++;
                     continue;
                     //Zz
                 case 12:
-                    strctRoboPathWerte->dZz = System::Single::Parse(sValue);
+                    strctRoboPathWerte->dZz = System::Double::Parse(sValue);
                     i++;
                     continue;
                 default:

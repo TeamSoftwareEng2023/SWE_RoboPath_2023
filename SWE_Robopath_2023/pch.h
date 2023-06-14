@@ -7,11 +7,11 @@
 #ifndef PCH_H
 #define PCH_H
 
-#include<Windows.h>
-#include<stdlib.h>
-#include<string>
-#include<iostream>
-#include<list>
-#include<stdexcept>
+//#include<Windows.h>
+//#include<stdlib.h>
+//#include<string>
+//#include<iostream>
+//#include<list>
+//#include<stdexcept>
 
 #endif //PCH_H

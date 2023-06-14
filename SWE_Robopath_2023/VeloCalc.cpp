@@ -25,7 +25,7 @@ System::Boolean Logic::VeloCalc::VeloCalcCSV(Projectdata::RoboPath^ RoboPathData
             dDistance = System::Math::Sqrt(dDiffX * dDiffX + dDiffY * dDiffY + dDiffZ * dDiffZ);
 
             //Geschwindigkeit berechnen. Da die Zeitangabe in ms ist, muss mit 1000 multipliziert werden
-            dVelo = (dDistance / dDiffTime) *1000;
+            dVelo = (dDistance / dDiffTime);
 
             //Aufnahme in den Datensatz
             lstApproxedData[i]->dVelo = dVelo;

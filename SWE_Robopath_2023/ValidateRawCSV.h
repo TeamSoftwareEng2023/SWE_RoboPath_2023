@@ -13,5 +13,6 @@ namespace Logic {
     private:
         //UI Objekt zum Benutzen des Logs
         UserInterface::RoboPathForm^ UIControl;
+        System::Boolean CheckValueRotMat(System::Double, int, int, System::String^);
     };
 }

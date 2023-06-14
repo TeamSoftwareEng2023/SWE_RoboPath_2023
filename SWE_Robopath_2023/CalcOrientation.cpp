@@ -31,20 +31,20 @@ System::Boolean Logic::CalcOrientation::CalcRotMatToEulerABC(Projectdata::RoboPa
 
             //Sonderabfrage bei bestimmten Bedingungen
             if (dM31 == 1) {
-                dA_Act = System::Math::Atan(-dM12 / -dM13);
-                dB_Act = System::Math::Asin(dM31) * (-1);
+                dA_Act = System::Math::Atan(-dM12 / -dM13) * (180 / System::Math::PI);
+                dB_Act = System::Math::Asin(dM31) * (-1) * (180 / System::Math::PI);
                 dC_Act = 0;
             }
             else if (dM31 == -1) {
-                dA_Act = System::Math::Atan(dM12 / dM13);
-                dB_Act = System::Math::Asin(dM31) * (-1);
+                dA_Act = System::Math::Atan(dM12 / dM13) * (180 / System::Math::PI);
+                dB_Act = System::Math::Asin(dM31) * (-1) * (180 / System::Math::PI);
                 dC_Act = 0;
             }
             //Allgemeines Lösungsverfahren
             else {
-                dA_Act = System::Math::Atan(dM32 / dM33);
-                dB_Act = System::Math::Asin(dM31) * (-1);
-                dC_Act = System::Math::Atan(dM21 / dM11);
+                dA_Act = System::Math::Atan(dM32 / dM33) * (180 / System::Math::PI);
+                dB_Act = System::Math::Asin(dM31) * (-1) * (180 / System::Math::PI);
+                dC_Act = System::Math::Atan(dM21 / dM11) * (180 / System::Math::PI);
             }
             //Die ersten Werte werden immer übernommen
             if (bSetFirstValuesAlways) {
@@ -65,8 +65,8 @@ System::Boolean Logic::CalcOrientation::CalcRotMatToEulerABC(Projectdata::RoboPa
             }
             //Orientierung in Datensatz aufnehmen
             lstApproxedData[i]->dA = dA;
-            lstApproxedData[i]->dB = dA;
-            lstApproxedData[i]->dC = dA;
+            lstApproxedData[i]->dB = dB;
+            lstApproxedData[i]->dC = dC;
         }
         //Speichern der Liste und Ausgabe im Log
         RoboPathData->SetlstAproxedPathData(lstApproxedData);

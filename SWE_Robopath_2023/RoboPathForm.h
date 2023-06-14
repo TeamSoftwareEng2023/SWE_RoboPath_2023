@@ -27,21 +27,25 @@ namespace UserInterface {
     private: System::Windows::Forms::Button^ btn_Set;
     private: System::Windows::Forms::TextBox^ tb_Velo;
     private: System::Windows::Forms::TextBox^ tb_Orientation_A;
-    private: System::Windows::Forms::TextBox^ tb_Tolerance;
+    private: System::Windows::Forms::TextBox^ tb_ToleranceApprox;
+
+
     private: System::Windows::Forms::TextBox^ tb_SampleSize;
 
     private: System::Windows::Forms::CheckBox^ cb_Velo;
     private: System::Windows::Forms::CheckBox^ cb_Orientation;
     private: System::Windows::Forms::Label^ label_Velo;
     private: System::Windows::Forms::Label^ label_Orientation;
-    private: System::Windows::Forms::Label^ label_Tolerance;
+    private: System::Windows::Forms::Label^ label_ToleranceApprox;
+
     private: System::Windows::Forms::Label^ label_SampleSize;
 
     private: System::Windows::Forms::Button^ btn_OpenCSV;
     private: System::Windows::Forms::Button^ btn_Start;
     private: System::Windows::Forms::TextBox^ tb_Velo_Act;
     private: System::Windows::Forms::TextBox^ tb_Orientation_Act_A;
-    private: System::Windows::Forms::TextBox^ tb_Tolerance_Act;
+    private: System::Windows::Forms::TextBox^ tb_ToleranceApprox_Act;
+
     private: System::Windows::Forms::TextBox^ tb_SampleSize_Act;
 
     private: System::Windows::Forms::Label^ label_ActValues;
@@ -54,24 +58,31 @@ namespace UserInterface {
     private: System::Windows::Forms::TextBox^ tb_Orientation_B;
     private: System::Windows::Forms::Label^ label_C;
     private: System::Windows::Forms::Label^ label_B;
-    private: System::Windows::Forms::Label^ label_ActB;
-    private: System::Windows::Forms::Label^ label_ActA;
-    private: System::Windows::Forms::Label^ label_ActC;
+
+
+
     private: System::Windows::Forms::Label^ label_A;
-    private: System::Windows::Forms::Label^ label_ActValues_ABC;
+
     private: System::Windows::Forms::Label^ label_Geschwindigkeit_Einheit_Wert;
-    private: System::Windows::Forms::Label^ label_Geschwindigkeit_Einheit_Act_Wert;
+
     private: System::Windows::Forms::Label^ label_Toleranz_Wert;
-    private: System::Windows::Forms::Label^ label_Toleranz_Act_Wert;
+
     private: System::Windows::Forms::Label^ label_Header;
     private: System::Windows::Forms::Button^ btn_Reset;
     public: System::Windows::Forms::SaveFileDialog^ saveFileDialog_CSV;
     private: System::Windows::Forms::Label^ label_Degree_A;
     private: System::Windows::Forms::Label^ label_Degree_B;
     private: System::Windows::Forms::Label^ label_Degree_C;
-    private: System::Windows::Forms::Label^ label_Degree_Act_A;
-    private: System::Windows::Forms::Label^ label_Degree_Act_B;
-    private: System::Windows::Forms::Label^ label_Degree_Act_C;
+    private: System::Windows::Forms::Label^ label_ToleranceOrientation;
+    private: System::Windows::Forms::TextBox^ tb_ToleranceOrientation;
+    private: System::Windows::Forms::TextBox^ tb_ToleranceOrientation_Act;
+    private: System::Windows::Forms::Label^ label_Degree_;
+
+
+
+
+
+
     private: System::ComponentModel::IContainer^ components;
 
            //Definition aller Funktionen
