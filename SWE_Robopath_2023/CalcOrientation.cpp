@@ -42,9 +42,9 @@ System::Boolean Logic::CalcOrientation::CalcRotMatToEulerABC(Projectdata::RoboPa
             }
             //Allgemeines Lösungsverfahren
             else {
-                dA_Act = (System::Math::Atan(dM32 / dM33) * (180 / System::Math::PI) - 180) * (-1);
+                dC_Act = (System::Math::Atan(dM32 / dM33) * (180 / System::Math::PI) - 180) * (-1);
                 dB_Act = -System::Math::Asin(dM31) * (180 / System::Math::PI);
-                dC_Act = (System::Math::Atan(dM21 / dM11) * (180 / System::Math::PI) - 180) * (-1);
+                dA_Act = (System::Math::Atan(dM21 / dM11) * (180 / System::Math::PI) - 180) * (-1);
             }
             //Die ersten Werte werden immer übernommen
             if (bSetFirstValuesAlways) {
