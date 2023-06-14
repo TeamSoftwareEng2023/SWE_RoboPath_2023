@@ -1,0 +1,18 @@
+﻿  pch.cpp
+  AssemblyInfo.cpp
+  CalcOrientation.cpp
+  CreateKUKAFile.cpp
+  DPAprox.cpp
+  main.cpp
+  RoboPathForm.cpp
+  ReadCSV.cpp
+  RoboPath.cpp
+  SampleFilter.cpp
+  ValidateRawCSV.cpp
+  VeloCalc.cpp
+  VersionInfo.cpp
+  WriteCSVForMatLab.cpp
+  Code wird generiert...
+  .NETFramework,Version=v4.7.2.AssemblyAttributes.cpp
+  AssemblyInfo.obj : MSIL-Modulgefunden; inkrementelles Verknüpfen wird für MSIL deaktiviert; vollständiger Link wird durchgeführt
+  SWE_Robopath_2023.vcxproj -> C:\Users\PG\Source\Repos\TeamSoftwareEng2023\SWE_RoboPath_2023\x64\Release\SWE_Robopath_2023.exe
