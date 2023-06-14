@@ -2,8 +2,12 @@
 #include"RoboPathForm.h"
 #include"ReadCSV.h"
 #include"DPAprox.h"
-#include"WriteCSV.h"
+#include"WriteCSVForMatLab.h"
 #include"SampleFilter.h"
+#include"VeloCalc.h"
+#include"CalcOrientation.h"
+#include"CreateKUKAFile.h"
+
 //Konstruktor
 UserInterface::RoboPathForm::RoboPathForm(void)
 {
@@ -29,19 +33,19 @@ void UserInterface::RoboPathForm::InitializeComponent()
     this->btn_Set = (gcnew System::Windows::Forms::Button());
     this->tb_Velo = (gcnew System::Windows::Forms::TextBox());
     this->tb_Orientation_A = (gcnew System::Windows::Forms::TextBox());
-    this->tb_Tolerance = (gcnew System::Windows::Forms::TextBox());
+    this->tb_ToleranceApprox = (gcnew System::Windows::Forms::TextBox());
     this->tb_SampleSize = (gcnew System::Windows::Forms::TextBox());
     this->cb_Velo = (gcnew System::Windows::Forms::CheckBox());
     this->cb_Orientation = (gcnew System::Windows::Forms::CheckBox());
     this->label_Velo = (gcnew System::Windows::Forms::Label());
     this->label_Orientation = (gcnew System::Windows::Forms::Label());
-    this->label_Tolerance = (gcnew System::Windows::Forms::Label());
+    this->label_ToleranceApprox = (gcnew System::Windows::Forms::Label());
     this->label_SampleSize = (gcnew System::Windows::Forms::Label());
     this->btn_OpenCSV = (gcnew System::Windows::Forms::Button());
     this->btn_Start = (gcnew System::Windows::Forms::Button());
     this->tb_Velo_Act = (gcnew System::Windows::Forms::TextBox());
     this->tb_Orientation_Act_A = (gcnew System::Windows::Forms::TextBox());
-    this->tb_Tolerance_Act = (gcnew System::Windows::Forms::TextBox());
+    this->tb_ToleranceApprox_Act = (gcnew System::Windows::Forms::TextBox());
     this->tb_SampleSize_Act = (gcnew System::Windows::Forms::TextBox());
     this->label_ActValues = (gcnew System::Windows::Forms::Label());
     this->tb_Version = (gcnew System::Windows::Forms::TextBox());
@@ -53,24 +57,19 @@ void UserInterface::RoboPathForm::InitializeComponent()
     this->tb_Orientation_B = (gcnew System::Windows::Forms::TextBox());
     this->label_C = (gcnew System::Windows::Forms::Label());
     this->label_B = (gcnew System::Windows::Forms::Label());
-    this->label_ActB = (gcnew System::Windows::Forms::Label());
-    this->label_ActA = (gcnew System::Windows::Forms::Label());
-    this->label_ActC = (gcnew System::Windows::Forms::Label());
     this->label_A = (gcnew System::Windows::Forms::Label());
-    this->label_ActValues_ABC = (gcnew System::Windows::Forms::Label());
     this->label_Geschwindigkeit_Einheit_Wert = (gcnew System::Windows::Forms::Label());
-    this->label_Geschwindigkeit_Einheit_Act_Wert = (gcnew System::Windows::Forms::Label());
     this->label_Toleranz_Wert = (gcnew System::Windows::Forms::Label());
-    this->label_Toleranz_Act_Wert = (gcnew System::Windows::Forms::Label());
     this->label_Header = (gcnew System::Windows::Forms::Label());
     this->btn_Reset = (gcnew System::Windows::Forms::Button());
     this->saveFileDialog_CSV = (gcnew System::Windows::Forms::SaveFileDialog());
     this->label_Degree_A = (gcnew System::Windows::Forms::Label());
     this->label_Degree_B = (gcnew System::Windows::Forms::Label());
     this->label_Degree_C = (gcnew System::Windows::Forms::Label());
-    this->label_Degree_Act_A = (gcnew System::Windows::Forms::Label());
-    this->label_Degree_Act_B = (gcnew System::Windows::Forms::Label());
-    this->label_Degree_Act_C = (gcnew System::Windows::Forms::Label());
+    this->label_ToleranceOrientation = (gcnew System::Windows::Forms::Label());
+    this->tb_ToleranceOrientation = (gcnew System::Windows::Forms::TextBox());
+    this->tb_ToleranceOrientation_Act = (gcnew System::Windows::Forms::TextBox());
+    this->label_Degree_ = (gcnew System::Windows::Forms::Label());
     this->SuspendLayout();
     // 
     // btn_Set
@@ -78,41 +77,41 @@ void UserInterface::RoboPathForm::InitializeComponent()
     this->btn_Set->BackColor = System::Drawing::SystemColors::ButtonFace;
     this->btn_Set->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 20, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
         static_cast<System::Byte>(0)));
-    this->btn_Set->Location = System::Drawing::Point(649, 213);
+    this->btn_Set->Location = System::Drawing::Point(674, 371);
     this->btn_Set->Name = L"btn_Set";
     this->btn_Set->Size = System::Drawing::Size(110, 50);
-    this->btn_Set->TabIndex = 9;
+    this->btn_Set->TabIndex = 11;
     this->btn_Set->Text = L"Set";
     this->btn_Set->UseVisualStyleBackColor = false;
     this->btn_Set->Click += gcnew System::EventHandler(this, &RoboPathForm::btn_Set_Click);
     // 
     // tb_Velo
     // 
-    this->tb_Velo->Location = System::Drawing::Point(169, 101);
+    this->tb_Velo->Location = System::Drawing::Point(274, 82);
     this->tb_Velo->Name = L"tb_Velo";
     this->tb_Velo->Size = System::Drawing::Size(100, 20);
-    this->tb_Velo->TabIndex = 1;
+    this->tb_Velo->TabIndex = 5;
     this->tb_Velo->Leave += gcnew System::EventHandler(this, &RoboPathForm::ValidateInput);
     // 
     // tb_Orientation_A
     // 
-    this->tb_Orientation_A->Location = System::Drawing::Point(319, 101);
+    this->tb_Orientation_A->Location = System::Drawing::Point(16, 82);
     this->tb_Orientation_A->Name = L"tb_Orientation_A";
     this->tb_Orientation_A->Size = System::Drawing::Size(100, 20);
-    this->tb_Orientation_A->TabIndex = 2;
+    this->tb_Orientation_A->TabIndex = 1;
     this->tb_Orientation_A->Leave += gcnew System::EventHandler(this, &RoboPathForm::ValidateInput);
     // 
-    // tb_Tolerance
+    // tb_ToleranceApprox
     // 
-    this->tb_Tolerance->Location = System::Drawing::Point(469, 101);
-    this->tb_Tolerance->Name = L"tb_Tolerance";
-    this->tb_Tolerance->Size = System::Drawing::Size(100, 20);
-    this->tb_Tolerance->TabIndex = 5;
-    this->tb_Tolerance->Leave += gcnew System::EventHandler(this, &RoboPathForm::ValidateInput);
+    this->tb_ToleranceApprox->Location = System::Drawing::Point(274, 181);
+    this->tb_ToleranceApprox->Name = L"tb_ToleranceApprox";
+    this->tb_ToleranceApprox->Size = System::Drawing::Size(100, 20);
+    this->tb_ToleranceApprox->TabIndex = 7;
+    this->tb_ToleranceApprox->Leave += gcnew System::EventHandler(this, &RoboPathForm::ValidateInput);
     // 
     // tb_SampleSize
     // 
-    this->tb_SampleSize->Location = System::Drawing::Point(619, 101);
+    this->tb_SampleSize->Location = System::Drawing::Point(274, 130);
     this->tb_SampleSize->Name = L"tb_SampleSize";
     this->tb_SampleSize->Size = System::Drawing::Size(100, 20);
     this->tb_SampleSize->TabIndex = 6;
@@ -121,10 +120,10 @@ void UserInterface::RoboPathForm::InitializeComponent()
     // cb_Velo
     // 
     this->cb_Velo->AutoSize = true;
-    this->cb_Velo->Location = System::Drawing::Point(12, 175);
+    this->cb_Velo->Location = System::Drawing::Point(636, 189);
     this->cb_Velo->Name = L"cb_Velo";
     this->cb_Velo->Size = System::Drawing::Size(147, 17);
-    this->cb_Velo->TabIndex = 7;
+    this->cb_Velo->TabIndex = 9;
     this->cb_Velo->Text = L"Geschwindigkeit aus .csv";
     this->cb_Velo->UseVisualStyleBackColor = true;
     this->cb_Velo->CheckedChanged += gcnew System::EventHandler(this, &RoboPathForm::cb_Velo_CheckChanged);
@@ -132,7 +131,7 @@ void UserInterface::RoboPathForm::InitializeComponent()
     // cb_Orientation
     // 
     this->cb_Orientation->AutoSize = true;
-    this->cb_Orientation->Location = System::Drawing::Point(12, 194);
+    this->cb_Orientation->Location = System::Drawing::Point(636, 170);
     this->cb_Orientation->Name = L"cb_Orientation";
     this->cb_Orientation->Size = System::Drawing::Size(126, 17);
     this->cb_Orientation->TabIndex = 8;
@@ -145,7 +144,7 @@ void UserInterface::RoboPathForm::InitializeComponent()
     this->label_Velo->AutoSize = true;
     this->label_Velo->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, static_cast<System::Drawing::FontStyle>((System::Drawing::FontStyle::Bold | System::Drawing::FontStyle::Underline)),
         System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
-    this->label_Velo->Location = System::Drawing::Point(165, 75);
+    this->label_Velo->Location = System::Drawing::Point(270, 59);
     this->label_Velo->Name = L"label_Velo";
     this->label_Velo->Size = System::Drawing::Size(140, 20);
     this->label_Velo->TabIndex = 0;
@@ -156,43 +155,43 @@ void UserInterface::RoboPathForm::InitializeComponent()
     this->label_Orientation->AutoSize = true;
     this->label_Orientation->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, static_cast<System::Drawing::FontStyle>((System::Drawing::FontStyle::Bold | System::Drawing::FontStyle::Underline)),
         System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
-    this->label_Orientation->Location = System::Drawing::Point(315, 75);
+    this->label_Orientation->Location = System::Drawing::Point(12, 56);
     this->label_Orientation->Name = L"label_Orientation";
     this->label_Orientation->Size = System::Drawing::Size(108, 20);
     this->label_Orientation->TabIndex = 0;
     this->label_Orientation->Text = L"Orientierung";
     // 
-    // label_Tolerance
+    // label_ToleranceApprox
     // 
-    this->label_Tolerance->AutoSize = true;
-    this->label_Tolerance->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, static_cast<System::Drawing::FontStyle>((System::Drawing::FontStyle::Bold | System::Drawing::FontStyle::Underline)),
+    this->label_ToleranceApprox->AutoSize = true;
+    this->label_ToleranceApprox->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, static_cast<System::Drawing::FontStyle>((System::Drawing::FontStyle::Bold | System::Drawing::FontStyle::Underline)),
         System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
-    this->label_Tolerance->Location = System::Drawing::Point(465, 75);
-    this->label_Tolerance->Name = L"label_Tolerance";
-    this->label_Tolerance->Size = System::Drawing::Size(78, 20);
-    this->label_Tolerance->TabIndex = 13;
-    this->label_Tolerance->Text = L"Toleranz";
+    this->label_ToleranceApprox->Location = System::Drawing::Point(270, 157);
+    this->label_ToleranceApprox->Name = L"label_ToleranceApprox";
+    this->label_ToleranceApprox->Size = System::Drawing::Size(228, 20);
+    this->label_ToleranceApprox->TabIndex = 13;
+    this->label_ToleranceApprox->Text = L"Toleranz der Approximation";
     // 
     // label_SampleSize
     // 
     this->label_SampleSize->AutoSize = true;
     this->label_SampleSize->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, static_cast<System::Drawing::FontStyle>((System::Drawing::FontStyle::Bold | System::Drawing::FontStyle::Underline)),
         System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
-    this->label_SampleSize->Location = System::Drawing::Point(615, 75);
+    this->label_SampleSize->Location = System::Drawing::Point(270, 106);
     this->label_SampleSize->Name = L"label_SampleSize";
-    this->label_SampleSize->Size = System::Drawing::Size(87, 20);
+    this->label_SampleSize->Size = System::Drawing::Size(205, 20);
     this->label_SampleSize->TabIndex = 14;
-    this->label_SampleSize->Text = L"Mittelwert";
+    this->label_SampleSize->Text = L"Anzahl Mittelwertbildung";
     // 
     // btn_OpenCSV
     // 
     this->btn_OpenCSV->BackColor = System::Drawing::SystemColors::ButtonFace;
     this->btn_OpenCSV->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 10, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
         static_cast<System::Byte>(0)));
-    this->btn_OpenCSV->Location = System::Drawing::Point(12, 417);
+    this->btn_OpenCSV->Location = System::Drawing::Point(674, 315);
     this->btn_OpenCSV->Name = L"btn_OpenCSV";
     this->btn_OpenCSV->Size = System::Drawing::Size(110, 50);
-    this->btn_OpenCSV->TabIndex = 11;
+    this->btn_OpenCSV->TabIndex = 10;
     this->btn_OpenCSV->Text = L".csv öffnen";
     this->btn_OpenCSV->UseVisualStyleBackColor = false;
     this->btn_OpenCSV->Click += gcnew System::EventHandler(this, &RoboPathForm::btn_OpenCSV_Click);
@@ -202,7 +201,7 @@ void UserInterface::RoboPathForm::InitializeComponent()
     this->btn_Start->BackColor = System::Drawing::SystemColors::ButtonFace;
     this->btn_Start->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 20, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
         static_cast<System::Byte>(0)));
-    this->btn_Start->Location = System::Drawing::Point(12, 473);
+    this->btn_Start->Location = System::Drawing::Point(674, 427);
     this->btn_Start->Name = L"btn_Start";
     this->btn_Start->Size = System::Drawing::Size(110, 50);
     this->btn_Start->TabIndex = 12;
@@ -216,7 +215,7 @@ void UserInterface::RoboPathForm::InitializeComponent()
     this->tb_Velo_Act->Enabled = false;
     this->tb_Velo_Act->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
         static_cast<System::Byte>(0)));
-    this->tb_Velo_Act->Location = System::Drawing::Point(169, 127);
+    this->tb_Velo_Act->Location = System::Drawing::Point(380, 82);
     this->tb_Velo_Act->Name = L"tb_Velo_Act";
     this->tb_Velo_Act->ReadOnly = true;
     this->tb_Velo_Act->Size = System::Drawing::Size(100, 20);
@@ -227,29 +226,29 @@ void UserInterface::RoboPathForm::InitializeComponent()
     this->tb_Orientation_Act_A->Enabled = false;
     this->tb_Orientation_Act_A->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Bold,
         System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
-    this->tb_Orientation_Act_A->Location = System::Drawing::Point(319, 191);
+    this->tb_Orientation_Act_A->Location = System::Drawing::Point(122, 82);
     this->tb_Orientation_Act_A->Name = L"tb_Orientation_Act_A";
     this->tb_Orientation_Act_A->ReadOnly = true;
     this->tb_Orientation_Act_A->Size = System::Drawing::Size(100, 20);
     this->tb_Orientation_Act_A->TabIndex = 18;
     // 
-    // tb_Tolerance_Act
+    // tb_ToleranceApprox_Act
     // 
-    this->tb_Tolerance_Act->Enabled = false;
-    this->tb_Tolerance_Act->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
-        static_cast<System::Byte>(0)));
-    this->tb_Tolerance_Act->Location = System::Drawing::Point(469, 127);
-    this->tb_Tolerance_Act->Name = L"tb_Tolerance_Act";
-    this->tb_Tolerance_Act->ReadOnly = true;
-    this->tb_Tolerance_Act->Size = System::Drawing::Size(100, 20);
-    this->tb_Tolerance_Act->TabIndex = 19;
+    this->tb_ToleranceApprox_Act->Enabled = false;
+    this->tb_ToleranceApprox_Act->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Bold,
+        System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
+    this->tb_ToleranceApprox_Act->Location = System::Drawing::Point(383, 181);
+    this->tb_ToleranceApprox_Act->Name = L"tb_ToleranceApprox_Act";
+    this->tb_ToleranceApprox_Act->ReadOnly = true;
+    this->tb_ToleranceApprox_Act->Size = System::Drawing::Size(100, 20);
+    this->tb_ToleranceApprox_Act->TabIndex = 19;
     // 
     // tb_SampleSize_Act
     // 
     this->tb_SampleSize_Act->Enabled = false;
     this->tb_SampleSize_Act->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
         static_cast<System::Byte>(0)));
-    this->tb_SampleSize_Act->Location = System::Drawing::Point(619, 127);
+    this->tb_SampleSize_Act->Location = System::Drawing::Point(380, 130);
     this->tb_SampleSize_Act->Name = L"tb_SampleSize_Act";
     this->tb_SampleSize_Act->ReadOnly = true;
     this->tb_SampleSize_Act->Size = System::Drawing::Size(100, 20);
@@ -258,18 +257,18 @@ void UserInterface::RoboPathForm::InitializeComponent()
     // label_ActValues
     // 
     this->label_ActValues->AutoSize = true;
-    this->label_ActValues->Location = System::Drawing::Point(86, 130);
+    this->label_ActValues->Location = System::Drawing::Point(126, 63);
     this->label_ActValues->Name = L"label_ActValues";
-    this->label_ActValues->Size = System::Drawing::Size(77, 13);
+    this->label_ActValues->Size = System::Drawing::Size(85, 13);
     this->label_ActValues->TabIndex = 21;
-    this->label_ActValues->Text = L"Aktuelle Werte";
+    this->label_ActValues->Text = L"Geladene Werte";
     // 
     // tb_Version
     // 
     this->tb_Version->Enabled = false;
     this->tb_Version->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
         static_cast<System::Byte>(0)));
-    this->tb_Version->Location = System::Drawing::Point(12, 529);
+    this->tb_Version->Location = System::Drawing::Point(691, 539);
     this->tb_Version->Name = L"tb_Version";
     this->tb_Version->ReadOnly = true;
     this->tb_Version->Size = System::Drawing::Size(71, 20);
@@ -286,10 +285,10 @@ void UserInterface::RoboPathForm::InitializeComponent()
     // 
     this->tb_Log->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
         static_cast<System::Byte>(0)));
-    this->tb_Log->Location = System::Drawing::Point(169, 273);
+    this->tb_Log->Location = System::Drawing::Point(3, 212);
     this->tb_Log->Name = L"tb_Log";
     this->tb_Log->ReadOnly = true;
-    this->tb_Log->Size = System::Drawing::Size(590, 267);
+    this->tb_Log->Size = System::Drawing::Size(665, 347);
     this->tb_Log->TabIndex = 23;
     this->tb_Log->TabStop = false;
     this->tb_Log->Text = L"";
@@ -299,7 +298,7 @@ void UserInterface::RoboPathForm::InitializeComponent()
     this->tb_Orientation_Act_C->Enabled = false;
     this->tb_Orientation_Act_C->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Bold,
         System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
-    this->tb_Orientation_Act_C->Location = System::Drawing::Point(319, 243);
+    this->tb_Orientation_Act_C->Location = System::Drawing::Point(122, 134);
     this->tb_Orientation_Act_C->Name = L"tb_Orientation_Act_C";
     this->tb_Orientation_Act_C->ReadOnly = true;
     this->tb_Orientation_Act_C->Size = System::Drawing::Size(100, 20);
@@ -310,7 +309,7 @@ void UserInterface::RoboPathForm::InitializeComponent()
     this->tb_Orientation_Act_B->Enabled = false;
     this->tb_Orientation_Act_B->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Bold,
         System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
-    this->tb_Orientation_Act_B->Location = System::Drawing::Point(319, 217);
+    this->tb_Orientation_Act_B->Location = System::Drawing::Point(122, 108);
     this->tb_Orientation_Act_B->Name = L"tb_Orientation_Act_B";
     this->tb_Orientation_Act_B->ReadOnly = true;
     this->tb_Orientation_Act_B->Size = System::Drawing::Size(100, 20);
@@ -318,24 +317,24 @@ void UserInterface::RoboPathForm::InitializeComponent()
     // 
     // tb_Orientation_C
     // 
-    this->tb_Orientation_C->Location = System::Drawing::Point(319, 153);
+    this->tb_Orientation_C->Location = System::Drawing::Point(16, 134);
     this->tb_Orientation_C->Name = L"tb_Orientation_C";
     this->tb_Orientation_C->Size = System::Drawing::Size(100, 20);
-    this->tb_Orientation_C->TabIndex = 4;
+    this->tb_Orientation_C->TabIndex = 3;
     this->tb_Orientation_C->Leave += gcnew System::EventHandler(this, &RoboPathForm::ValidateInput);
     // 
     // tb_Orientation_B
     // 
-    this->tb_Orientation_B->Location = System::Drawing::Point(319, 127);
+    this->tb_Orientation_B->Location = System::Drawing::Point(16, 108);
     this->tb_Orientation_B->Name = L"tb_Orientation_B";
     this->tb_Orientation_B->Size = System::Drawing::Size(100, 20);
-    this->tb_Orientation_B->TabIndex = 3;
+    this->tb_Orientation_B->TabIndex = 2;
     this->tb_Orientation_B->Leave += gcnew System::EventHandler(this, &RoboPathForm::ValidateInput);
     // 
     // label_C
     // 
     this->label_C->AutoSize = true;
-    this->label_C->Location = System::Drawing::Point(299, 156);
+    this->label_C->Location = System::Drawing::Point(0, 137);
     this->label_C->Name = L"label_C";
     this->label_C->Size = System::Drawing::Size(14, 13);
     this->label_C->TabIndex = 28;
@@ -344,99 +343,45 @@ void UserInterface::RoboPathForm::InitializeComponent()
     // label_B
     // 
     this->label_B->AutoSize = true;
-    this->label_B->Location = System::Drawing::Point(299, 130);
+    this->label_B->Location = System::Drawing::Point(0, 111);
     this->label_B->Name = L"label_B";
     this->label_B->Size = System::Drawing::Size(14, 13);
     this->label_B->TabIndex = 29;
     this->label_B->Text = L"B";
     // 
-    // label_ActB
-    // 
-    this->label_ActB->AutoSize = true;
-    this->label_ActB->Location = System::Drawing::Point(299, 220);
-    this->label_ActB->Name = L"label_ActB";
-    this->label_ActB->Size = System::Drawing::Size(14, 13);
-    this->label_ActB->TabIndex = 30;
-    this->label_ActB->Text = L"B";
-    // 
-    // label_ActA
-    // 
-    this->label_ActA->AutoSize = true;
-    this->label_ActA->Location = System::Drawing::Point(299, 194);
-    this->label_ActA->Name = L"label_ActA";
-    this->label_ActA->Size = System::Drawing::Size(14, 13);
-    this->label_ActA->TabIndex = 31;
-    this->label_ActA->Text = L"A";
-    // 
-    // label_ActC
-    // 
-    this->label_ActC->AutoSize = true;
-    this->label_ActC->Location = System::Drawing::Point(299, 246);
-    this->label_ActC->Name = L"label_ActC";
-    this->label_ActC->Size = System::Drawing::Size(14, 13);
-    this->label_ActC->TabIndex = 32;
-    this->label_ActC->Text = L"C";
-    // 
     // label_A
     // 
     this->label_A->AutoSize = true;
-    this->label_A->Location = System::Drawing::Point(299, 104);
+    this->label_A->Location = System::Drawing::Point(0, 85);
     this->label_A->Name = L"label_A";
     this->label_A->Size = System::Drawing::Size(14, 13);
     this->label_A->TabIndex = 33;
     this->label_A->Text = L"A";
     // 
-    // label_ActValues_ABC
-    // 
-    this->label_ActValues_ABC->AutoSize = true;
-    this->label_ActValues_ABC->Location = System::Drawing::Point(330, 175);
-    this->label_ActValues_ABC->Name = L"label_ActValues_ABC";
-    this->label_ActValues_ABC->Size = System::Drawing::Size(77, 13);
-    this->label_ActValues_ABC->TabIndex = 34;
-    this->label_ActValues_ABC->Text = L"Aktuelle Werte";
-    // 
     // label_Geschwindigkeit_Einheit_Wert
     // 
     this->label_Geschwindigkeit_Einheit_Wert->AutoSize = true;
-    this->label_Geschwindigkeit_Einheit_Wert->Location = System::Drawing::Point(270, 104);
+    this->label_Geschwindigkeit_Einheit_Wert->Location = System::Drawing::Point(486, 85);
     this->label_Geschwindigkeit_Einheit_Wert->Name = L"label_Geschwindigkeit_Einheit_Wert";
     this->label_Geschwindigkeit_Einheit_Wert->Size = System::Drawing::Size(25, 13);
     this->label_Geschwindigkeit_Einheit_Wert->TabIndex = 35;
     this->label_Geschwindigkeit_Einheit_Wert->Text = L"m/s";
     // 
-    // label_Geschwindigkeit_Einheit_Act_Wert
-    // 
-    this->label_Geschwindigkeit_Einheit_Act_Wert->AutoSize = true;
-    this->label_Geschwindigkeit_Einheit_Act_Wert->Location = System::Drawing::Point(270, 130);
-    this->label_Geschwindigkeit_Einheit_Act_Wert->Name = L"label_Geschwindigkeit_Einheit_Act_Wert";
-    this->label_Geschwindigkeit_Einheit_Act_Wert->Size = System::Drawing::Size(25, 13);
-    this->label_Geschwindigkeit_Einheit_Act_Wert->TabIndex = 36;
-    this->label_Geschwindigkeit_Einheit_Act_Wert->Text = L"m/s";
-    // 
     // label_Toleranz_Wert
     // 
     this->label_Toleranz_Wert->AutoSize = true;
-    this->label_Toleranz_Wert->Location = System::Drawing::Point(570, 104);
+    this->label_Toleranz_Wert->Location = System::Drawing::Point(489, 183);
     this->label_Toleranz_Wert->Name = L"label_Toleranz_Wert";
     this->label_Toleranz_Wert->Size = System::Drawing::Size(23, 13);
     this->label_Toleranz_Wert->TabIndex = 38;
     this->label_Toleranz_Wert->Text = L"mm";
-    // 
-    // label_Toleranz_Act_Wert
-    // 
-    this->label_Toleranz_Act_Wert->AutoSize = true;
-    this->label_Toleranz_Act_Wert->Location = System::Drawing::Point(570, 130);
-    this->label_Toleranz_Act_Wert->Name = L"label_Toleranz_Act_Wert";
-    this->label_Toleranz_Act_Wert->Size = System::Drawing::Size(23, 13);
-    this->label_Toleranz_Act_Wert->TabIndex = 39;
-    this->label_Toleranz_Act_Wert->Text = L"mm";
     // 
     // label_Header
     // 
     this->label_Header->AutoSize = true;
     this->label_Header->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 25, static_cast<System::Drawing::FontStyle>((System::Drawing::FontStyle::Bold | System::Drawing::FontStyle::Underline)),
         System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
-    this->label_Header->Location = System::Drawing::Point(8, 9);
+    this->label_Header->Location = System::Drawing::Point(213, 9);
     this->label_Header->Name = L"label_Header";
     this->label_Header->Size = System::Drawing::Size(384, 39);
     this->label_Header->TabIndex = 40;
@@ -447,10 +392,10 @@ void UserInterface::RoboPathForm::InitializeComponent()
     this->btn_Reset->BackColor = System::Drawing::SystemColors::ButtonFace;
     this->btn_Reset->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
         static_cast<System::Byte>(0)));
-    this->btn_Reset->Location = System::Drawing::Point(12, 361);
+    this->btn_Reset->Location = System::Drawing::Point(674, 483);
     this->btn_Reset->Name = L"btn_Reset";
     this->btn_Reset->Size = System::Drawing::Size(110, 50);
-    this->btn_Reset->TabIndex = 10;
+    this->btn_Reset->TabIndex = 13;
     this->btn_Reset->Text = L"Zurücksetzen";
     this->btn_Reset->UseVisualStyleBackColor = false;
     this->btn_Reset->Click += gcnew System::EventHandler(this, &RoboPathForm::btn_Reset_Click);
@@ -464,7 +409,7 @@ void UserInterface::RoboPathForm::InitializeComponent()
     // label_Degree_A
     // 
     this->label_Degree_A->AutoSize = true;
-    this->label_Degree_A->Location = System::Drawing::Point(423, 101);
+    this->label_Degree_A->Location = System::Drawing::Point(228, 82);
     this->label_Degree_A->Name = L"label_Degree_A";
     this->label_Degree_A->Size = System::Drawing::Size(11, 13);
     this->label_Degree_A->TabIndex = 41;
@@ -473,7 +418,7 @@ void UserInterface::RoboPathForm::InitializeComponent()
     // label_Degree_B
     // 
     this->label_Degree_B->AutoSize = true;
-    this->label_Degree_B->Location = System::Drawing::Point(423, 127);
+    this->label_Degree_B->Location = System::Drawing::Point(228, 108);
     this->label_Degree_B->Name = L"label_Degree_B";
     this->label_Degree_B->Size = System::Drawing::Size(11, 13);
     this->label_Degree_B->TabIndex = 42;
@@ -482,38 +427,51 @@ void UserInterface::RoboPathForm::InitializeComponent()
     // label_Degree_C
     // 
     this->label_Degree_C->AutoSize = true;
-    this->label_Degree_C->Location = System::Drawing::Point(423, 153);
+    this->label_Degree_C->Location = System::Drawing::Point(228, 134);
     this->label_Degree_C->Name = L"label_Degree_C";
     this->label_Degree_C->Size = System::Drawing::Size(11, 13);
     this->label_Degree_C->TabIndex = 43;
     this->label_Degree_C->Text = L"°";
     // 
-    // label_Degree_Act_A
+    // label_ToleranceOrientation
     // 
-    this->label_Degree_Act_A->AutoSize = true;
-    this->label_Degree_Act_A->Location = System::Drawing::Point(423, 191);
-    this->label_Degree_Act_A->Name = L"label_Degree_Act_A";
-    this->label_Degree_Act_A->Size = System::Drawing::Size(11, 13);
-    this->label_Degree_Act_A->TabIndex = 44;
-    this->label_Degree_Act_A->Text = L"°";
+    this->label_ToleranceOrientation->AutoSize = true;
+    this->label_ToleranceOrientation->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, static_cast<System::Drawing::FontStyle>((System::Drawing::FontStyle::Bold | System::Drawing::FontStyle::Underline)),
+        System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
+    this->label_ToleranceOrientation->Location = System::Drawing::Point(12, 157);
+    this->label_ToleranceOrientation->Name = L"label_ToleranceOrientation";
+    this->label_ToleranceOrientation->Size = System::Drawing::Size(213, 20);
+    this->label_ToleranceOrientation->TabIndex = 44;
+    this->label_ToleranceOrientation->Text = L"Toleranz der Orientierung";
     // 
-    // label_Degree_Act_B
+    // tb_ToleranceOrientation
     // 
-    this->label_Degree_Act_B->AutoSize = true;
-    this->label_Degree_Act_B->Location = System::Drawing::Point(423, 217);
-    this->label_Degree_Act_B->Name = L"label_Degree_Act_B";
-    this->label_Degree_Act_B->Size = System::Drawing::Size(11, 13);
-    this->label_Degree_Act_B->TabIndex = 45;
-    this->label_Degree_Act_B->Text = L"°";
+    this->tb_ToleranceOrientation->Enabled = false;
+    this->tb_ToleranceOrientation->Location = System::Drawing::Point(16, 180);
+    this->tb_ToleranceOrientation->Name = L"tb_ToleranceOrientation";
+    this->tb_ToleranceOrientation->Size = System::Drawing::Size(100, 20);
+    this->tb_ToleranceOrientation->TabIndex = 4;
+    this->tb_ToleranceOrientation->Leave += gcnew System::EventHandler(this, &RoboPathForm::ValidateInput);
     // 
-    // label_Degree_Act_C
+    // tb_ToleranceOrientation_Act
     // 
-    this->label_Degree_Act_C->AutoSize = true;
-    this->label_Degree_Act_C->Location = System::Drawing::Point(423, 243);
-    this->label_Degree_Act_C->Name = L"label_Degree_Act_C";
-    this->label_Degree_Act_C->Size = System::Drawing::Size(11, 13);
-    this->label_Degree_Act_C->TabIndex = 46;
-    this->label_Degree_Act_C->Text = L"°";
+    this->tb_ToleranceOrientation_Act->Enabled = false;
+    this->tb_ToleranceOrientation_Act->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Bold,
+        System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
+    this->tb_ToleranceOrientation_Act->Location = System::Drawing::Point(122, 180);
+    this->tb_ToleranceOrientation_Act->Name = L"tb_ToleranceOrientation_Act";
+    this->tb_ToleranceOrientation_Act->ReadOnly = true;
+    this->tb_ToleranceOrientation_Act->Size = System::Drawing::Size(100, 20);
+    this->tb_ToleranceOrientation_Act->TabIndex = 46;
+    // 
+    // label_Degree_
+    // 
+    this->label_Degree_->AutoSize = true;
+    this->label_Degree_->Location = System::Drawing::Point(228, 180);
+    this->label_Degree_->Name = L"label_Degree_";
+    this->label_Degree_->Size = System::Drawing::Size(11, 13);
+    this->label_Degree_->TabIndex = 47;
+    this->label_Degree_->Text = L"°";
     // 
     // RoboPathForm
     // 
@@ -521,23 +479,18 @@ void UserInterface::RoboPathForm::InitializeComponent()
     this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
     this->BackColor = System::Drawing::SystemColors::ButtonShadow;
     this->ClientSize = System::Drawing::Size(784, 561);
-    this->Controls->Add(this->label_Degree_Act_C);
-    this->Controls->Add(this->label_Degree_Act_B);
-    this->Controls->Add(this->label_Degree_Act_A);
+    this->Controls->Add(this->label_Degree_);
+    this->Controls->Add(this->tb_ToleranceOrientation_Act);
+    this->Controls->Add(this->tb_ToleranceOrientation);
+    this->Controls->Add(this->label_ToleranceOrientation);
     this->Controls->Add(this->label_Degree_C);
     this->Controls->Add(this->label_Degree_B);
     this->Controls->Add(this->label_Degree_A);
     this->Controls->Add(this->btn_Reset);
     this->Controls->Add(this->label_Header);
-    this->Controls->Add(this->label_Toleranz_Act_Wert);
     this->Controls->Add(this->label_Toleranz_Wert);
-    this->Controls->Add(this->label_Geschwindigkeit_Einheit_Act_Wert);
     this->Controls->Add(this->label_Geschwindigkeit_Einheit_Wert);
-    this->Controls->Add(this->label_ActValues_ABC);
     this->Controls->Add(this->label_A);
-    this->Controls->Add(this->label_ActC);
-    this->Controls->Add(this->label_ActA);
-    this->Controls->Add(this->label_ActB);
     this->Controls->Add(this->label_B);
     this->Controls->Add(this->label_C);
     this->Controls->Add(this->tb_Orientation_B);
@@ -548,24 +501,25 @@ void UserInterface::RoboPathForm::InitializeComponent()
     this->Controls->Add(this->tb_Version);
     this->Controls->Add(this->label_ActValues);
     this->Controls->Add(this->tb_SampleSize_Act);
-    this->Controls->Add(this->tb_Tolerance_Act);
+    this->Controls->Add(this->tb_ToleranceApprox_Act);
     this->Controls->Add(this->tb_Orientation_Act_A);
     this->Controls->Add(this->tb_Velo_Act);
     this->Controls->Add(this->btn_Start);
     this->Controls->Add(this->btn_OpenCSV);
     this->Controls->Add(this->label_SampleSize);
-    this->Controls->Add(this->label_Tolerance);
+    this->Controls->Add(this->label_ToleranceApprox);
     this->Controls->Add(this->label_Orientation);
     this->Controls->Add(this->label_Velo);
     this->Controls->Add(this->cb_Orientation);
     this->Controls->Add(this->cb_Velo);
     this->Controls->Add(this->tb_SampleSize);
-    this->Controls->Add(this->tb_Tolerance);
+    this->Controls->Add(this->tb_ToleranceApprox);
     this->Controls->Add(this->tb_Orientation_A);
     this->Controls->Add(this->tb_Velo);
     this->Controls->Add(this->btn_Set);
     this->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
         static_cast<System::Byte>(0)));
+    this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedSingle;
     this->MaximizeBox = false;
     this->Name = L"RoboPathForm";
     this->Text = L"RoboPath";
@@ -586,11 +540,16 @@ System::Void UserInterface::RoboPathForm::cb_Velo_CheckChanged(System::Object^ s
         this->tb_Velo->Enabled = false;
 
         this->tb_Velo_Act->Clear();
+
+        //Der Benutzer wird nochmal gezwungen den Set Button zu drücken, da der aktuell geladene Wert der Checkbox nicht ersichtlich ist
+        bSetted = false;
     }
     //Wenn die Checkbox false ist, möchte der Benutzer die Geschwindigkeit selbst definieren.
     //Die TextBox wird enabled
     else {
         this->tb_Velo->Enabled = true;
+        //Der Benutzer wird nochmal gezwungen den Set Button zu drücken, da der aktuell geladene Wert der Checkbox nicht ersichtlich ist
+        bSetted = false;
     }
 }
 //Ereignis, nachdem die Orientation Checbox un/checked wird
@@ -606,10 +565,13 @@ System::Void UserInterface::RoboPathForm::cb_Orientation_CheckChanged(System::Ob
         this->tb_Orientation_A->Enabled = false;
         this->tb_Orientation_B->Enabled = false;
         this->tb_Orientation_C->Enabled = false;
+        this->tb_ToleranceOrientation->Enabled = true;
 
         this->tb_Orientation_Act_A->Clear();
         this->tb_Orientation_Act_B->Clear();
         this->tb_Orientation_Act_C->Clear();
+        //Der Benutzer wird nochmal gezwungen den Set Button zu drücken, da der aktuell geladene Wert der Checkbox nicht ersichtlich ist
+        bSetted = false;
     }
     //Wenn die Checkbox false ist, möchte der Benutzer die Orientierung selbst bestimmen
     //Somit werden alle Orientation Textboxen enabled
@@ -617,6 +579,13 @@ System::Void UserInterface::RoboPathForm::cb_Orientation_CheckChanged(System::Ob
         this->tb_Orientation_A->Enabled = true;
         this->tb_Orientation_B->Enabled = true;
         this->tb_Orientation_C->Enabled = true;
+        this->tb_ToleranceOrientation->Enabled = false;
+
+        this->tb_ToleranceOrientation->Clear();
+
+        this->tb_ToleranceOrientation_Act->Clear();
+        //Der Benutzer wird nochmal gezwungen den Set Button zu drücken, da der aktuell geladene Wert der Checkbox nicht ersichtlich ist
+        bSetted = false;
     }
 }
 //Eregnis, nachdem der Set Button geklickt worden ist. Damit möchte der Nutzer alle eingegebene Werte setzen/speichern.
@@ -631,9 +600,11 @@ System::Void UserInterface::RoboPathForm::btn_Set_Click(System::Object^ sender, 
                 && (this->tb_Orientation_A->Text == ""
                     || this->tb_Orientation_B->Text == ""
                     || this->tb_Orientation_C->Text == ""))
-            || this->tb_Tolerance->Text == ""
+            || this->tb_ToleranceApprox->Text == ""
             || this->tb_SampleSize->Text == ""
-            || Datastore->GetFilePath() == "") {
+            || Datastore->GetFilePath() == ""
+            || (this->cb_Orientation->Checked == true
+                && this->tb_ToleranceOrientation->Text == "")) {
             //Liste, zum Sammeln der Fehlermeldungen
             System::Collections::Generic::List<System::String^> lstErrorMessages;
 
@@ -668,13 +639,18 @@ System::Void UserInterface::RoboPathForm::btn_Set_Click(System::Object^ sender, 
             }
 
             //Fehler: Kein Wert in der Tolerance Textbox
-            if (this->tb_Tolerance->Text == "") {
-                lstErrorMessages.Add("Geben Sie eine Toleranz ein");
+            if (this->tb_ToleranceApprox->Text == "") {
+                lstErrorMessages.Add("Geben Sie eine Toleranz für die Approximation ein");
             }
 
             //Fehler: Kein Wert in der Average Textbox
             if (this->tb_SampleSize->Text == "") {
-                lstErrorMessages.Add("Geben Sie eine Mittelwert ein");
+                lstErrorMessages.Add("Geben Sie an über wie viele Datensätze ein Mittelwert gebildet werden soll");
+            }
+
+            if (this->cb_Orientation->Checked == true
+                && this->tb_ToleranceOrientation->Text == "") {
+                lstErrorMessages.Add("Geben Sie eine Toleranz für die Orientierung ein");
             }
 
             //Alle Fehlermeldungen wurden in einer Liste aufgenommen und werden jetzt in einen String aneinandergehängt um diesen dann
@@ -704,8 +680,12 @@ System::Void UserInterface::RoboPathForm::btn_Set_Click(System::Object^ sender, 
                 Datastore->SetOrientationC(Double::Parse(this->tb_Orientation_C->Text));
             }
 
+            if (this->cb_Orientation->Checked == true) {
+                Datastore->SetToleranceOrientation(Double::Parse(this->tb_ToleranceOrientation->Text));
+            }
+
             //Der Text wird in den passenden Datentyp umgewandelt und übergeben.
-            Datastore->SetToleranceApprox(Double::Parse(this->tb_Tolerance->Text));
+            Datastore->SetToleranceApprox(Double::Parse(this->tb_ToleranceApprox->Text));
             Datastore->SetSampleSize(System::Convert::ToInt32(this->tb_SampleSize->Text));
 
             //Der Status der Checkboxen wird übergeben
@@ -717,8 +697,9 @@ System::Void UserInterface::RoboPathForm::btn_Set_Click(System::Object^ sender, 
             this->tb_Orientation_Act_A->Text = this->tb_Orientation_A->Text;
             this->tb_Orientation_Act_B->Text = this->tb_Orientation_B->Text;
             this->tb_Orientation_Act_C->Text = this->tb_Orientation_C->Text;
-            this->tb_Tolerance_Act->Text = this->tb_Tolerance->Text;
+            this->tb_ToleranceApprox_Act->Text = this->tb_ToleranceApprox->Text;
             this->tb_SampleSize_Act->Text = this->tb_SampleSize->Text;
+            this->tb_ToleranceOrientation_Act->Text = this->tb_ToleranceOrientation->Text;
 
             //Zusätzlich gibt es noch eine Meldung über die erfolgreiche Speicherung
             this->AppendLog("Laden der Werte erfolgreich\n\n");
@@ -768,7 +749,6 @@ System::Void UserInterface::RoboPathForm::openFileDialog_CSV_FileOk(System::Obje
 //Ereignis, dass nachdem ein gültiger Speicherpfad gewählt worden ist
 System::Void UserInterface::RoboPathForm::saveFileDialog_CSV_FileOk(System::Object^ sender, System::ComponentModel::CancelEventArgs^ e) {
     //Der Speicherort mit Dateiname wird im Log ausgegeben und der Speicherpfad gespeichert
-    this->AppendLog("Die Datei wird in " + saveFileDialog_CSV->FileName + " gespeichert" + "\n\n");
     Datastore->SetSavePath(saveFileDialog_CSV->FileName);
 }
 //Ereignis, nachdem der Start Button geklickt wird
@@ -778,6 +758,8 @@ System::Void UserInterface::RoboPathForm::btn_Start_Click(System::Object^ sender
         System::Boolean bReadDone = false;
         System::Boolean bFilteredDone = false;
         System::Boolean bApproxedDone = false;
+        System::Boolean bCalcOrientationDone = false;
+        System::Boolean bVeloCalcDone = false;
          //Wenn der Set Button gedrückt und alle Werte erfolgreich geladen worden sind, ist bSetted true
         if (bSetted) {
             //Ausgewählte Datei wird eingelesen
@@ -825,14 +807,51 @@ System::Void UserInterface::RoboPathForm::btn_Start_Click(System::Object^ sender
             else {
                 return;
             }
+            //Die Geschwindigkeit wird aus der CSV berechnet
+            if (Datastore->GetUserDefVelo() && bApproxedDone) {
+                this->AppendLog("Geschwindigkeit wird berechnet\n\n");
+                System::Threading::Thread::Sleep(500);
+                Logic::VeloCalc^ VeloCalculation = gcnew Logic::VeloCalc(this);
+                bVeloCalcDone = VeloCalculation->VeloCalcCSV(Datastore);
+                delete VeloCalculation;
+            }
+            //Wenn der Nutzer die Geschwindigkeit selbst gewählt hat, wird die Ablaufkette weitergeführt
+            else if (!Datastore->GetUserDefVelo() && bApproxedDone) {
+                bVeloCalcDone = true;
+            }
+            else {
+                return;
+            }
+            //Die Orientierung wird aus der CSV berechnet
+            if (Datastore->GetUserDefOrientation() && bVeloCalcDone) {
+                this->AppendLog("Orientierung wird berechnet\n\n");
+                System::Threading::Thread::Sleep(500);
+                Logic::CalcOrientation^ OCalculation = gcnew Logic::CalcOrientation(this);
+                bCalcOrientationDone = OCalculation->CalcRotMatToEulerABC(Datastore);
+                delete OCalculation;
+            }
+            //Wenn der Nutzer die Geschwindigkeit selbst gewählt hat, wird die Ablaufkette weitergeführt
+            else if (!Datastore->GetUserDefOrientation() && bVeloCalcDone) {
+                bCalcOrientationDone = true;
+            }
+            else {
+                return;
+            }
             //Die Datei wird erzeugt und unter dem nutzerdefinierten Pfad gespeichert
-            if (bApproxedDone) {
+            if (bCalcOrientationDone) {
                 this->AppendLog("Datei wird erstellt\n\n");
                 System::Threading::Thread::Sleep(500);
-                Logic::WriteCSV^ FileCreater = gcnew Logic::WriteCSV(this);
+                Logic::CreateKUKAFile^ KUKACreater = gcnew Logic::CreateKUKAFile(this);
+                KUKACreater->WriteKUKA(Datastore);
+                delete KUKACreater;
+            }
+            /*if (bCalcOrientationDone) {
+                this->AppendLog("Datei wird erstellt\n\n");
+                System::Threading::Thread::Sleep(500);
+                Logic::WriteCSVForMatLab^ FileCreater = gcnew Logic::WriteCSVForMatLab(this);
                 FileCreater->WriteForMatLab(Datastore);
                 delete FileCreater;
-            }
+            }*/
 
             //Nachdem alles durchgelaufen ist, wird alles resettet
             this->ResetAll();
@@ -877,6 +896,14 @@ System::Void UserInterface::RoboPathForm::ValidateInput(System::Object^ sender, 
                 }
                 return;
             }
+            if (tbCurrentTextBox->Name == "tb_ToleranceOrientation") {
+                if (dInput < 0 || dInput > 360) {
+                    //Falls doch, wird eine Fehlermeldung ausgegeben und der Text wird resettet.
+                    this->ShowErrorWindow("Die Toleranz der Orientierung muss mindestens 0° sein und darf maximal 360° betragen");
+                    tbCurrentTextBox->Clear();
+                }
+                return;
+            }
             //Wenn es einer der Orientation Textboxen ist, darf der Winkel nur zwischen 0 und 360 grad betragen
             else if (tbCurrentTextBox->Name->Contains("tb_Orientation_")) {
                 if (dInput < 0 || dInput > 360) {
@@ -887,10 +914,10 @@ System::Void UserInterface::RoboPathForm::ValidateInput(System::Object^ sender, 
                 return;
             }
             //Wenn es die Tolerance Textbox ist, ...
-            else if (tbCurrentTextBox->Name == "tb_Tolerance") {
+            else if (tbCurrentTextBox->Name == "tb_ToleranceApprox") {
                 if (dInput < 0 || dInput > 10) {
                     //Falls doch, wird eine Fehlermeldung ausgegeben und der Text wird resettet.
-                    this->ShowErrorWindow("Die Toleranz darf maximal 10mm betragen\nNegative Zahlen sind nicht erlaubt");
+                    this->ShowErrorWindow("Die Toleranz der Approximation darf maximal 10mm betragen\nNegative Zahlen sind nicht erlaubt");
                     tbCurrentTextBox->Text = "";
                 }
                 return;
@@ -975,8 +1002,10 @@ System::Void UserInterface::RoboPathForm::ResetAll() {
     this->tb_Orientation_Act_B->Clear();
     this->tb_Orientation_C->Clear();
     this->tb_Orientation_Act_C->Clear();
-    this->tb_Tolerance->Clear();
-    this->tb_Tolerance_Act->Clear();
+    this->tb_ToleranceApprox->Clear();
+    this->tb_ToleranceApprox_Act->Clear();
+    this->tb_ToleranceOrientation->Clear();
+    this->tb_ToleranceOrientation_Act->Clear();
     this->tb_SampleSize->Clear();
     this->tb_SampleSize_Act->Clear();
     /*this->tb_Log->Clear();*/

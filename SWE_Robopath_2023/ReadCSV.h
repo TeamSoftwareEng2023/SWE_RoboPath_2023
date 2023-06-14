@@ -1,6 +1,7 @@
 #pragma once
 #include"RoboPathStruct.h"
 #include"RoboPathForm.h"
+#include "ValidateRawCSV.h"
 
 namespace Logic {
 	ref class ReadCSV
