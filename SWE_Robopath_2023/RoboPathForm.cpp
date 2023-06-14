@@ -402,7 +402,7 @@ void UserInterface::RoboPathForm::InitializeComponent()
     // 
     // saveFileDialog_CSV
     // 
-    this->saveFileDialog_CSV->Filter = L"src files (*.src) |*.src";
+    this->saveFileDialog_CSV->Filter = L"source files (*.src) |*.src";
     this->saveFileDialog_CSV->InitialDirectory = L"c:\\";
     this->saveFileDialog_CSV->FileOk += gcnew System::ComponentModel::CancelEventHandler(this, &RoboPathForm::saveFileDialog_CSV_FileOk);
     // 
