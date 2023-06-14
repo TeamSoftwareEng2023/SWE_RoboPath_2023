@@ -1,13 +1,3 @@
 ﻿  CalcOrientation.cpp
-  CreateKUKAFile.cpp
-  DPAprox.cpp
-  ReadCSV.cpp
-  RoboPathForm.cpp
-  SampleFilter.cpp
-  ValidateRawCSV.cpp
-  VeloCalc.cpp
-  WriteCSVForMatLab.cpp
-  main.cpp
-  Code wird generiert...
   AssemblyInfo.obj : MSIL-Modulgefunden; inkrementelles Verknüpfen wird für MSIL deaktiviert; vollständiger Link wird durchgeführt
   SWE_Robopath_2023.vcxproj -> C:\Users\PG\Source\Repos\TeamSoftwareEng2023\SWE_RoboPath_2023\x64\Debug\SWE_Robopath_2023.exe
