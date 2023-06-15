@@ -31,14 +31,14 @@ System::Boolean Logic::CalcOrientation::CalcRotMatToEulerABC(Projectdata::RoboPa
 
             //Sonderabfrage bei bestimmten Bedingungen
             if (dM31 == 1) {
-                dA_Act = (System::Math::Atan(-dM12 / -dM13) * (180 / System::Math::PI) - 180)* (-1);
+                dC_Act = System::Math::Atan2(-dM12, -dM13) * (180 / System::Math::PI);
                 dB_Act = -System::Math::Asin(dM31) * (180 / System::Math::PI);
-                dC_Act = 0;
+                dA_Act = 0;
             }
             else if (dM31 == -1) {
-                dA_Act = (System::Math::Atan(dM12 / dM13) * (180 / System::Math::PI) - 180) *(-1);
+                dC_Act = System::Math::Atan2(dM12, dM13) * (180 / System::Math::PI);
                 dB_Act = -System::Math::Asin(dM31) * (180 / System::Math::PI);
-                dC_Act = 0;
+                dA_Act = 0;
             }
             //Allgemeines Lösungsverfahren
             else {
