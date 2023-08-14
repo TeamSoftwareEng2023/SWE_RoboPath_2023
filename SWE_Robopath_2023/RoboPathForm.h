@@ -105,7 +105,7 @@ namespace UserInterface {
            //Ereignis nach dem Klicken auf den Set Button
     private: System::Void btn_Set_Click(System::Object^ sender, System::EventArgs^ e);
            //Funktion, um ein Fehlerfesnter mit definierten Text anzuzeigen
-    private: System::Void ShowErrorWindow(String^ errorMessage);
+    public:  System::Void ShowErrorWindow(String^ errorMessage);
            //Ereignis nach dem Klicken auf den Reset Button
     private: System::Void btn_Reset_Click(System::Object^ sender, System::EventArgs^ e);
            //Funktion, um ein Entscheidungsfesnter (Ja oder Nein) mit definierten Text anzuzeigen
@@ -116,6 +116,8 @@ namespace UserInterface {
     private: System::Void ValidateInput(System::Object^ sender, System::EventArgs^ e);
            //Ereignis, nachdem ein gültiger Speicherort und Speichernamen ausgewählt worden ist
     private: System::Void saveFileDialog_CSV_FileOk(System::Object^ sender, System::ComponentModel::CancelEventArgs^ e);
+           //Mit diesem Aufruf kann die UI und der Datastore resettet werden
+    private: System::Void ResetDatastoreAndUI();
     };
 }
 #pragma endregion

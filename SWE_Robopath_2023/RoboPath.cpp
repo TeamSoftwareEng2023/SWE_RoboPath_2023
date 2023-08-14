@@ -124,6 +124,7 @@ bool Projectdata::RoboPath::GetUserDefOrientation() {
 //Standardwerte setzen
 void Projectdata::RoboPath::Reset() {
     sFilepath = "";
+    sSavePath = "";
     dUserDefVelo = 0;
     dUserDefToleranceApproximation = 0;
     dUserDefToleranceOrientation = 0;
