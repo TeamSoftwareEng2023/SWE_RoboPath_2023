@@ -9,7 +9,7 @@ namespace Logic {
         //Konstruktor
         ValidateRawCSV(UserInterface::RoboPathForm^);
         //Funktion um die zu einlesende CSV zu validieren
-        System::Boolean ValidateCSV(System::IO::StreamReader^);
+        System::Boolean ValidateCSV(Projectdata::RoboPath^);
     private:
         //UI Objekt zum Benutzen des Logs
         UserInterface::RoboPathForm^ UIControl;

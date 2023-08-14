@@ -21,3 +21,4 @@ Class UserInterface.RoboPathForm: AutoLayout, AnsiClass, Class, Public, BeforeFi
     System.Windows.Forms.SaveFileDialog saveFileDialog_CSV : Public
   Methods:
     AppendLog(String): PrivateScope, Public, HideBySig
+    ShowErrorWindow(String): PrivateScope, Public, HideBySig

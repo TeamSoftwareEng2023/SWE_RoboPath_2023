@@ -8,22 +8,12 @@ Logic::ReadCSV::ReadCSV(UserInterface::RoboPathForm^ UI) {
 
 System::Boolean Logic::ReadCSV::ReadAndSaveCSV(Projectdata::RoboPath^ RoboPathData)
 {
-    //Streamreader mit dem Pfad der CSV initialisieren
-    System::IO::StreamReader^ srReader = gcnew System::IO::StreamReader(RoboPathData->GetFilePath());
-    //Hilfsstring zum auslesen der Datei
-    System::String^ sLine;
     try
     {
-        //Hier wird die die CSV validiert. Bei einem Fehler wird der Programmdurchlauf abgebrochen
-        UIControl->AppendLog("Datei wird validiert\n\n");
-        System::Threading::Thread::Sleep(500);
-        Logic::ValidateRawCSV^ Validater = gcnew Logic::ValidateRawCSV(UIControl);
-        if (!Validater->ValidateCSV(srReader)) {
-            return false;
-        }
-        delete Validater;
-        srReader->Close();
-        srReader = gcnew System::IO::StreamReader(RoboPathData->GetFilePath());
+        //Streamreader mit dem Pfad der CSV initialisieren
+        System::IO::StreamReader^ srReader = gcnew System::IO::StreamReader(RoboPathData->GetFilePath());
+        //Hilfsstring zum auslesen der Datei
+        System::String^ sLine;
         //Solange noch eine Zeile da ist, wird weitergelesen
         while ((sLine = srReader->ReadLine()) != nullptr)
         {

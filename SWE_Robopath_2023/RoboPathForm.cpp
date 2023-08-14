@@ -749,12 +749,13 @@ System::Void UserInterface::RoboPathForm::openFileDialog_CSV_FileOk(System::Obje
 //Ereignis, dass nachdem ein gültiger Speicherpfad gewählt worden ist
 System::Void UserInterface::RoboPathForm::saveFileDialog_CSV_FileOk(System::Object^ sender, System::ComponentModel::CancelEventArgs^ e) {
     //Der Speicherort mit Dateiname wird im Log ausgegeben und der Speicherpfad gespeichert
-    Datastore->SetSavePath(saveFileDialog_CSV->FileName);
+        Datastore->SetSavePath(saveFileDialog_CSV->FileName);
 }
 //Ereignis, nachdem der Start Button geklickt wird
 System::Void UserInterface::RoboPathForm::btn_Start_Click(System::Object^ sender, System::EventArgs^ e) {
     try {
         //Boolsche Werte, die die erfolgreiche Abbarbeitung eines Abschnitts widerspiegeln
+        System::Boolean bValidateDone = false;
         System::Boolean bReadDone = false;
         System::Boolean bFilteredDone = false;
         System::Boolean bApproxedDone = false;
@@ -762,12 +763,25 @@ System::Void UserInterface::RoboPathForm::btn_Start_Click(System::Object^ sender
         System::Boolean bVeloCalcDone = false;
          //Wenn der Set Button gedrückt und alle Werte erfolgreich geladen worden sind, ist bSetted true
         if (bSetted) {
-            //Ausgewählte Datei wird eingelesen
-            this->AppendLog("CSV wird eingelesen\n\n");
+            //Augewählte Datei wird validiert
+            this->AppendLog("CSV wird validiert\n\n");
             System::Threading::Thread::Sleep(500);
-            Logic::ReadCSV^ Reader = gcnew Logic::ReadCSV(this);
-            bReadDone = Reader->ReadAndSaveCSV(Datastore);
-            delete Reader;
+            Logic::ValidateRawCSV^ Validater = gcnew Logic::ValidateRawCSV(this);
+            bValidateDone = Validater->ValidateCSV(Datastore);
+            delete Validater;
+            //Ausgewählte Datei wird eingelesen
+            if (bValidateDone) {
+                this->AppendLog("CSV wird eingelesen\n\n");
+                System::Threading::Thread::Sleep(500);
+                Logic::ReadCSV^ Reader = gcnew Logic::ReadCSV(this);
+                bReadDone = Reader->ReadAndSaveCSV(Datastore);
+                delete Reader;
+            }
+            //Falls die Validierung schief gegangen ist, wird das System zurück gesetzt
+            else {
+                this->ResetDatastoreAndUI();
+                return;
+            }
             //Datensätze werden über die nutzerdefinierte Samplegröße gemittelt
             //Falls die Samplegröße == 1 ist, dann muss nicht gemittelt werden
             if (Datastore->GetSampleSize() > 1 && bReadDone) {
@@ -786,6 +800,7 @@ System::Void UserInterface::RoboPathForm::btn_Start_Click(System::Object^ sender
             //Falls nichts zutrifft ist etwas schief gelaufen. Eine enstprechende Fehlermeldung sollte durch die vorher durchgelaufenen Funktionen
             //im Log erzeugt worden sein
             else {
+                this->ResetDatastoreAndUI();
                 return;
             }
             //Datensätze werden über die nutzerdefinierte Toleranz wegapproximiert
@@ -805,6 +820,7 @@ System::Void UserInterface::RoboPathForm::btn_Start_Click(System::Object^ sender
             //Falls nichts zutrifft ist etwas schief gelaufen. Eine enstprechende Fehlermeldung sollte durch die vorher durchgelaufenen Funktionen
             //im Log erzeugt worden sein
             else {
+                this->ResetDatastoreAndUI();
                 return;
             }
             //Die Geschwindigkeit wird aus der CSV berechnet
@@ -820,6 +836,7 @@ System::Void UserInterface::RoboPathForm::btn_Start_Click(System::Object^ sender
                 bVeloCalcDone = true;
             }
             else {
+                this->ResetDatastoreAndUI();
                 return;
             }
             //Die Orientierung wird aus der CSV berechnet
@@ -835,6 +852,7 @@ System::Void UserInterface::RoboPathForm::btn_Start_Click(System::Object^ sender
                 bCalcOrientationDone = true;
             }
             else {
+                this->ResetDatastoreAndUI();
                 return;
             }
             //Die Datei wird erzeugt und unter dem nutzerdefinierten Pfad gespeichert
@@ -845,13 +863,13 @@ System::Void UserInterface::RoboPathForm::btn_Start_Click(System::Object^ sender
                 KUKACreater->WriteKUKA(Datastore);
                 delete KUKACreater;
             }
-            /*if (bCalcOrientationDone) {
-                this->AppendLog("Datei wird erstellt\n\n");
+            
+                /*this->AppendLog("Datei für MatLab wird erstellt\n\n");
                 System::Threading::Thread::Sleep(500);
                 Logic::WriteCSVForMatLab^ FileCreater = gcnew Logic::WriteCSVForMatLab(this);
                 FileCreater->WriteForMatLab(Datastore);
-                delete FileCreater;
-            }*/
+                delete FileCreater;*/
+            
 
             //Nachdem alles durchgelaufen ist, wird alles resettet
             this->ResetAll();
@@ -871,7 +889,7 @@ System::Void UserInterface::RoboPathForm::btn_Start_Click(System::Object^ sender
 }
 //Ereignis, nachdem ein Wert in irgendeine Textbox eingegeben wird und diese Textbox dann den Fokus verliert
 System::Void UserInterface::RoboPathForm::ValidateInput(System::Object^ sender, System::EventArgs^ e) {
-    //Die Textbox wird in einem Objekt gespeichert. Somit kann man mit dieser Funktion alle Textboxen anfangen
+    //Die Textbox wird in einem Objekt gespeichert. Somit kann man mit dieser Funktion alle Textboxen abfangen
     TextBox^ tbCurrentTextBox = dynamic_cast<TextBox^>(sender);
     //Wenn gar nichts eingegeben wurde, passiert nichts
     if (tbCurrentTextBox->Text == "") {
@@ -939,9 +957,9 @@ System::Void UserInterface::RoboPathForm::ValidateInput(System::Object^ sender, 
         int iInput;
         //Der eingegebene Text wird in ein int32 umgewandelt. Falls dies gelingt, wird der int in der Variable iInput gespeichert
         if (System::Int32::TryParse(tbCurrentTextBox->Text, iInput)) {
-            if (iInput < 0 || iInput > 10) {
+            if (iInput < 1 || iInput > 10) {
                 //Falls doch, wird eine Fehlermeldung ausgegeben und der Text wird resettet.
-                this->ShowErrorWindow("Die Anzahl an Datensätze, über die gemittelt werden darf, darf maximal 10 betragen\nNegative Zahlen sind nicht erlaubt");
+                this->ShowErrorWindow("Die Anzahl an Datensätze, über die gemittelt werden darf, muss mindestens 1 und darf maximal 10 betragen");
                 tbCurrentTextBox->Text = "";
             }
             return;
@@ -992,7 +1010,7 @@ System::Void UserInterface::RoboPathForm::SetVersion() {
     //Die Versionsnummer wird der Textbox zugewiesen
     this->tb_Version->Text = Version.getVersion();
 }
-//Funktion, um alles zurück zu setzen
+//Funktion, um alles in der UI zurück zu setzen
 System::Void UserInterface::RoboPathForm::ResetAll() {
     this->tb_Velo->Clear();
     this->tb_Velo_Act->Clear();
@@ -1010,5 +1028,11 @@ System::Void UserInterface::RoboPathForm::ResetAll() {
     this->tb_SampleSize_Act->Clear();
     /*this->tb_Log->Clear();*/
     bSetted = false;
+}
+//Diese Funktion setzt UI und Datastore zurück
+System::Void UserInterface::RoboPathForm::ResetDatastoreAndUI() {
+    this->ResetAll();
+    Datastore->Reset();
+    this->AppendLog("Daten zurück gesetzt.\n\n");
 }
 #pragma endregion helpers
